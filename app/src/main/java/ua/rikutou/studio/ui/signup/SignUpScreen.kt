@@ -18,9 +18,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
-fun SignUpScreen(modifier: Modifier = Modifier) {
+fun SignUpScreen(
+    viewModel: SignUpViewModel
+) {
+    val state = viewModel.state.collectAsStateWithLifecycle()
+    SignUpScreenContent(
+        state = state,
+        onAction = viewModel::onAction
+    )
 
 }
 
