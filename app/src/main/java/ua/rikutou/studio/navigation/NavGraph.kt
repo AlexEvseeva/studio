@@ -3,7 +3,7 @@ package ua.rikutou.studio.navigation
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-//import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
@@ -20,8 +20,7 @@ fun NavGraph(navController: NavHostController) {
         startDestination = Screen.SignUp.route
     ) {
         composable(route = Screen.SignUp.route) {
-//            SignUpScreen(viewModel = hiltViewModel())
-            SignUpScreen(viewModel = SignUpViewModel())
+            SignUpScreen(viewModel = hiltViewModel())
         }
     }
 }

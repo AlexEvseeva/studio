@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     kotlin("kapt")
     alias(libs.plugins.devtools.ksp)
-//    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -38,12 +38,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+//    kotlinOptions {
+//        jvmTarget = "1.8"
+//    }
     buildFeatures {
         compose = true
     }
@@ -71,11 +71,11 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.navigation.compose)
 
-//    // DI
-//    implementation(libs.android.hilt)
-//    kapt(libs.android.hilt.compiler)
+    // DI
+    implementation(libs.android.hilt)
+    kapt(libs.android.hilt.compiler)
 //    kapt(libs.androidx.hilt.compiler)
-//    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
