@@ -2,8 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     kotlin("kapt")
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.devtools.ksp)
+//    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -60,7 +60,6 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -72,11 +71,11 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.navigation.compose)
 
-    // DI
-    implementation(libs.android.hilt)
-    kapt(libs.android.hilt.compiler)
-    kapt(libs.androidx.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
+//    // DI
+//    implementation(libs.android.hilt)
+//    kapt(libs.android.hilt.compiler)
+//    kapt(libs.androidx.hilt.compiler)
+//    implementation(libs.hilt.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -11,19 +11,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+//import dagger.hilt.android.AndroidEntryPoint
+import ua.rikutou.studio.navigation.NavGraph
 import ua.rikutou.studio.ui.theme.StudioTheme
 
+//@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             StudioTheme {
+                val navController = rememberNavController()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    val padding = innerPadding
+
+                    NavGraph(navController = navController)
                 }
             }
         }

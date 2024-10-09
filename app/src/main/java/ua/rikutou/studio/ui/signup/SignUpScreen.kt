@@ -72,7 +72,7 @@ fun SignUpScreenContent(
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-
+                onAction(SignUp.Action.OnRegister)
             }
         ) {
             Text(text = "Sign up")
