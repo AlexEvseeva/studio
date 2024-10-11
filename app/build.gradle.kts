@@ -37,6 +37,8 @@ android {
             )
         }
     }
+//    buildConfigField("String", 'CFG_SERVER_URL', "\"http:192.168.50.79:8080\"")
+//    buildConfigField("String", "CFG_SERVER_URL", "\"https://reachtags.app/api/\"")
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -46,6 +48,7 @@ android {
 //    }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -70,6 +73,13 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.navigation.compose)
+
+//    Network
+    implementation(libs.retrofit)
+    implementation(libs.retrofitConvertorGSon)
+    implementation(libs.chucker)
+    implementation(libs.chuckerNoOp)
+
 
     // DI
     implementation(libs.android.hilt)
