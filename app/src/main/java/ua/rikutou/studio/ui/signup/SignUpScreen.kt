@@ -64,6 +64,7 @@ fun SignUpScreenContent(
             value = password,
             onValueChange = {
                 password = it
+                onAction(SignUp.Action.onPasswordChanged(password = it))
             },
             label = {
                 Text(text = "password")

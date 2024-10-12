@@ -2,7 +2,7 @@ package ua.rikutou.studio.ui.signup
 
 object SignUp {
     sealed interface Event {
-
+        data object NavigateToLogin : Event
     }
 
     sealed interface Action {
@@ -12,7 +12,8 @@ object SignUp {
     }
 
     data class State(
-        val name: String = "",
-        val password: String = ""
+        val name: String = "John.Doe@gmail.com",
+        val password: String = "Secret1",
+        val inProgress: Boolean = false,
     )
 }

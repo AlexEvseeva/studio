@@ -7,13 +7,17 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ua.rikutou.studio.data.repository.RepositoryResponse
+import ua.rikutou.studio.data.repository.auth.AuthRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel
-@Inject constructor()
-    : ViewModel() {
+@Inject constructor(
+  private val authRepository: AuthRepository
+) : ViewModel() {
     private val _event = MutableSharedFlow<SignUp.Event>()
     val event = _event.asSharedFlow()
     private val _state = MutableStateFlow(SignUp.State())
@@ -21,9 +25,49 @@ class SignUpViewModel
 
     fun onAction(action: SignUp.Action) = viewModelScope.launch {
         when (action) {
-            SignUp.Action.OnRegister -> TODO()
-            is SignUp.Action.onNameChanged -> TODO()
-            is SignUp.Action.onPasswordChanged -> TODO()
+            SignUp.Action.OnRegister -> register(name = state.value.name, password = state.value.password)
+            is SignUp.Action.onNameChanged -> {
+                _state.update {
+                    it.copy(
+                        name = action.name
+                    )
+                }
+            }
+            is SignUp.Action.onPasswordChanged -> {
+                _state.update {
+                    it.copy(
+                        password = action.password
+                    )
+                }
+            }
+        }
+    }
+    suspend fun register(name: String, password: String) {
+        if (state.value.name.isEmpty() || state.value.password.isEmpty()) {
+            return
+        }
+        authRepository.signUp(
+            name = name,
+            password = password
+        ).collect {
+            when(it){
+                is RepositoryResponse.Error -> {
+                    _state.update {
+                        it.copy(inProgress = false)
+                    }
+                }
+                RepositoryResponse.InProgress -> {
+                    _state.update {
+                        it.copy(inProgress = true)
+                    }
+                }
+                is RepositoryResponse.Success -> {
+                    _state.update {
+                        it.copy(inProgress = false)
+                    }
+                    _event.emit(SignUp.Event.NavigateToLogin)
+                }
+            }
         }
     }
 }

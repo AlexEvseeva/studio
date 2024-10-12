@@ -78,7 +78,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofitConvertorGSon)
     implementation(libs.chucker)
-    implementation(libs.chuckerNoOp)
+//    implementation(libs.chuckerNoOp)
 
 
     // DI
