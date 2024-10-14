@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.repository.RepositoryResponse
@@ -49,11 +50,18 @@ class SignUpViewModel
         authRepository.signUp(
             name = name,
             password = password
-        ).collect {
+        ).catch {
+            _state.update {
+                it.copy(inProgress = false)
+            }
+        }.collect {
             when(it){
                 is RepositoryResponse.Error -> {
                     _state.update {
                         it.copy(inProgress = false)
+                    }
+                    it.message?.let {
+                        _event.emit(SignUp.Event.OnMessage(message = it))
                     }
                 }
                 RepositoryResponse.InProgress -> {

@@ -1,3 +1,5 @@
+import com.android.build.api.variant.BuildConfigField
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -50,8 +52,13 @@ android {
         compose = true
         buildConfig = true
     }
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.7"
     }
     packaging {
         resources {
@@ -59,6 +66,15 @@ android {
         }
     }
 }
+androidComponents {
+    onVariants {
+        it.buildConfigFields.put(
+            "CFG_SERVER_URL",
+            BuildConfigField(type  = "String",value = "\"http:192.168.50.79:8080\"", comment = "server config url")
+        )
+    }
+}
+
 
 dependencies {
 

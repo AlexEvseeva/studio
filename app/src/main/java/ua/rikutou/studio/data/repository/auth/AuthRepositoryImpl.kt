@@ -21,6 +21,9 @@ class AuthRepositoryImpl(
                 isSuccessful -> {
                     emit(RepositoryResponse.Success())
                 }
+                409 == code() -> {
+                    emit(RepositoryResponse.Error(message = "User already created"))
+                }
                 else -> {
                     emit(RepositoryResponse.Error())
                 }

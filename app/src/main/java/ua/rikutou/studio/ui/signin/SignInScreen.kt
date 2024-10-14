@@ -1,7 +1,6 @@
-package ua.rikutou.studio.ui.signup
+package ua.rikutou.studio.ui.signin
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,16 +17,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import ua.rikutou.studio.navigation.Screen
+import kotlinx.coroutines.flow.collect
+import ua.rikutou.studio.ui.signup.SignUp
 
 @Composable
-fun SignUpScreen(
-    viewModel: SignUpViewModel,
+fun SignInScreen(
+    viewModel: SignInViewModel,
     navController: NavController
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
@@ -35,26 +34,19 @@ fun SignUpScreen(
     LaunchedEffect(key1 = Unit) {
         viewModel.event.collect {
             when (it) {
-                SignUp.Event.NavigateToLogin -> {
-                    navController.navigate(Screen.SignIn.route)
-                }
-                is SignUp.Event.OnMessage -> {
+                is SignIn.Event.OnMessage -> {
                     Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 }
             }
         }
     }
-    SignUpScreenContent(
-        state = state,
-        onAction = viewModel::onAction
-    )
-
+    SignInScreenContent(state = state, onAction = viewModel::onAction)
 }
 
 @Composable
-fun SignUpScreenContent(
-    state: State<SignUp.State>,
-    onAction: (SignUp.Action) -> Unit
+fun SignInScreenContent(
+    state : State<SignIn.State>,
+    onAction: (SignIn.Action) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -71,7 +63,7 @@ fun SignUpScreenContent(
             value = name,
             onValueChange = {
                 name = it
-                onAction(SignUp.Action.onNameChanged(name = it))
+                onAction(SignIn.Action.onNameChanged(name = it))
             },
             label = {
                 Text(text = "Email")
@@ -83,7 +75,7 @@ fun SignUpScreenContent(
             value = password,
             onValueChange = {
                 password = it
-                onAction(SignUp.Action.onPasswordChanged(password = it))
+                onAction(SignIn.Action.onPasswordChanged(password = it))
             },
             label = {
                 Text(text = "password")
@@ -92,27 +84,25 @@ fun SignUpScreenContent(
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                onAction(SignUp.Action.OnRegister)
+                onAction(SignIn.Action.OnLogin)
             }
         ) {
-            Text(text = "Sign up")
+            Text(text = "Sign in")
         }
     }
 }
 
 @Preview(showSystemUi = true)
 @Composable
-private fun SignUpScreenPreview(modifier: Modifier = Modifier) {
+private fun SignInScreenPreview(modifier: Modifier = Modifier) {
     val state = remember {
         mutableStateOf(
-            SignUp.State(
-                name = "",
-                password = ""
-            )
+            SignIn.State()
         )
     }
-    SignUpScreenContent(
+    SignInScreenContent(
         state = state,
         onAction = {}
     )
+
 }

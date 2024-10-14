@@ -1,20 +1,19 @@
-package ua.rikutou.studio.ui.signup
+package ua.rikutou.studio.ui.signin
 
 import ua.rikutou.studio.BuildConfig
 
-object SignUp {
+object SignIn {
     sealed interface Event {
-        data object NavigateToLogin : Event
         data class OnMessage(val message: String) : Event
     }
 
     sealed interface Action {
-        data object OnRegister : Action
+        data object OnLogin : Action
         data class onNameChanged(val name: String) : Action
         data class onPasswordChanged(val password: String) : Action
     }
 
-    data class State(
+    data class State (
         val name: String = if (BuildConfig.DEBUG) "John.Doe@gmail.com" else "",
         val password: String = if (BuildConfig.DEBUG) "Secret1" else "",
         val inProgress: Boolean = false,

@@ -14,6 +14,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ua.rikutou.studio.BuildConfig
 import ua.rikutou.studio.data.repository.token.TokenDataSource
 import ua.rikutou.studio.extention.addBearer
 import java.util.Locale
@@ -43,10 +44,12 @@ object RetrofitModule {
         gson: Gson
     ): Retrofit =
         Retrofit.Builder().apply {
-            baseUrl("http://192.168.50.79:8080/")
+            baseUrl(BuildConfig.CFG_SERVER_URL)
             client(
                 OkHttpClient.Builder().apply {
-                    addInterceptor(getChuckerInterceptor(context))
+                    if (BuildConfig.DEBUG) {
+                        addInterceptor(getChuckerInterceptor(context))
+                    }
                     addInterceptor { chain -> addHeaders(chain, tokenDataSource) }
                     connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
                     readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)

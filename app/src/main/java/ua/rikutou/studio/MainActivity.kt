@@ -24,10 +24,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             StudioTheme {
                 val navController = rememberNavController()
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    val padding = innerPadding
-
-                    NavGraph(navController = navController)
+                Scaffold(modifier = Modifier
+                    .fillMaxSize()
+                ) { innerPadding ->
+                    NavGraph(
+                        modifier = Modifier
+                            .padding(innerPadding),
+                        navController = navController
+                    )
                 }
             }
         }
