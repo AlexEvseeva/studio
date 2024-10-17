@@ -1,6 +1,8 @@
 package ua.rikutou.studio.navigation
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -13,6 +15,7 @@ import androidx.navigation.compose.composable
 import ua.rikutou.studio.ui.signin.SignInScreen
 import ua.rikutou.studio.ui.signup.SignUpScreen
 import ua.rikutou.studio.ui.signup.SignUpViewModel
+import ua.rikutou.studio.ui.splash.SplashScreen
 
 @Composable
 fun NavGraph(
@@ -22,8 +25,15 @@ fun NavGraph(
     NavHost(
         modifier = modifier.fillMaxSize(),
         navController = navController,
-        startDestination = Screen.SignUp.route
+        startDestination = Screen.SignIn.route
     ) {
+        composable(route = Screen.Splash.route) {
+            SplashScreen(
+                viewModel = hiltViewModel(),
+                navController = navController
+            )
+        }
+
         composable(route = Screen.SignUp.route) {
             SignUpScreen(
                 viewModel = hiltViewModel(),
@@ -35,6 +45,14 @@ fun NavGraph(
                 viewModel = hiltViewModel(),
                 navController = navController
             )
+        }
+
+        composable(route = Screen.Main.route) {
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Text(text = "Main screen")
+            }
         }
     }
 }

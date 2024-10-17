@@ -96,12 +96,18 @@ dependencies {
     implementation(libs.chucker)
 //    implementation(libs.chuckerNoOp)
 
-
     // DI
     implementation(libs.android.hilt)
     kapt(libs.android.hilt.compiler)
 //    kapt(libs.androidx.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
+
+    //Db
+    implementation(libs.roomCommon)
+    implementation(libs.roomRuntime)
+    implementation(libs.roomKtx)
+    implementation(libs.roomPaging)
+    ksp(libs.roomCompiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

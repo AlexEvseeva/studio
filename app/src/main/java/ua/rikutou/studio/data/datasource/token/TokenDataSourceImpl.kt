@@ -1,4 +1,4 @@
-package ua.rikutou.studio.data.repository.token
+package ua.rikutou.studio.data.datasource.token
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
@@ -13,10 +13,14 @@ class TokenDataSourceImpl (
         _token = sharedPreferences.getString(TOKEN_KEY, "").takeIf { it?.isNotBlank() == true }
     }
 
-    override suspend fun setToken(newToken: String) {
+    override suspend fun setToken(newToken: String?) {
         _token = newToken
         sharedPreferences.edit {
-            putString(TOKEN_KEY, newToken)
+            if (token == null) {
+                remove(TOKEN_KEY)
+            } else {
+                putString(TOKEN_KEY, newToken)
+            }
         }
     }
 

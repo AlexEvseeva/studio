@@ -15,7 +15,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ua.rikutou.studio.BuildConfig
-import ua.rikutou.studio.data.repository.token.TokenDataSource
+import ua.rikutou.studio.data.datasource.token.TokenDataSource
 import ua.rikutou.studio.extention.addBearer
 import java.util.Locale
 import java.util.concurrent.TimeUnit

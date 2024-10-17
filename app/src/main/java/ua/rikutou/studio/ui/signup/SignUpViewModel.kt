@@ -10,14 +10,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ua.rikutou.studio.data.repository.RepositoryResponse
-import ua.rikutou.studio.data.repository.auth.AuthRepository
+import ua.rikutou.studio.data.datasource.DataSourceResponse
+import ua.rikutou.studio.data.datasource.auth.AuthDataSource
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel
 @Inject constructor(
-  private val authRepository: AuthRepository
+  private val authRepository: AuthDataSource
 ) : ViewModel() {
     private val _event = MutableSharedFlow<SignUp.Event>()
     val event = _event.asSharedFlow()
@@ -56,7 +56,7 @@ class SignUpViewModel
             }
         }.collect {
             when(it){
-                is RepositoryResponse.Error -> {
+                is DataSourceResponse.Error -> {
                     _state.update {
                         it.copy(inProgress = false)
                     }
@@ -64,12 +64,12 @@ class SignUpViewModel
                         _event.emit(SignUp.Event.OnMessage(message = it))
                     }
                 }
-                RepositoryResponse.InProgress -> {
+                DataSourceResponse.InProgress -> {
                     _state.update {
                         it.copy(inProgress = true)
                     }
                 }
-                is RepositoryResponse.Success -> {
+                is DataSourceResponse.Success -> {
                     _state.update {
                         it.copy(inProgress = false)
                     }
