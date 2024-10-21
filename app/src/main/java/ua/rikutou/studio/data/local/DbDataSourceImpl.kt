@@ -16,19 +16,25 @@ class DbDataSourceImpl(
     private val context: Context,
     private val userRepository: UserDataSource
 ) : DbDataSource {
+    override val db: AppDb
+        get() = checkNotNull(_db) {"Db must be initializes"}
     override val dbFlow: Flow<AppDb>
         get() = _dbFlow.asStateFlow().filterNotNull()
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
             userRepository.userFlow.distinctUntilChanged { old, new ->  old?.userId == new?.userId}.collect { user ->
-                _dbFlow.emit(
-                    if (user == null) {
-                        null
-                    } else {
-                        createDb(user.userId.toString())
+                if(user == null) {
+                    synchronized(this) {
+                        _db = null
                     }
-                )
+                    _dbFlow.emit(null)
+                } else {
+                    synchronized(this) {
+                        _db = createDb(user.userId.toString())
+                    }
+                    _dbFlow.value = _db
+                }
             }
         }
     }
@@ -44,5 +50,6 @@ class DbDataSourceImpl(
 
     companion object {
         private val _dbFlow: MutableStateFlow<AppDb?> = MutableStateFlow(null)
+        private var _db: AppDb? = null
     }
 }
