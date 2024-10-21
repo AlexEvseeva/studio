@@ -1,5 +1,6 @@
 package ua.rikutou.studio.ui.signin
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +20,7 @@ class SignInViewModel
 @Inject constructor(
     private val authRepository: AuthDataSource
 ) : ViewModel() {
+    private val TAG by lazy { SignInViewModel::class.simpleName }
     private val _event = MutableSharedFlow<SignIn.Event>()
     val event = _event.asSharedFlow()
     private val _state = MutableStateFlow(SignIn.State())
@@ -64,6 +66,7 @@ class SignInViewModel
                     _state.update {
                         it.copy(inProgress = false)
                     }
+                    _event.emit(SignIn.Event.OnNavigate(Screen.Main.route))
                 }
             }
         }

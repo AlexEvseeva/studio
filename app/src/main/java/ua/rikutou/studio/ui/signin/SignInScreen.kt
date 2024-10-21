@@ -1,5 +1,6 @@
 package ua.rikutou.studio.ui.signin
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +33,7 @@ import kotlinx.coroutines.flow.collect
 import ua.rikutou.studio.navigation.Screen
 import ua.rikutou.studio.ui.signup.SignUp
 
+private val TAG by lazy { "SignInScreen" }
 @Composable
 fun SignInScreen(
     viewModel: SignInViewModel,
@@ -46,7 +48,9 @@ fun SignInScreen(
                     Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 }
 
-                is SignIn.Event.OnNavigate -> navController.navigate(it.route)
+                is SignIn.Event.OnNavigate -> {
+                    navController.navigate(it.route)
+                }
             }
         }
     }
@@ -92,7 +96,9 @@ fun SignInScreenContent(
             }
         )
         Button(
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
             onClick = {
                 onAction(SignIn.Action.OnLogin)
             }

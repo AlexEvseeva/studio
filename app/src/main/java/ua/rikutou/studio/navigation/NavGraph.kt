@@ -12,6 +12,7 @@ import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import ua.rikutou.studio.ui.main.MainScreen
 import ua.rikutou.studio.ui.signin.SignInScreen
 import ua.rikutou.studio.ui.signup.SignUpScreen
 import ua.rikutou.studio.ui.signup.SignUpViewModel
@@ -48,11 +49,10 @@ fun NavGraph(
         }
 
         composable(route = Screen.Main.route) {
-            Column(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                Text(text = "Main screen")
-            }
+            MainScreen(
+                viewModel = hiltViewModel(),
+                navController = navController
+            )
         }
     }
 }

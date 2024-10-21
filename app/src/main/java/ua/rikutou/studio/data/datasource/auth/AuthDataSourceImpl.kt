@@ -55,6 +55,7 @@ class AuthDataSourceImpl(
                             name = it.userName ?: "",
                             studioId = it.studioId
                         ))
+                        emit(DataSourceResponse.Success())
                     }
                 }
                 else -> {
