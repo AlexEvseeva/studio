@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.DataSourceResponse
 import ua.rikutou.studio.data.datasource.auth.AuthDataSource
+import ua.rikutou.studio.navigation.Screen
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,6 +42,8 @@ class SignUpViewModel
                     )
                 }
             }
+
+            is SignUp.Action.OnNavigate -> _event.emit(SignUp.Event.OnNavigate(action.route))
         }
     }
     suspend fun register(name: String, password: String) {
@@ -73,7 +76,7 @@ class SignUpViewModel
                     _state.update {
                         it.copy(inProgress = false)
                     }
-                    _event.emit(SignUp.Event.NavigateToLogin)
+                    _event.emit(SignUp.Event.OnNavigate(route = Screen.SignIn.route))
                 }
             }
         }

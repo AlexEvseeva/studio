@@ -1,10 +1,14 @@
 package ua.rikutou.studio.ui.signin
 
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -18,10 +22,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.collect
+import ua.rikutou.studio.navigation.Screen
 import ua.rikutou.studio.ui.signup.SignUp
 
 @Composable
@@ -37,6 +45,8 @@ fun SignInScreen(
                 is SignIn.Event.OnMessage -> {
                     Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 }
+
+                is SignIn.Event.OnNavigate -> navController.navigate(it.route)
             }
         }
     }
@@ -82,13 +92,25 @@ fun SignInScreenContent(
             }
         )
         Button(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
             onClick = {
                 onAction(SignIn.Action.OnLogin)
             }
         ) {
             Text(text = "Sign in")
         }
+        Spacer(
+            modifier = Modifier
+                .height(16.dp)
+                .fillMaxWidth())
+        Text(
+            modifier = Modifier
+                .clickable {
+                    onAction(SignIn.Action.OnNavigate(route = Screen.SignUp.route))
+                },
+            style = TextStyle(textDecoration = TextDecoration.Underline),
+            text = "Sign up"
+        )
     }
 }
 

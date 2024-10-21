@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.auth.AuthDataSource
+import ua.rikutou.studio.navigation.Screen
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,6 +27,7 @@ class SignInViewModel
             SignIn.Action.OnLogin -> TODO()
             is SignIn.Action.onNameChanged -> TODO()
             is SignIn.Action.onPasswordChanged -> TODO()
+            is SignIn.Action.OnNavigate -> _event.emit(SignIn.Event.OnNavigate(action.route))
         }
     }
 

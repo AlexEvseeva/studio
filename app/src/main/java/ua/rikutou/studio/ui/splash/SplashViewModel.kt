@@ -5,7 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.DataSourceResponse
 import ua.rikutou.studio.data.datasource.auth.AuthDataSource
@@ -17,16 +20,20 @@ import javax.inject.Inject
 @HiltViewModel
 class SplashViewModel
 @Inject constructor(
-    tokenDataSource: TokenDataSource,
-    userDataSource: UserDataSource,
-    authDataSource: AuthDataSource
+    val tokenDataSource: TokenDataSource,
+    val userDataSource: UserDataSource,
+    val authDataSource: AuthDataSource
 ) : ViewModel() {
     private val TAG by lazy { SplashViewModel::class.simpleName }
+    private val _state = MutableStateFlow(Splash.State())
+    val state = _state.asStateFlow().onStart {
+        checkToken()
+    }
     private val _event = MutableSharedFlow<Splash.Event>()
     val event = _event.asSharedFlow()
 
-    init {
-        Log.d(TAG, "get me: ${tokenDataSource.token}")
+    private fun checkToken() {
+//        Log.d(TAG, "get me: ${tokenDataSource.token}")
         viewModelScope.launch {
             if (tokenDataSource.token?.isNotEmpty() == true) {
                 Log.d(TAG, "get me: ")
