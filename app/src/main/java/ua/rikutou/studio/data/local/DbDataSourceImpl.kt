@@ -1,6 +1,7 @@
 package ua.rikutou.studio.data.local
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +17,7 @@ class DbDataSourceImpl(
     private val context: Context,
     private val userRepository: UserDataSource
 ) : DbDataSource {
+    val TAG by lazy { DbDataSourceImpl::class.simpleName }
     override val db: AppDb
         get() = checkNotNull(_db) {"Db must be initializes"}
     override val dbFlow: Flow<AppDb>
@@ -47,6 +49,9 @@ class DbDataSourceImpl(
         )
             .fallbackToDestructiveMigration()
             .build()
+            .also {
+                Log.d(TAG, "createDb: ${dbName}")
+            }
 
     companion object {
         private val _dbFlow: MutableStateFlow<AppDb?> = MutableStateFlow(null)
