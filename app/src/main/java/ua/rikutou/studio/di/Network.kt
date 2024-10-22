@@ -6,10 +6,14 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import ua.rikutou.studio.data.remote.auth.AuthApi
+import ua.rikutou.studio.data.remote.studio.StudioApi
 
 @InstallIn(SingletonComponent::class)
 @Module
 object Network {
     @Provides
-    fun proveAuthApi(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
+    fun provideAuthApi(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
+
+    @Provides
+    fun provideStudioApi(retrofit: Retrofit): StudioApi = retrofit.create(StudioApi::class.java)
 }

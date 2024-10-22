@@ -21,7 +21,7 @@ fun MainScreen(
     viewModel: MainViewModel,
     navController: NavController
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle()
+    val state = viewModel.state.collectAsStateWithLifecycle(Main.State())
 
     LaunchedEffect(key1 = Unit) {
         viewModel.event.collect {
@@ -48,7 +48,7 @@ fun MainScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Text(text = "Main screen")
+        Text(text = "Main screen: ${state.value.studio}")
 
     }
 

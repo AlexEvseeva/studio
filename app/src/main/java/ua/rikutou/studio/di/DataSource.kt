@@ -7,15 +7,20 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CloseableCoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ua.rikutou.studio.data.local.DbDataSource
 import ua.rikutou.studio.data.local.DbDataSourceImpl
 import ua.rikutou.studio.data.remote.auth.AuthApi
 import ua.rikutou.studio.data.datasource.auth.AuthDataSource
 import ua.rikutou.studio.data.datasource.auth.AuthDataSourceImpl
+import ua.rikutou.studio.data.datasource.studio.StudioDataSource
+import ua.rikutou.studio.data.datasource.studio.StudioDataSourceImpl
 import ua.rikutou.studio.data.datasource.token.TokenDataSource
 import ua.rikutou.studio.data.datasource.token.TokenDataSourceImpl
 import ua.rikutou.studio.data.datasource.user.UserDataSource
 import ua.rikutou.studio.data.datasource.user.UserDataSourceImpl
+import ua.rikutou.studio.data.remote.studio.StudioApi
 import javax.inject.Singleton
 
 
@@ -53,5 +58,17 @@ object DataSource {
     ): DbDataSource = DbDataSourceImpl(
         context = context,
         userRepository = userRepository
+    )
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Provides
+    fun provideStudioDataSource(
+        studioApi: StudioApi,
+        dbDataSource: DbDataSource,
+        @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
+    ): StudioDataSource = StudioDataSourceImpl(
+        studioApi = studioApi,
+        dbDataSource = dbDataSource,
+        dbDeliveryDispatcher = dbDeliveryDispatcher
     )
 }
