@@ -45,7 +45,7 @@ fun SignUpScreen(
                     Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 }
 
-                is SignUp.Event.OnNavigate -> navController.navigate(it.route)
+                is SignUp.Event.OnNavigate -> navController.navigate(it.destination)
             }
         }
     }
@@ -106,7 +106,7 @@ fun SignUpScreenContent(
         Text(
             modifier = Modifier
                 .clickable {
-                    onAction(SignUp.Action.OnNavigate(Screen.SignIn.route))
+                    onAction(SignUp.Action.OnNavigate(Screen.SignIn))
                 }
                 .padding(top = 16.dp),
             text = "Sign in",

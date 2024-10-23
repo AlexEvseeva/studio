@@ -6,6 +6,7 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.devtools.ksp)
     alias(libs.plugins.hilt.android)
+    kotlin("plugin.serialization") version "1.9.23"
 }
 
 android {
@@ -89,6 +90,7 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
 
 //    Network
     implementation(libs.retrofit)

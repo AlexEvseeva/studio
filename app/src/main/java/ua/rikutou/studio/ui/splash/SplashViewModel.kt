@@ -41,20 +41,20 @@ class SplashViewModel
                     when(it) {
                         is DataSourceResponse.Error -> {
                             Log.d(TAG, "get me: error")
-                            _event.emit(Splash.Event.OnNavigate(Screen.SignIn.route))
+                            _event.emit(Splash.Event.OnNavigate(Screen.SignIn))
                         }
                         DataSourceResponse.InProgress -> {
                             Log.d(TAG, "get me: in progress")
                         }
                         is DataSourceResponse.Success -> {
                             Log.d(TAG, "get me: success")
-                            _event.emit(Splash.Event.OnNavigate(Screen.Main.route))
+                            _event.emit(Splash.Event.OnNavigate(Screen.Studio.Main))
                         }
                     }
                 }
             } else {
                 Log.d(TAG, "else: ")
-                _event.emit(Splash.Event.OnNavigate(Screen.SignIn.route))
+                _event.emit(Splash.Event.OnNavigate(Screen.SignIn))
             }
         }
     }

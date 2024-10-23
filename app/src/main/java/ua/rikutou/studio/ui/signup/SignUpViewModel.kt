@@ -43,7 +43,7 @@ class SignUpViewModel
                 }
             }
 
-            is SignUp.Action.OnNavigate -> _event.emit(SignUp.Event.OnNavigate(action.route))
+            is SignUp.Action.OnNavigate -> _event.emit(SignUp.Event.OnNavigate(action.destination))
         }
     }
     suspend fun register(name: String, password: String) {
@@ -76,7 +76,7 @@ class SignUpViewModel
                     _state.update {
                         it.copy(inProgress = false)
                     }
-                    _event.emit(SignUp.Event.OnNavigate(route = Screen.SignIn.route))
+                    _event.emit(SignUp.Event.OnNavigate(destination = Screen.SignIn))
                 }
             }
         }

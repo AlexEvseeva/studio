@@ -39,7 +39,7 @@ class SignInViewModel
                     it.copy(password = action.password)
                 }
             }
-            is SignIn.Action.OnNavigate -> _event.emit(SignIn.Event.OnNavigate(action.route))
+            is SignIn.Action.OnNavigate -> _event.emit(SignIn.Event.OnNavigate(action.destination))
         }
     }
 
@@ -66,7 +66,7 @@ class SignInViewModel
                     _state.update {
                         it.copy(inProgress = false)
                     }
-                    _event.emit(SignIn.Event.OnNavigate(Screen.Main.route))
+                    _event.emit(SignIn.Event.OnNavigate(Screen.Studio.Main))
                 }
             }
         }

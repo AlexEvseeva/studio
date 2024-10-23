@@ -49,7 +49,7 @@ fun SignInScreen(
                 }
 
                 is SignIn.Event.OnNavigate -> {
-                    navController.navigate(it.route)
+                    navController.navigate(it.destination)
                 }
             }
         }
@@ -112,7 +112,7 @@ fun SignInScreenContent(
         Text(
             modifier = Modifier
                 .clickable {
-                    onAction(SignIn.Action.OnNavigate(route = Screen.SignUp.route))
+                    onAction(SignIn.Action.OnNavigate(destination = Screen.SignUp))
                 },
             style = TextStyle(textDecoration = TextDecoration.Underline),
             text = "Sign up"

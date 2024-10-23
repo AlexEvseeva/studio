@@ -19,7 +19,7 @@ fun SplashScreen(
         viewModel.event.collect {
             when(it) {
                 is Splash.Event.OnNavigate -> {
-                    navController.navigate(it.route)
+                    navController.navigate(it.destination)
                 }
             }
         }

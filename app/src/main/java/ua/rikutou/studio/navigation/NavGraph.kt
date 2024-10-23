@@ -26,29 +26,29 @@ fun NavGraph(
     NavHost(
         modifier = modifier.fillMaxSize(),
         navController = navController,
-        startDestination = Screen.SignIn.route
+        startDestination = Screen.Splash
     ) {
-        composable(route = Screen.Splash.route) {
+        composable<Screen.Splash> {
             SplashScreen(
                 viewModel = hiltViewModel(),
                 navController = navController
             )
         }
 
-        composable(route = Screen.SignUp.route) {
+        composable<Screen.SignUp> {
             SignUpScreen(
                 viewModel = hiltViewModel(),
                 navController = navController
             )
         }
-        composable(route = Screen.SignIn.route) {
+        composable<Screen.SignIn> {
             SignInScreen(
                 viewModel = hiltViewModel(),
                 navController = navController
             )
         }
 
-        composable(route = Screen.Main.route) {
+        composable<Screen.Studio.Main> {
             MainScreen(
                 viewModel = hiltViewModel(),
                 navController = navController

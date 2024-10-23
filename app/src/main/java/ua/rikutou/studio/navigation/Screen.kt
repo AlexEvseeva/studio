@@ -1,8 +1,14 @@
 package ua.rikutou.studio.navigation
 
-sealed class Screen(val route: String) {
-    data object SignUp : Screen("signup")
-    data object SignIn : Screen("signin")
-    data object Main : Screen("main")
-    data object Splash : Screen("splash")
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed class Screen {
+    @Serializable data object SignUp : Screen()
+    @Serializable data object SignIn : Screen()
+    @Serializable data object Splash : Screen()
+    @Serializable sealed class Studio : Screen(){
+        @Serializable data object Main : Studio()
+        @Serializable data class Edit(val studioId: Long?) : Studio()
+    }
 }

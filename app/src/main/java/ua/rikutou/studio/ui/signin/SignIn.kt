@@ -1,18 +1,19 @@
 package ua.rikutou.studio.ui.signin
 
 import ua.rikutou.studio.BuildConfig
+import ua.rikutou.studio.navigation.Screen
 
 object SignIn {
     sealed interface Event {
         data class OnMessage(val message: String) : Event
-        data class OnNavigate(val route: String): Event
+        data class OnNavigate(val destination: Screen): Event
     }
 
     sealed interface Action {
         data object OnLogin : Action
         data class onNameChanged(val name: String) : Action
         data class onPasswordChanged(val password: String) : Action
-        data class OnNavigate(val route: String): Action
+        data class OnNavigate(val destination: Screen): Action
     }
 
     data class State (
