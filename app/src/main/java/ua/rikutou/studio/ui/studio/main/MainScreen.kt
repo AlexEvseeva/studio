@@ -1,9 +1,9 @@
-package ua.rikutou.studio.ui.main
+package ua.rikutou.studio.ui.studio.main
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,9 +25,11 @@ fun MainScreen(
 
     LaunchedEffect(key1 = Unit) {
         viewModel.event.collect {
-//            when(it) {
-//
-//            }
+            when(it) {
+                is Main.Event.OnNavigate -> {
+                    navController.navigate(it.destination)
+                }
+            }
         }
     }
     MainScreenContent(
@@ -40,7 +42,7 @@ fun MainScreen(
 @Composable
 fun MainScreenContent(
     state: State<Main.State>,
-    onAction: (Main.Acton) -> Unit
+    onAction: (Main.Action) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -49,7 +51,11 @@ fun MainScreenContent(
         verticalArrangement = Arrangement.Top
     ) {
         Text(text = "Main screen: ${state.value.studio}")
-
+        Button(onClick = {
+            onAction(Main.Action.OnEdit)
+        }) {
+            Text("to edit")
+        }
     }
 
 }

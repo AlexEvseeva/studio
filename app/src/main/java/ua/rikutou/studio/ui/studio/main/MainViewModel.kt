@@ -1,4 +1,4 @@
-package ua.rikutou.studio.ui.main
+package ua.rikutou.studio.ui.studio.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.studio.StudioDataSource
 import ua.rikutou.studio.data.datasource.user.UserDataSource
+import ua.rikutou.studio.navigation.Screen
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -60,9 +61,15 @@ class MainViewModel
         }
     }
 
-    fun onAction(action: Main.Acton) {
-//        when(action) {
-//
-//        }
+    fun onAction(action: Main.Action) {
+        viewModelScope.launch {
+            when(action) {
+                Main.Action.OnEdit -> {
+                    _state.value.studio?.studioId?.let { id ->
+                        _event.emit(Main.Event.OnNavigate(destination = Screen.Studio.Edit(studioId = id)))
+                    }
+                }
+            }
+        }
     }
 }

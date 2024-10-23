@@ -12,11 +12,13 @@ import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import ua.rikutou.studio.ui.main.MainScreen
+import ua.rikutou.studio.ui.studio.main.MainScreen
 import ua.rikutou.studio.ui.signin.SignInScreen
 import ua.rikutou.studio.ui.signup.SignUpScreen
 import ua.rikutou.studio.ui.signup.SignUpViewModel
 import ua.rikutou.studio.ui.splash.SplashScreen
+import ua.rikutou.studio.ui.studio.edit.StudioEdit
+import ua.rikutou.studio.ui.studio.edit.StudioEditScreen
 
 @Composable
 fun NavGraph(
@@ -50,6 +52,13 @@ fun NavGraph(
 
         composable<Screen.Studio.Main> {
             MainScreen(
+                viewModel = hiltViewModel(),
+                navController = navController
+            )
+        }
+
+        composable<Screen.Studio.Edit> {
+            StudioEditScreen(
                 viewModel = hiltViewModel(),
                 navController = navController
             )
