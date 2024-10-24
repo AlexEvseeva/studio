@@ -11,4 +11,9 @@ sealed class Screen {
         @Serializable data object Main : Studio()
         @Serializable data class Edit(val studioId: Long?) : Studio()
     }
+    @Serializable data object Location : Screen()
+    @Serializable data object Equipment : Screen()
+    @Serializable data object Department : Screen()
+    @Serializable data object Actor : Screen()
+
 }

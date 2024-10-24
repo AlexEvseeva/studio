@@ -63,5 +63,17 @@ fun NavGraph(
                 navController = navController
             )
         }
+
+        composable<Screen.Location> {
+            Text(text = "location in progress")
+        }
+
+        composable<Screen.Equipment> {
+            Text(text = "equipment in progress")
+        }
+
+        composable<Screen.Actor> {
+            Text(text = "Actors in progress")
+        }
     }
 }
