@@ -23,6 +23,7 @@ import ua.rikutou.studio.R
 fun ElementTitle(
     modifier: Modifier = Modifier,
     title: String,
+    isEditEnabled: Boolean = true,
     onClick: () -> Unit = {}
 ) {
     Row(
@@ -39,15 +40,17 @@ fun ElementTitle(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Start
         )
-        Image(
-            modifier = Modifier
-                .padding(4.dp)
-                .clickable {
-                    onClick()
-                },
-            painter = painterResource(R.drawable.edit),
-            contentDescription = "Edit"
-        )
+        if(isEditEnabled) {
+            Image(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .clickable {
+                        onClick()
+                    },
+                painter = painterResource(R.drawable.edit),
+                contentDescription = "Edit"
+            )
+        }
     }
 
 

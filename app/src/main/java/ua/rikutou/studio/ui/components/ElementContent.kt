@@ -1,5 +1,6 @@
 package ua.rikutou.studio.ui.components
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun ElementContent(
@@ -16,21 +18,21 @@ fun ElementContent(
     label: String,
     name: String
 ) {
-    Row(
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(top = 8.dp, bottom = 8.dp)
     ) {
         Text(
             modifier = Modifier
-                .padding(end = 8.dp),
-            text = "$label: "
+                .fillMaxWidth(),
+            text = "$label: ",
+            fontSize = 12.sp
         )
 
         Text(
             modifier = Modifier
-                .padding(end = 8.dp)
-                .weight(1f),
+                .fillMaxWidth(),
             text = name
         )
     }
