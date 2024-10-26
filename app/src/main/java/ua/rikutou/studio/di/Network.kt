@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import ua.rikutou.studio.data.remote.auth.AuthApi
+import ua.rikutou.studio.data.remote.location.LocationApi
 import ua.rikutou.studio.data.remote.studio.StudioApi
 
 @InstallIn(SingletonComponent::class)
@@ -16,4 +17,7 @@ object Network {
 
     @Provides
     fun provideStudioApi(retrofit: Retrofit): StudioApi = retrofit.create(StudioApi::class.java)
+
+    @Provides
+    fun provideLocationApi(retrofit: Retrofit): LocationApi = retrofit.create(LocationApi::class.java)
 }

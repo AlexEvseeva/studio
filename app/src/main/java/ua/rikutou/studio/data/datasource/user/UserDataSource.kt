@@ -5,5 +5,6 @@ import ua.rikutou.studio.data.local.entity.UserEntity
 
 interface UserDataSource {
     val userFlow: StateFlow<UserEntity?>
+    val user: UserEntity?
     suspend fun setUser(userEntity: UserEntity?)
 }

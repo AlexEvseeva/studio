@@ -10,11 +10,16 @@ import ua.rikutou.studio.data.local.entity.UserEntity
 
 class UserDataSourceImpl(): UserDataSource {
     private val _userFlow = MutableStateFlow<UserEntity?>(null)
+    private var _user: UserEntity? = null
 
     override suspend fun setUser(userEntity: UserEntity?) {
         _userFlow.emit(userEntity)
+        _user = userEntity
     }
 
     override val userFlow = _userFlow.asStateFlow()
+
+    override val user: UserEntity?
+        get() = _user
 
 }

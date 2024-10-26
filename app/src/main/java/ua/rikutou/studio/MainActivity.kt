@@ -93,7 +93,7 @@ data class TopLevelRoute<T: Any> (
 
 val topLevelRoutes = listOf(
     TopLevelRoute(name = "Studio", destination = Screen.Studio.Main, icon = R.drawable.studio),
-    TopLevelRoute(name = "Locations", destination = Screen.Location, icon = R.drawable.location),
+    TopLevelRoute(name = "Locations", destination = Screen.Location.List, icon = R.drawable.location),
     TopLevelRoute(name = "Equipment", destination = Screen.Equipment, icon = R.drawable.camera),
     TopLevelRoute(name = "Actors", destination = Screen.Actor, icon = R.drawable.actors),
 )

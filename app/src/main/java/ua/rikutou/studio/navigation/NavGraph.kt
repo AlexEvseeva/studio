@@ -12,6 +12,7 @@ import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import ua.rikutou.studio.ui.location.list.LocationListScreen
 import ua.rikutou.studio.ui.studio.main.MainScreen
 import ua.rikutou.studio.ui.signin.SignInScreen
 import ua.rikutou.studio.ui.signup.SignUpScreen
@@ -64,8 +65,11 @@ fun NavGraph(
             )
         }
 
-        composable<Screen.Location> {
-            Text(text = "location in progress")
+        composable<Screen.Location.List> {
+            LocationListScreen(
+                viewModel = hiltViewModel(),
+                navController = navController
+            )
         }
 
         composable<Screen.Equipment> {

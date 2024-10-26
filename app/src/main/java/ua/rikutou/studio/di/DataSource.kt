@@ -14,12 +14,15 @@ import ua.rikutou.studio.data.local.DbDataSourceImpl
 import ua.rikutou.studio.data.remote.auth.AuthApi
 import ua.rikutou.studio.data.datasource.auth.AuthDataSource
 import ua.rikutou.studio.data.datasource.auth.AuthDataSourceImpl
+import ua.rikutou.studio.data.datasource.location.LocationDataSource
+import ua.rikutou.studio.data.datasource.location.LocationDataSourceImpl
 import ua.rikutou.studio.data.datasource.studio.StudioDataSource
 import ua.rikutou.studio.data.datasource.studio.StudioDataSourceImpl
 import ua.rikutou.studio.data.datasource.token.TokenDataSource
 import ua.rikutou.studio.data.datasource.token.TokenDataSourceImpl
 import ua.rikutou.studio.data.datasource.user.UserDataSource
 import ua.rikutou.studio.data.datasource.user.UserDataSourceImpl
+import ua.rikutou.studio.data.remote.location.LocationApi
 import ua.rikutou.studio.data.remote.studio.StudioApi
 import javax.inject.Singleton
 
@@ -68,6 +71,18 @@ object DataSource {
         @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
     ): StudioDataSource = StudioDataSourceImpl(
         studioApi = studioApi,
+        dbDataSource = dbDataSource,
+        dbDeliveryDispatcher = dbDeliveryDispatcher
+    )
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Provides
+    fun provideLocationDataSource(
+        locationApi: LocationApi,
+        dbDataSource: DbDataSource,
+        @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
+    ): LocationDataSource = LocationDataSourceImpl(
+        locationApi = locationApi,
         dbDataSource = dbDataSource,
         dbDeliveryDispatcher = dbDeliveryDispatcher
     )
