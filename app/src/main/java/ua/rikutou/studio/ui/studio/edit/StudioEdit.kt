@@ -16,7 +16,7 @@ object StudioEdit {
         data object OnSave : Action
     }
     data class State(
-        val studio: StudioEntity? = null,
+        val studioId: Long? = null,
         val name: String? = null,
         val address: String? = null,
         val postIndex: String? = null,

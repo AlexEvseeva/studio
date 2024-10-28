@@ -39,32 +39,32 @@ class StudioEditViewModel
                 is StudioEdit.Action.OnFieldchanged -> {
                     action.name?.let { 
                         _state.update { 
-                            it.copy(name = it.name)
+                            it.copy(name = action.name)
                         }
                     }
                     action.address?.let {
                         _state.update {
-                            it.copy(address = it.address)
+                            it.copy(address = action.address)
                         }
                     }
                     action.postIndex?.let {
                         _state.update {
-                            it.copy(postIndex = it.postIndex)
+                            it.copy(postIndex = action.postIndex)
                         }
                     }
                     action.site?.let {
                         _state.update {
-                            it.copy(site = it.site)
+                            it.copy(site = action.site)
                         }
                     }
                     action.youtube?.let {
                         _state.update {
-                            it.copy(youtube = it.youtube)
+                            it.copy(youtube = action.youtube)
                         }
                     }
                     action.facebook?.let {
                         _state.update {
-                            it.copy(facebook = it.facebook)
+                            it.copy(facebook = action.facebook)
                         }
                     }
                 }
@@ -79,9 +79,16 @@ class StudioEditViewModel
     private fun loadStudio() = viewModelScope.launch {
         savedStateHandle.toRoute<Screen.Studio.Edit>().studioId?.let { id ->
             studioDataSource.getStudioById(studioId = id).collect { studio ->
-                Log.d(TAG, "loadStudio: $studio")
                 _state.update {
-                    it.copy(studio = studio)
+                    it.copy(
+                        studioId = studio?.studioId,
+                        name = studio?.name,
+                        address = studio?.address,
+                        postIndex = studio?.postIndex,
+                        site = studio?.site,
+                        youtube = studio?.youtube,
+                        facebook = studio?.facebook
+                    )
                 }
             }
         }

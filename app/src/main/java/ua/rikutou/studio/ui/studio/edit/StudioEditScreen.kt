@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -49,91 +50,78 @@ fun StudioEditScreenContent(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        var name by remember { mutableStateOf(state.value.studio?.name ?: "") }
-        var address by remember { mutableStateOf(state.value.studio?.address ?: "") }
-        var postIndex by remember { mutableStateOf(state.value.studio?.postIndex ?: "") }
-        var site by remember { mutableStateOf(state.value.studio?.site ?: "") }
-        var youtube by remember { mutableStateOf(state.value.studio?.youtube ?: "") }
-        var facebook by remember { mutableStateOf(state.value.studio?.facebook ?: "") }
-
         ElementTitle(
-            title = state.value.studio?.let {
-                "Edit ${state.value.studio?.name}"
+            title = state.value.name?.let {
+                "Edit ${state.value.name}"
             } ?: "Create new studio",
             isEditEnabled = false
         )
-        TextField(
+        OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            value = name,
+            value = state.value.name ?: "",
             onValueChange = {
-                name = it
                 onAction(StudioEdit.Action.OnFieldchanged(name = it))
             },
             label = {
                 Text(text = "name")
             }
         )
-        TextField(
+        OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            value = address,
+            value = state.value.address ?: "",
             onValueChange = {
-                address = it
                 onAction(StudioEdit.Action.OnFieldchanged(address = it))
             },
             label = {
                 Text(text = "address")
             }
         )
-        TextField(
+        OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            value = postIndex,
+            value = state.value.postIndex ?: "",
             onValueChange = {
-                postIndex = it
                 onAction(StudioEdit.Action.OnFieldchanged(postIndex = it))
             },
             label = {
                 Text(text = "postIndex")
             }
         )
-        TextField(
+        OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            value = site,
+            value = state.value.site ?: "",
             onValueChange = {
-                site = it
                 onAction(StudioEdit.Action.OnFieldchanged(site = it))
             },
             label = {
                 Text(text = "site")
             }
         )
-        TextField(
+        OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            value = youtube,
+            value = state.value.youtube ?: "",
             onValueChange = {
-                youtube = it
                 onAction(StudioEdit.Action.OnFieldchanged(youtube = it))
             },
             label = {
                 Text(text = "youtube")
             }
         )
-        TextField(
+        OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            value = facebook,
+            value = state.value.facebook ?: "",
             onValueChange = {
-                facebook = it
                 onAction(StudioEdit.Action.OnFieldchanged(facebook = it))
             },
             label = {
@@ -155,7 +143,7 @@ fun StudioEditScreenContent(
 @Composable
 @Preview(showSystemUi = true)
 fun StudioEditScreenContentPreview() {
-    StudioEditScreenContent(state = remember { mutableStateOf(StudioEdit.State(studio = StudioEntity(
+    StudioEditScreenContent(state = remember { mutableStateOf(StudioEdit.State(
         studioId = 1L,
         name = "sdfsdf",
         address = "jdfjklsdf",
@@ -163,5 +151,5 @@ fun StudioEditScreenContentPreview() {
         site = "ksdfsdf",
         youtube = "sdfshj",
         facebook = "l;kfgh"
-    ))) }) { }
+    )) }) { }
 }
