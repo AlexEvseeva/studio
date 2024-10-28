@@ -3,7 +3,10 @@ package ua.rikutou.studio.ui.studio.edit
 import ua.rikutou.studio.data.local.entity.StudioEntity
 
 object StudioEdit {
-    sealed interface Event{}
+    sealed interface Event{
+        data object OnBack : Event
+    }
+
     sealed interface Action{
         data class OnFieldchanged(
             val name: String? = null,
@@ -16,6 +19,7 @@ object StudioEdit {
         data object OnSave : Action
     }
     data class State(
+        val inProgress: Boolean = false,
         val studioId: Long? = null,
         val name: String? = null,
         val address: String? = null,

@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -28,11 +30,13 @@ fun StudioEditScreen(
     viewModel: StudioEditViewModel,
     navController: NavController
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle(StudioEdit.State())
+    val state = viewModel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = Unit) {
         viewModel.event.collect {
-
+            when (it) {
+                StudioEdit.Event.OnBack -> navController.popBackStack()
+            }
         }
     }
     StudioEditScreenContent(
@@ -49,6 +53,7 @@ fun StudioEditScreenContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(state = rememberScrollState())
     ) {
         ElementTitle(
             title = state.value.name?.let {
@@ -133,7 +138,9 @@ fun StudioEditScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
-            onClick = {}
+            onClick = {
+                onAction(StudioEdit.Action.OnSave)
+            }
         ) {
             Text(text = "Save")
         }

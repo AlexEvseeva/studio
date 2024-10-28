@@ -9,12 +9,16 @@ import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ua.rikutou.studio.data.datasource.DataSourceResponse
 import ua.rikutou.studio.data.datasource.studio.StudioDataSource
+import ua.rikutou.studio.data.local.entity.StudioEntity
 import ua.rikutou.studio.navigation.Screen
 import javax.inject.Inject
 
@@ -27,9 +31,14 @@ class StudioEditViewModel
     private val TAG by lazy { StudioEditViewModel::class.simpleName }
     private val _state = MutableStateFlow(StudioEdit.State())
 
-    val state = _state.asStateFlow().onStart {
-        loadStudio()
-    }
+    val state = _state.asStateFlow()
+        .onStart {
+            loadStudio()
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000L),
+            initialValue = StudioEdit.State()
+        )
     private val _event = MutableSharedFlow<StudioEdit.Event>()
     val event = _event.asSharedFlow()
 
@@ -94,8 +103,43 @@ class StudioEditViewModel
         }
     }
 
-    private fun saveStudio() {
-
+    private fun saveStudio() = viewModelScope.launch {
+        if(state.value.name?.isEmpty() == true
+            && state.value.address?.isEmpty() == true
+            && state.value.postIndex?.isEmpty() == true
+            && state.value.site?.isEmpty() == true
+            && state.value.youtube?.isEmpty() == true
+            && state.value.facebook?.isEmpty() == true
+            ) {
+            return@launch
+        } else {
+            studioDataSource.createUpdateStudio(
+                studio = StudioEntity(
+                    studioId = state.value.studioId ?: -1L,
+                    name = state.value.name ?: "",
+                    address = state.value.address ?: "",
+                    postIndex = state.value.postIndex ?: "",
+                    site = state.value.site ?: "",
+                    youtube = state.value.youtube ?: "",
+                    facebook = state.value.facebook ?: ""
+                )
+            ).collect {
+                when(it) {
+                    is DataSourceResponse.Error -> _state.update {
+                        it.copy(inProgress = false)
+                    }
+                    DataSourceResponse.InProgress -> _state.update {
+                        it.copy(inProgress = true)
+                    }
+                    is DataSourceResponse.Success -> {
+                        _state.update {
+                            it.copy(inProgress = false)
+                        }
+                        _event.emit(StudioEdit.Event.OnBack)
+                    }
+                }
+            }
+        }
     }
 }
 
