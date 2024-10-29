@@ -47,11 +47,11 @@ class MainActivity : ComponentActivity() {
             StudioTheme {
                 val navController = rememberNavController()
                 Scaffold(modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .safeContentPadding(),
                     bottomBar = {
                         BottomNavigation(
                             modifier = Modifier
-                                .padding(bottom = 50.dp)
                                 .padding(horizontal = 4.dp)
                                 .clip(RoundedCornerShape(8.dp))
                         ) {

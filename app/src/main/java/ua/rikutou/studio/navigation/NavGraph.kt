@@ -38,46 +38,14 @@ fun NavGraph(
             )
         }
 
-        composable<Screen.SignUp> {
-            SignUpScreen(
-                viewModel = hiltViewModel(),
-                navController = navController
-            )
-        }
-        composable<Screen.SignIn> {
-            SignInScreen(
-                viewModel = hiltViewModel(),
-                navController = navController
-            )
-        }
+        authGraph(navController = navController)
 
-        composable<Screen.Studio.Main> {
-            MainScreen(
-                viewModel = hiltViewModel(),
-                navController = navController
-            )
-        }
+        studioGraph(navController = navController)
 
-        composable<Screen.Studio.Edit> {
-            StudioEditScreen(
-                viewModel = hiltViewModel(),
-                navController = navController
-            )
-        }
+        locationGraph(navController = navController)
 
-        composable<Screen.Location.List> {
-            LocationListScreen(
-                viewModel = hiltViewModel(),
-                navController = navController
-            )
-        }
+        equipmentGraph(navController = navController)
 
-        composable<Screen.Equipment> {
-            Text(text = "equipment in progress")
-        }
-
-        composable<Screen.Actor> {
-            Text(text = "Actors in progress")
-        }
+        actorGraph(navController = navController)
     }
 }
