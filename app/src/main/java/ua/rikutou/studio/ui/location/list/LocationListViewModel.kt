@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.location.LocationDataSource
 import ua.rikutou.studio.data.datasource.user.UserDataSource
@@ -24,6 +25,7 @@ class LocationListViewModel
     val state = _state.asStateFlow().onStart {
         userDataSource.user?.studioId?.let {
             loadLocations(studioId = it)
+            getLocations(studioId = it)
         }
     }
     private val _event = MutableSharedFlow<LocationList.Event>()
@@ -39,6 +41,17 @@ class LocationListViewModel
     private fun loadLocations(studioId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             locationDataSource.loadLocations(studioId = studioId)
+        }
+    }
+
+    private fun getLocations(studioId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            locationDataSource.getLocationsByStudioId(studioId = studioId)
+                .collect { list ->
+                    _state.update {
+                        it.copy(locations = list)
+                    }
+                }
         }
     }
 }

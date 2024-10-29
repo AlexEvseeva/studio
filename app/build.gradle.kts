@@ -93,6 +93,10 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.compose.material)
 
+//    AsyncImage
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network)
+
 //    Network
     implementation(libs.retrofit)
     implementation(libs.retrofitConvertorGSon)
