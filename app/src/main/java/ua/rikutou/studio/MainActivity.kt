@@ -35,6 +35,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import ua.rikutou.studio.navigation.NavGraph
+import ua.rikutou.studio.navigation.NestedGraph
 import ua.rikutou.studio.navigation.Screen
 import ua.rikutou.studio.ui.theme.StudioTheme
 
@@ -102,8 +103,8 @@ data class TopLevelRoute<T: Any> (
 )
 
 val topLevelRoutes = listOf(
-    TopLevelRoute(name = "Studio", destination = Screen.Studio.Main, icon = R.drawable.studio),
-    TopLevelRoute(name = "Locations", destination = Screen.Location.List, icon = R.drawable.location),
-    TopLevelRoute(name = "Equipment", destination = Screen.Equipment, icon = R.drawable.camera),
-    TopLevelRoute(name = "Actors", destination = Screen.Actor, icon = R.drawable.actors),
+    TopLevelRoute(name = "Studio", destination = NestedGraph.Studio, icon = R.drawable.studio),
+    TopLevelRoute(name = "Locations", destination = NestedGraph.Location, icon = R.drawable.location),
+    TopLevelRoute(name = "Equipment", destination = NestedGraph.Equipment, icon = R.drawable.camera),
+    TopLevelRoute(name = "Actors", destination = NestedGraph.Actor, icon = R.drawable.actors),
 )
