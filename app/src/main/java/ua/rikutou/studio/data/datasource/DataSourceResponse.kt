@@ -1,7 +1,7 @@
 package ua.rikutou.studio.data.datasource
 
 sealed interface DataSourceResponse<out T: Any> {
-    data class Error(
+    data class Error<out T: Any>(
         val message: String? = null
     ) : DataSourceResponse<Nothing>
 

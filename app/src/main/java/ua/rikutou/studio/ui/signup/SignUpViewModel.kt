@@ -59,7 +59,7 @@ class SignUpViewModel
             }
         }.collect {
             when(it){
-                is DataSourceResponse.Error -> {
+                is DataSourceResponse.Error<*> -> {
                     _state.update {
                         it.copy(inProgress = false)
                     }

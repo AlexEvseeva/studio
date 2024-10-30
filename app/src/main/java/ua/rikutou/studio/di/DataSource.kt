@@ -2,6 +2,7 @@ package ua.rikutou.studio.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,7 +47,7 @@ object DataSource {
     ) : AuthDataSource = AuthDataSourceImpl(
         authApi = authApi,
         userDataSource = userDataSource,
-        tokenDataSource = tokenDataSource
+        tokenDataSource = tokenDataSource,
     )
 
     @Provides

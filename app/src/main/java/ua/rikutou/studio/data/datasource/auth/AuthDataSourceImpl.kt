@@ -1,16 +1,20 @@
 package ua.rikutou.studio.data.datasource.auth
 
+import android.provider.ContactsContract.Data
+import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.CloseableCoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okhttp3.ResponseBody
 import ua.rikutou.studio.data.remote.auth.AuthApi
 import ua.rikutou.studio.data.remote.auth.dto.AuthRequest
 import ua.rikutou.studio.data.datasource.DataSourceResponse
 import ua.rikutou.studio.data.datasource.token.TokenDataSource
 import ua.rikutou.studio.data.datasource.user.UserDataSource
 import ua.rikutou.studio.data.local.entity.UserEntity
+import ua.rikutou.studio.data.remote.parseError
 import ua.rikutou.studio.di.DbDeliveryDispatcher
-
 class AuthDataSourceImpl(
     private val authApi: AuthApi,
     private val userDataSource: UserDataSource,
@@ -29,10 +33,10 @@ class AuthDataSourceImpl(
                     emit(DataSourceResponse.Success())
                 }
                 409 == code() -> {
-                    emit(DataSourceResponse.Error(message = "User already created"))
+                    emit(parseError(errorBody()))
                 }
                 else -> {
-                    emit(DataSourceResponse.Error())
+                    emit(parseError(errorBody()))
                 }
             }
         }
@@ -59,7 +63,7 @@ class AuthDataSourceImpl(
                     }
                 }
                 else -> {
-                    emit(DataSourceResponse.Error())
+                    emit(parseError(errorBody()))
                 }
             }
         }
@@ -84,9 +88,10 @@ class AuthDataSourceImpl(
                 else -> {
                     tokenDataSource.setToken(null)
                     userDataSource.setUser(null)
-                    emit(DataSourceResponse.Error())
+                    emit(parseError(errorBody()))
                 }
             }
         }
     }
 }
+

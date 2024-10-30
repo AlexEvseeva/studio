@@ -39,7 +39,7 @@ class SplashViewModel
                 Log.d(TAG, "get me: ")
                 authDataSource.getMe().collect {
                     when(it) {
-                        is DataSourceResponse.Error -> {
+                        is DataSourceResponse.Error<*> -> {
                             Log.d(TAG, "get me: error")
                             _event.emit(Splash.Event.OnNavigate(Screen.SignIn))
                         }

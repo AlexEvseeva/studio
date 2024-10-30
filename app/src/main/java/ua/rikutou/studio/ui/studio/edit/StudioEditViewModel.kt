@@ -125,8 +125,10 @@ class StudioEditViewModel
                 )
             ).collect {
                 when(it) {
-                    is DataSourceResponse.Error -> _state.update {
-                        it.copy(inProgress = false)
+                    is DataSourceResponse.Error<*> -> {
+                        _state.update {
+                            it.copy(inProgress = false)
+                        }
                     }
                     DataSourceResponse.InProgress -> _state.update {
                         it.copy(inProgress = true)

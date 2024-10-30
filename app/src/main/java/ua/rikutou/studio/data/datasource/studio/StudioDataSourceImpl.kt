@@ -64,7 +64,7 @@ class StudioDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructor(
                 }
                 else -> {
                     Log.e(TAG, "createUpdateStudio: error")
-                    emit(DataSourceResponse.Error())
+                    emit(DataSourceResponse.Error<StudioEntity>())
                 }
             }
         }

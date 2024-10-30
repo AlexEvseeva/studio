@@ -49,7 +49,7 @@ class SignInViewModel
         }
         authRepository.signIn(name = name, password = password).collect {
             when (it) {
-                is DataSourceResponse.Error ->{
+                is DataSourceResponse.Error<*> ->{
                     _state.update {
                         it.copy(inProgress = false)
                     }
