@@ -4,6 +4,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -36,8 +37,8 @@ fun Item(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
-            .border(1.dp, color = Color.LightGray)
-            .padding(2.dp),
+            .border(1.dp, color = Color.LightGray, shape = RoundedCornerShape(8.dp))
+            .padding(4.dp),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -46,13 +47,17 @@ fun Item(
                 modifier = Modifier
                     .size(50.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .border(1.dp, color = Color.LightGray)
-                    .padding(2.dp),
+                    ,
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(it)
                     .build(),
                 contentScale = ContentScale.FillBounds,
                 contentDescription = title
+            )
+        } ?: run {
+            Spacer(
+                modifier = Modifier
+                    .size(50.dp)
             )
         }
         Column(
@@ -77,7 +82,7 @@ fun Item(
 private fun ItemPreview(modifier: Modifier = Modifier) {
     Item(
         modifier = Modifier,
-        imageURL = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.theemotionmachine.com%2Fthe-power-of-a-nice-view-feast-your-eyes-on-beauty%2F&psig=AOvVaw0JPb2DvN9eXCC_GQWVmIZ-&ust=1730310577365000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCPjD26yTtIkDFQAAAAAdAAAAABAE",
+        imageURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Field_Hamois_Belgium_Luc_Viatour.jpg/280px-Field_Hamois_Belgium_Luc_Viatour.jpg",
         title = "image",
         comment = "from internet"
     )

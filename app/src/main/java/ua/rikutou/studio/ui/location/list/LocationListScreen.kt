@@ -1,9 +1,11 @@
 package ua.rikutou.studio.ui.location.list
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
@@ -47,7 +49,9 @@ private fun LocationListScreenContent(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .padding(horizontal = 8.dp)
+        ,
     ) {
         ElementTitle(
             modifier = Modifier,
@@ -55,6 +59,7 @@ private fun LocationListScreenContent(
         )
         LazyColumn(
             modifier = Modifier.weight(1F),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             items(
                 items = state.value.locations,
@@ -62,7 +67,7 @@ private fun LocationListScreenContent(
             ) { item ->
                 Item(
                     modifier = Modifier.fillMaxWidth(),
-                    imageURL = "https://www.google.com/url?https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/c4/23/16/highland-view-bed-and.jpg?w=1200&h=-1&s=1",
+                    imageURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Field_Hamois_Belgium_Luc_Viatour.jpg/280px-Field_Hamois_Belgium_Luc_Viatour.jpg",
                     title = item.name,
                     comment = item.address
                     )
