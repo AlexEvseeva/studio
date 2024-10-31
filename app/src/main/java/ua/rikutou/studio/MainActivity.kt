@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -47,40 +48,52 @@ class MainActivity : ComponentActivity() {
         setContent {
             StudioTheme {
                 val navController = rememberNavController()
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
                 Scaffold(modifier = Modifier
                     .fillMaxSize()
                     .safeContentPadding(),
                     bottomBar = {
-                        BottomNavigation(
-                            modifier = Modifier
-                                .padding(horizontal = 4.dp)
-                                .clip(RoundedCornerShape(8.dp))
-                        ) {
-                            val navBackStackEntry by navController.currentBackStackEntryAsState()
-                            val currentDestination = navBackStackEntry?.destination
-                            topLevelRoutes.forEach { topLevelRoutes ->
-                                BottomNavigationItem(
-                                    icon = { Icon(painterResource(topLevelRoutes.icon), contentDescription = topLevelRoutes.name) },
-                                    label = {
-                                        Text(
-                                            topLevelRoutes.name,
-                                            fontSize = 12.sp,
-                                            color = Color.White
-                                        )
-                                    },
-                                    selected = currentDestination?.hierarchy?.any { it.hasRoute(topLevelRoutes.destination::class) } == true,
-                                    onClick = {
-                                        navController.navigate(topLevelRoutes.destination) {
-                                            popUpTo(navController.graph.findStartDestination().id) {
-                                                saveState = true
+                        if(showBottomNavigation(currentDestination)) {
+                            BottomNavigation(
+                                modifier = Modifier
+                                    .padding(horizontal = 4.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                            ) {
+                                topLevelRoutes.forEach { topLevelRoutes ->
+                                    BottomNavigationItem(
+                                        icon = {
+                                            Icon(
+                                                painterResource(topLevelRoutes.icon),
+                                                contentDescription = topLevelRoutes.name
+                                            )
+                                        },
+                                        label = {
+                                            Text(
+                                                topLevelRoutes.name,
+                                                fontSize = 12.sp,
+                                                color = Color.White
+                                            )
+                                        },
+                                        selected = currentDestination?.hierarchy?.any {
+                                            it.hasRoute(
+                                                topLevelRoutes.destination::class
+                                            )
+                                        } == true,
+                                        onClick = {
+                                            navController.navigate(topLevelRoutes.destination) {
+                                                popUpTo(navController.graph.findStartDestination().id) {
+                                                    saveState = true
+                                                }
+                                                launchSingleTop = true
+                                                restoreState = true
                                             }
-                                            launchSingleTop = true
-                                            restoreState = true
                                         }
-                                    }
-                                )
+                                    )
+                                }
                             }
                         }
+
                     }
                 ) { innerPadding ->
                         NavGraph(
@@ -108,3 +121,13 @@ val topLevelRoutes = listOf(
     TopLevelRoute(name = "Equipment", destination = NestedGraph.Equipment, icon = R.drawable.camera),
     TopLevelRoute(name = "Actors", destination = NestedGraph.Actor, icon = R.drawable.actors),
 )
+
+private fun showBottomNavigation(navDestination: NavDestination?): Boolean =
+    navDestination?.let { destination ->
+        destination.route in listOf(
+            Screen.Studio.Main::class.qualifiedName,
+            Screen.Location.List::class.qualifiedName,
+            Screen.Actor::class.qualifiedName,
+            Screen.Equipment::class.qualifiedName,
+        )
+    } ?: false

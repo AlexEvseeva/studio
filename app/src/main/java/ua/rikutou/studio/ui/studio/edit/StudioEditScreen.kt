@@ -54,6 +54,7 @@ fun StudioEditScreenContent(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(state = rememberScrollState())
+            .padding(horizontal = 8.dp)
     ) {
         ElementTitle(
             title = state.value.name?.let {
