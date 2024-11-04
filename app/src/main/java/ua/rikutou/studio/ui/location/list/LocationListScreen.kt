@@ -1,5 +1,6 @@
 package ua.rikutou.studio.ui.location.list
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,9 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import ua.rikutou.studio.BuildConfig
+import ua.rikutou.studio.navigation.Screen
 import ua.rikutou.studio.ui.components.ElementTitle
 import ua.rikutou.studio.ui.components.Item
 
+private val TAG by lazy { "LocationListScreen" }
 @Composable
 fun LocationListScreen(
     viewModel: LocationListViewModel,
@@ -63,14 +67,22 @@ private fun LocationListScreenContent(
         ) {
             items(
                 items = state.value.locations,
-                key = { it.locationId }
+                key = { it.location.locationId }
             ) { item ->
                 Item(
                     modifier = Modifier.fillMaxWidth(),
-                    imageURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Field_Hamois_Belgium_Luc_Viatour.jpg/280px-Field_Hamois_Belgium_Luc_Viatour.jpg",
-                    title = item.name,
-                    comment = item.address
-                    )
+                    imageURL = if(item.images.isNotEmpty()){
+                        "${BuildConfig.CFG_SERVER_URL}/${item.images.first().url}"
+                    } else {
+                        ""
+                    }.also {
+                        Log.d(TAG, "LocationListScreenContent: $it")
+                    },
+                    title = item.location.name,
+                    comment = item.location.address
+                    ) {
+                    onAction(LocationList.Action.OnNavigate(Screen.Location.Details(locationId = item.location.locationId)))
+                }
             }
         }
     }

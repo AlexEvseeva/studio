@@ -5,6 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import ua.rikutou.studio.ui.location.details.LocationDetailsScreen
 import ua.rikutou.studio.ui.location.list.LocationListScreen
 
 fun NavGraphBuilder.locationGraph(navController: NavController) {
@@ -17,5 +18,12 @@ fun NavGraphBuilder.locationGraph(navController: NavController) {
                 navController = navController
             )
         }
+        composable<Screen.Location.Details> {
+            LocationDetailsScreen(
+                viewModel = hiltViewModel(),
+                navController = navController
+            )
+        }
+
     }
 }

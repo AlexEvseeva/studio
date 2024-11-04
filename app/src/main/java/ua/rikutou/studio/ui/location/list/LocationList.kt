@@ -1,5 +1,6 @@
 package ua.rikutou.studio.ui.location.list
 
+import ua.rikutou.studio.data.local.entity.Location
 import ua.rikutou.studio.data.local.entity.LocationEntity
 import ua.rikutou.studio.navigation.Screen
 
@@ -14,6 +15,6 @@ object LocationList {
 
     data class State (
         val inProgress: Boolean = false,
-        val locations: List<LocationEntity> = emptyList()
+        val locations: List<Location> = emptyList()
     )
 }

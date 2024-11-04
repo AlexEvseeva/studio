@@ -1,6 +1,7 @@
 package ua.rikutou.studio.ui.components
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,14 +32,18 @@ fun Item(
     modifier: Modifier = Modifier,
     imageURL: String? = null,
     title: String,
-    comment: String
+    comment: String,
+    onItemClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
             .border(1.dp, color = Color.LightGray, shape = RoundedCornerShape(8.dp))
-            .padding(4.dp),
+            .padding(4.dp)
+            .clickable {
+                onItemClick()
+            },
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {

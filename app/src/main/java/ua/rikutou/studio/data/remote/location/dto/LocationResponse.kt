@@ -1,6 +1,7 @@
 package ua.rikutou.studio.data.remote.location.dto
 
 import ua.rikutou.studio.data.local.entity.LocationEntity
+import ua.rikutou.studio.data.remote.gallery.dto.GalleryResponse
 
 data class LocationResponse(
     val locationId: Long,
@@ -12,6 +13,7 @@ data class LocationResponse(
     val type: String,
     val studioId: Long,
     val rentPrice: Float,
+    val images: List<GalleryResponse>
 )
 
 fun LocationResponse.toEntity() =

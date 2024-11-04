@@ -34,7 +34,7 @@ class LocationListViewModel
     fun onAction(action: LocationList.Action) =
         viewModelScope.launch {
             when(action) {
-                is LocationList.Action.OnNavigate -> TODO()
+                is LocationList.Action.OnNavigate -> _event.emit(LocationList.Event.OnNavigate(destionation = action.destionation))
             }
         }
 
