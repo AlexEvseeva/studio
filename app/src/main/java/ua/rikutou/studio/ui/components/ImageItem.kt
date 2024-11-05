@@ -1,5 +1,7 @@
 package ua.rikutou.studio.ui.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -18,7 +20,8 @@ fun ImageItem(
 ) {
     AsyncImage(
         modifier = modifier
-            .size(200.dp)
+            .height(200.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp)),
         model = ImageRequest.Builder(LocalContext.current)
             .data(imageURL)

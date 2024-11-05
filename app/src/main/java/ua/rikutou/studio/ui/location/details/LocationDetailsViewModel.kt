@@ -36,8 +36,12 @@ class LocationDetailsViewModel
     private val _event = MutableSharedFlow<LocationDetails.Event>()
     val event = _event.asSharedFlow()
 
-    fun onAction(action: LocationDetails.Action) {
-
+    fun onAction(action: LocationDetails.Action) = viewModelScope.launch {
+        when(action) {
+            is LocationDetails.Action.OnNavigate -> {
+                _event.emit(LocationDetails.Event.OnNavigate(destination = action.destination))
+            }
+        }
     }
 
     private fun loadLocation() = viewModelScope.launch {

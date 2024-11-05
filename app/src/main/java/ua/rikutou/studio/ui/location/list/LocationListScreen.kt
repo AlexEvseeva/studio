@@ -72,11 +72,9 @@ private fun LocationListScreenContent(
                 Item(
                     modifier = Modifier.fillMaxWidth(),
                     imageURL = if(item.images.isNotEmpty()){
-                        "${BuildConfig.CFG_SERVER_URL}/${item.images.first().url}"
+                        item.images.first().url
                     } else {
                         ""
-                    }.also {
-                        Log.d(TAG, "LocationListScreenContent: $it")
                     },
                     title = item.location.name,
                     comment = item.location.address

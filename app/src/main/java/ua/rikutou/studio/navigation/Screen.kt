@@ -16,7 +16,7 @@ sealed class Screen {
     @Serializable sealed class Location : Screen() {
         @Serializable data object List : Location()
         @Serializable data class Details(val locationId: Long) : Location()
-        @Serializable data class Edit(val locationId: Long) : Location()
+        @Serializable data class Edit(val locationId: Long? = null) : Location()
     }
     @Serializable data object Equipment : Screen()
     @Serializable data object Department : Screen()
