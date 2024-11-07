@@ -20,6 +20,6 @@ object LocationList {
         val inProgress: Boolean = false,
         val locations: List<Location> = emptyList(),
         val isSearchActive: Boolean = false,
-        val isSearchEnabled: Boolean = true
+        val isSearchEnabled: Boolean = true,
     )
 }

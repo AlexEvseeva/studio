@@ -8,6 +8,7 @@ import ua.rikutou.studio.data.remote.location.dto.LocationResponse
 interface LocationApi {
     @GET("locations")
     suspend fun getAllLocations(
-        @Query("studioId") studioId: Long
+        @Query("studioId") studioId: Long,
+        @Query("search") search: String? = null,
     ): Response<List<LocationResponse>>
 }

@@ -23,8 +23,9 @@ class LocationDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructo
     private val locationApi: LocationApi,
     private val dbDataSource: DbDataSource,
     @DbDeliveryDispatcher private val dbDeliveryDispatcher: CloseableCoroutineDispatcher,
-) : LocationDataSource{
+) : LocationDataSource {
     private val TAG by lazy { LocationDataSourceImpl::class.simpleName }
+
     @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun getLocationsByStudioId(studioId: Long): Flow<List<Location>> =
         dbDataSource.dbFlow
@@ -34,41 +35,46 @@ class LocationDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructo
             .catch { it.printStackTrace() }
 
 
-    override suspend fun loadLocations(studioId: Long) {
+    override suspend fun loadLocations(studioId: Long, search: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            locationApi.getAllLocations(studioId = studioId).run {
-                when {
-                    isSuccessful -> {
-                        body()?.let { list ->
-                            dbDataSource.db.locationDao.insert(
-                                list.map {
-                                    it.toEntity()
-                                }
-                            )
-                            dbDataSource.db.galleryDao.insert(
-                                list.flatMap {
-                                    it.images
-                                }.toSet().toList().map {
-                                    it.toEntity()
-                                }
-                            )
-                            dbDataSource.db.locationToGalleryDao.insert(
-                                list.flatMap { location ->
-                                    location.images.map { image ->
-                                        LocationToGalleryEntity(
-                                            locationId = location.locationId,
-                                            galleryId = image.galleryId
-                                        )
+            locationApi.getAllLocations(
+                studioId = studioId,
+                search = if (search.isEmpty()) null else search
+            )
+                .run {
+                    when {
+                        isSuccessful -> {
+                            body()?.let { list ->
+                                dbDataSource.db.locationDao.insert(
+                                    list.map {
+                                        it.toEntity()
                                     }
-                                }
-                            )
+                                )
+                                dbDataSource.db.galleryDao.insert(
+                                    list.flatMap {
+                                        it.images
+                                    }.toSet().toList().map {
+                                        it.toEntity()
+                                    }
+                                )
+                                dbDataSource.db.locationToGalleryDao.insert(
+                                    list.flatMap { location ->
+                                        location.images.map { image ->
+                                            LocationToGalleryEntity(
+                                                locationId = location.locationId,
+                                                galleryId = image.galleryId
+                                            )
+                                        }
+                                    }
+                                )
+                            }
+                        }
+
+                        else -> {
+                            Log.e(TAG, "loadLocations: error $studioId")
                         }
                     }
-                    else -> {
-                        Log.e(TAG, "loadLocations: error $studioId" )
-                    }
                 }
-            }
         }
     }
 
