@@ -34,7 +34,27 @@ class LocationListViewModel
     fun onAction(action: LocationList.Action) =
         viewModelScope.launch {
             when(action) {
-                is LocationList.Action.OnNavigate -> _event.emit(LocationList.Event.OnNavigate(destionation = action.destionation))
+                is LocationList.Action.OnNavigate -> {
+                    _event.emit(LocationList.Event.OnNavigate(destionation = action.destionation))
+                }
+                LocationList.Action.OnCancel -> {
+                    _state.update {
+                        it.copy(
+                            isSearchActive = false,
+                            isSearchEnabled = true
+                        )
+                    }
+                }
+
+                LocationList.Action.OnSearch -> {
+                    _state.update {
+                        it.copy(
+                            isSearchActive = true,
+                            isSearchEnabled = false
+                        )
+                    }
+                }
+                is LocationList.Action.OnSearchChanged -> TODO()
             }
         }
 

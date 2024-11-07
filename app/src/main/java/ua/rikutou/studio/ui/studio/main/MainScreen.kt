@@ -56,7 +56,7 @@ private fun MainScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        ElementTitle(title = state.value.studio?.name ?: "") {
+        ElementTitle(title = state.value.studio?.name ?: "", isEditEnabled = true) {
             onAction(Main.Action.OnEdit)
         }
         ElementContent(label = "address", name = state.value.studio?.address ?: "")

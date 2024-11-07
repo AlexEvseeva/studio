@@ -26,6 +26,7 @@ import ua.rikutou.studio.ui.components.ElementTitle
 import ua.rikutou.studio.ui.components.Item
 
 private val TAG by lazy { "LocationListScreen" }
+
 @Composable
 fun LocationListScreen(
     viewModel: LocationListViewModel,
@@ -35,7 +36,7 @@ fun LocationListScreen(
 
     LaunchedEffect(key1 = Unit) {
         viewModel.event.collect {
-            when(it) {
+            when (it) {
                 is LocationList.Event.OnNavigate -> {
                     navController.navigate(it.destionation)
                 }
@@ -54,12 +55,31 @@ private fun LocationListScreenContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 8.dp)
-        ,
+            .padding(horizontal = 8.dp),
     ) {
         ElementTitle(
             modifier = Modifier,
-            title = "Locations"
+            title = "Locations",
+            isSearchEnabled = state.value.isSearchEnabled,
+            isSearchActive = state.value.isSearchActive,
+            onSearch = {
+                onAction(LocationList.Action.OnSearch)
+            },
+            onCancel = {
+                onAction(LocationList.Action.OnCancel)
+            },
+            onSearchChanged = {
+                onAction(LocationList.Action.OnSearchChanged(it))
+            },
+            onAdd = {
+                onAction(
+                    LocationList.Action.OnNavigate(
+                        destionation = Screen.Location.Edit(
+                            locationId = null
+                        )
+                    )
+                )
+            }
         )
         LazyColumn(
             modifier = Modifier.weight(1F),
@@ -71,14 +91,14 @@ private fun LocationListScreenContent(
             ) { item ->
                 Item(
                     modifier = Modifier.fillMaxWidth(),
-                    imageURL = if(item.images.isNotEmpty()){
+                    imageURL = if (item.images.isNotEmpty()) {
                         item.images.first().url
                     } else {
                         ""
                     },
                     title = item.location.name,
                     comment = item.location.address
-                    ) {
+                ) {
                     onAction(LocationList.Action.OnNavigate(Screen.Location.Details(locationId = item.location.locationId)))
                 }
             }

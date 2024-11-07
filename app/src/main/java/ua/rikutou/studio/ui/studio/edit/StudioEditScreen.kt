@@ -60,7 +60,7 @@ fun StudioEditScreenContent(
             title = state.value.name?.let {
                 "Edit ${state.value.name}"
             } ?: "Create new studio",
-            isEditEnabled = false
+            isEditActive = true
         )
         OutlinedTextField(
             modifier = Modifier

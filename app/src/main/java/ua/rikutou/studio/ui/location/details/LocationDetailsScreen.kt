@@ -52,7 +52,8 @@ fun LocationDetailsScreenContent(
         ElementTitle(
             modifier = Modifier,
             title = state.value.location?.location?.name ?: "",
-            onClick = {
+            isEditEnabled = true,
+            onEdit = {
                 onAction(
                     LocationDetails.Action.OnNavigate(
                         destination = Screen.Location.Edit(

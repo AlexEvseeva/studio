@@ -50,7 +50,7 @@ fun LocationEditScreenContent(
     ) {
         ElementTitle(
             title = state.value.location?.name ?: "",
-            isEditEnabled = false
+            isEditActive = true
         )
         OutlinedTextField(
             modifier = Modifier
