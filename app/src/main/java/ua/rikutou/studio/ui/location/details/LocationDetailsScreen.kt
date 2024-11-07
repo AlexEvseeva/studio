@@ -80,11 +80,12 @@ fun LocationDetailsScreenContent(
                     )
                 }
             }
-            ElementContent(label = "Address", name = state.value.location?.location?.address ?: "")
-            ElementContent(label = "Area", name = "${state.value.location?.location?.width ?: 0} x ${state.value.location?.location?.length ?: 0} x ${state.value.location?.location?.height ?: 0}")
-            ElementContent(label = "Type", name = state.value.location?.location?.type ?: "")
-            ElementContent(label = "Rent price", name = "$${state.value.location?.location?.rentPrice ?: 0F}")
         }
+        ElementContent(label = "Name", name = state.value.location?.location?.name ?: "")
+        ElementContent(label = "Address", name = state.value.location?.location?.address ?: "")
+        ElementContent(label = "Area", name = "${state.value.location?.location?.width ?: 0} x ${state.value.location?.location?.length ?: 0} x ${state.value.location?.location?.height ?: 0}")
+        ElementContent(label = "Type", name = state.value.location?.location?.type ?: "")
+        ElementContent(label = "Rent price", name = "$${state.value.location?.location?.rentPrice ?: 0F}")
     }
 
 }
