@@ -65,9 +65,7 @@ class MainViewModel
         viewModelScope.launch {
             when(action) {
                 Main.Action.OnEdit -> {
-                    _state.value.studio?.studioId?.let { id ->
-                        _event.emit(Main.Event.OnNavigate(destination = Screen.Studio.Edit(studioId = id)))
-                    }
+                    _event.emit(Main.Event.OnNavigate(destination = Screen.Studio.Edit(studioId = _state.value.studio?.studioId)))
                 }
             }
         }

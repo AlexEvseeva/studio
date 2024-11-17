@@ -7,4 +7,5 @@ interface UserDataSource {
     val userFlow: StateFlow<UserEntity?>
     val user: UserEntity?
     suspend fun setUser(userEntity: UserEntity?)
+    suspend fun updateStudio(studioId: Long)
 }

@@ -69,10 +69,12 @@ object DataSource {
     fun provideStudioDataSource(
         studioApi: StudioApi,
         dbDataSource: DbDataSource,
+        userDataSource: UserDataSource,
         @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
     ): StudioDataSource = StudioDataSourceImpl(
         studioApi = studioApi,
         dbDataSource = dbDataSource,
+        userDataSource = userDataSource,
         dbDeliveryDispatcher = dbDeliveryDispatcher
     )
 

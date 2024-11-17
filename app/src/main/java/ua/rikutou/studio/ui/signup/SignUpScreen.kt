@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -63,14 +64,16 @@ fun SignUpScreenContent(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .padding(horizontal = 4.dp)
+        ,
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
         var name by remember { mutableStateOf(state.value.name) }
         var password by remember { mutableStateOf(state.value.password) }
 
-        TextField(
+        OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth(),
             value = name,
@@ -82,7 +85,7 @@ fun SignUpScreenContent(
                 Text(text = "Email")
             }
         )
-        TextField(
+        OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth(),
             value = password,

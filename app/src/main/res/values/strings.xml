@@ -2,4 +2,5 @@
     <string name="app_name">Studio</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
+    <string name="addStudio">Add studio</string>
 </resources>

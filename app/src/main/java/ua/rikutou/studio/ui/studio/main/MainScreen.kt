@@ -1,5 +1,6 @@
 package ua.rikutou.studio.ui.studio.main
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,13 +14,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import ua.rikutou.studio.R
 import ua.rikutou.studio.data.local.entity.StudioEntity
 import ua.rikutou.studio.ui.components.ElementContent
 import ua.rikutou.studio.ui.components.ElementTitle
+
+private val TAG by lazy { "MainScreen" }
 
 @Composable
 fun MainScreen(
@@ -56,14 +61,28 @@ private fun MainScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        ElementTitle(title = state.value.studio?.name ?: "", isEditEnabled = true) {
-            onAction(Main.Action.OnEdit)
+        if(state.value.studio == null) {
+            Button(
+                onClick = {
+                    onAction(Main.Action.OnEdit)
+                }
+            ) {
+                Text(text = stringResource(R.string.addStudio))
+            }
+        } else {
+            ElementTitle(
+                title = state.value.studio?.name ?: "",
+                isEditEnabled = true,
+                onEdit = {
+                    onAction(Main.Action.OnEdit)
+                }
+            )
+            ElementContent(label = "address", name = state.value.studio?.address ?: "")
+            ElementContent(label = "postIndex", name = state.value.studio?.postIndex ?: "")
+            ElementContent(label = "site", name = state.value.studio?.site ?: "")
+            ElementContent(label = "youtube site", name = state.value.studio?.youtube ?: "")
+            ElementContent(label = "facebook site", name = state.value.studio?.facebook ?: "")
         }
-        ElementContent(label = "address", name = state.value.studio?.address ?: "")
-        ElementContent(label = "postIndex", name = state.value.studio?.postIndex ?: "")
-        ElementContent(label = "site", name = state.value.studio?.site ?: "")
-        ElementContent(label = "youtube site", name = state.value.studio?.youtube ?: "")
-        ElementContent(label = "facebook site", name = state.value.studio?.facebook ?: "")
     }
 
 }

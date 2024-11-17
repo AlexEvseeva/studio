@@ -3,7 +3,7 @@ package ua.rikutou.studio.data.remote.studio.dto
 import ua.rikutou.studio.data.local.entity.StudioEntity
 
 data class StudioRequest(
-    val studioId: Long,
+    val studioId: Long? = null,
     val name: String,
     val address: String,
     val postIndex: String,
@@ -13,7 +13,7 @@ data class StudioRequest(
 )
 fun StudioRequest.toEntity() =
     StudioEntity(
-        studioId = studioId,
+        studioId = studioId ?: -1L,
         name = name,
         address = address,
         postIndex = postIndex,

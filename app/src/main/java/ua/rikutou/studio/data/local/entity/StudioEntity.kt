@@ -16,7 +16,7 @@ data class StudioEntity(
 )
 
 fun StudioEntity.toDto() = StudioRequest(
-    studioId = studioId,
+    studioId = if(studioId < 0) null else studioId,
     name = name,
     address = address,
     postIndex = postIndex,

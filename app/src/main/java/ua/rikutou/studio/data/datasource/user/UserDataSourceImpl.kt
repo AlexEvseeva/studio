@@ -17,6 +17,11 @@ class UserDataSourceImpl(): UserDataSource {
         _user = userEntity
     }
 
+    override suspend fun updateStudio(studioId: Long) {
+        _user = _user?.copy(studioId = studioId)
+        _userFlow.emit(_user)
+    }
+
     override val userFlow = _userFlow.asStateFlow()
 
     override val user: UserEntity?

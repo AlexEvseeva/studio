@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.DataSourceResponse
+import ua.rikutou.studio.data.datasource.user.UserDataSource
 import ua.rikutou.studio.data.local.DbDataSource
 import ua.rikutou.studio.data.local.entity.StudioEntity
 import ua.rikutou.studio.data.local.entity.toDto
@@ -23,6 +24,7 @@ import ua.rikutou.studio.di.DbDeliveryDispatcher
 class StudioDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructor(
     private val studioApi: StudioApi,
     private val dbDataSource: DbDataSource,
+    private val userDataSource: UserDataSource,
     @DbDeliveryDispatcher private val dbDeliveryDispatcher: CloseableCoroutineDispatcher,
 ) : StudioDataSource {
     private val TAG by lazy { StudioDataSourceImpl::class.simpleName }
@@ -59,6 +61,7 @@ class StudioDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructor(
                 isSuccessful -> {
                     body()?.let {
                         dbDataSource.db.studioDao.insert(it.toEntity())
+                        userDataSource.updateStudio(studioId = it.studioId)
                         emit(DataSourceResponse.Success())
                     }
                 }
