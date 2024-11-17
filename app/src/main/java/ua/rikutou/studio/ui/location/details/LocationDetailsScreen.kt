@@ -17,7 +17,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import ua.rikutou.studio.ui.components.ElementTitle
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import ua.rikutou.studio.R
 import ua.rikutou.studio.navigation.Screen
 import ua.rikutou.studio.ui.components.ElementContent
 import ua.rikutou.studio.ui.components.ImageItem
@@ -32,7 +36,13 @@ fun LocationDetailsScreen(
     LaunchedEffect(key1 = Unit) {
         viewModel.event.collect {
             when(it) {
-                is LocationDetails.Event.OnNavigate -> navController.navigate(it.destination)
+                is LocationDetails.Event.OnNavigate -> {
+                    if (it.destination == null) {
+                        navController.popBackStack()
+                    } else {
+                        navController.navigate(it.destination)
+                    }
+                }
             }
         }
     }
@@ -86,6 +96,16 @@ fun LocationDetailsScreenContent(
         ElementContent(label = "Area", name = "${state.value.location?.location?.width ?: 0} x ${state.value.location?.location?.length ?: 0} x ${state.value.location?.location?.height ?: 0}")
         ElementContent(label = "Type", name = state.value.location?.location?.type ?: "")
         ElementContent(label = "Rent price", name = "$${state.value.location?.location?.rentPrice ?: 0F}")
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth(),
+            onClick = {
+                onAction(LocationDetails.Action.OnDelete)
+            }
+        ) {
+            Text(text = stringResource(R.string.delete))
+        }
     }
 
 }

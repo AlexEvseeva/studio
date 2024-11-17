@@ -18,4 +18,7 @@ interface LocationDao {
 
     @Query("SELECT * FROM locationentity WHERE locationId = :locationId LIMIT 1")
     fun getByLocationId(locationId: Long): Flow<Location>
+
+    @Query("DELETE FROM locationentity WHERE locationId = :locationId")
+    fun deleteById(locationId: Long)
 }

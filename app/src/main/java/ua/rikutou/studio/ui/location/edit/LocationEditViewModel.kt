@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.location.LocationDataSource
+import ua.rikutou.studio.data.datasource.user.UserDataSource
 import ua.rikutou.studio.data.local.entity.LocationEntity
 import ua.rikutou.studio.navigation.Screen
 import ua.rikutou.studio.ui.location.details.LocationDetails
@@ -25,7 +26,8 @@ import javax.inject.Inject
 class LocationEditViewModel
 @Inject constructor(
     private val locationDataSource: LocationDataSource,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val userDataSource: UserDataSource
 ) : ViewModel(){
     private val _state = MutableStateFlow(LocationEdit.State())
     val state = _state.asStateFlow()
@@ -99,7 +101,7 @@ class LocationEditViewModel
                     length = 0F,
                     height = 0F,
                     type = "",
-                    studioId = -1,
+                    studioId = userDataSource.user?.studioId ?: -1,
                     rentPrice = 0F
                 ))
             }
@@ -107,5 +109,15 @@ class LocationEditViewModel
     }
 
     private fun onSave() = viewModelScope.launch {
+        if (state.value.location?.name?.isEmpty() == true
+            || state.value.location?.address?.isEmpty() == true
+            || state.value.location?.type?.isEmpty() == true
+            ) {
+            return@launch
+        }
+        state.value.location?.let {
+            locationDataSource.save(location = it)
+            _event.emit(LocationEdit.Event.OnBack)
+        }
     }
 }

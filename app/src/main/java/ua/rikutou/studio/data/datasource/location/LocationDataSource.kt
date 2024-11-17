@@ -9,4 +9,6 @@ interface LocationDataSource {
     suspend fun getLocationsByStudioId(studioId: Long): Flow<List<Location>>
     suspend fun loadLocations(studioId: Long, search: String)
     suspend fun getLocationById(locationId: Long): Flow<Location>
+    suspend fun save(location: LocationEntity)
+    suspend fun delete(locationId: Long)
 }

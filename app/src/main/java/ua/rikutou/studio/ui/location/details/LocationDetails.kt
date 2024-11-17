@@ -6,11 +6,12 @@ import ua.rikutou.studio.navigation.Screen
 
 object LocationDetails {
     sealed interface Event {
-        data class OnNavigate(val destination: Screen) : Event
+        data class OnNavigate(val destination: Screen? = null) : Event
     }
 
     sealed interface Action {
         data class OnNavigate(val destination: Screen) : Action
+        data object OnDelete: Action
     }
 
     data class State (

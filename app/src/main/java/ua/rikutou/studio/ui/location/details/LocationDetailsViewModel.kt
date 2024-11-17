@@ -41,6 +41,8 @@ class LocationDetailsViewModel
             is LocationDetails.Action.OnNavigate -> {
                 _event.emit(LocationDetails.Event.OnNavigate(destination = action.destination))
             }
+
+            LocationDetails.Action.OnDelete -> delete()
         }
     }
 
@@ -52,5 +54,12 @@ class LocationDetailsViewModel
                 }
             }
         }
+    }
+
+    private fun delete() = viewModelScope.launch {
+        state.value.location?.location?.locationId?.let {
+            locationDataSource.delete(locationId = it)
+        }
+        _event.emit(LocationDetails.Event.OnNavigate())
     }
 }

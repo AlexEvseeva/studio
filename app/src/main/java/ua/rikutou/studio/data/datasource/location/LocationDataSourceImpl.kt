@@ -14,6 +14,7 @@ import ua.rikutou.studio.data.local.DbDataSource
 import ua.rikutou.studio.data.local.entity.Location
 import ua.rikutou.studio.data.local.entity.LocationEntity
 import ua.rikutou.studio.data.local.entity.LocationToGalleryEntity
+import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.gallery.dto.toEntity
 import ua.rikutou.studio.data.remote.location.LocationApi
 import ua.rikutou.studio.data.remote.location.dto.toEntity
@@ -85,4 +86,36 @@ class LocationDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructo
                 db.locationDao.getByLocationId(locationId = locationId)
             }.flowOn(dbDeliveryDispatcher)
             .catch { it.printStackTrace() }
+
+    override suspend fun save(location: LocationEntity) {
+        CoroutineScope(Dispatchers.IO).launch {
+            locationApi.saveUpdateLocation(
+                body = location.toDto()
+            ).run {
+                when {
+                    isSuccessful -> {
+                        body()?.let {
+                            dbDataSource.db.locationDao.insert(
+                                listOf(it.toEntity())
+                            )
+                        }
+                    } else -> {
+                        Log.e(TAG, "save: error $location")
+                    }
+                }
+            }
+        }
+    }
+
+    override suspend fun delete(locationId: Long) {
+        CoroutineScope(Dispatchers.IO).launch {
+            locationApi.deleteLocation(locationId = locationId).run {
+                when {
+                    code() == 204 -> {  //no content
+                        dbDataSource.db.locationDao.deleteById(locationId = locationId)
+                    }
+                }
+            }
+        }
+    }
 }

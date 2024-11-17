@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.Junction
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import ua.rikutou.studio.data.remote.location.dto.LocationRequest
 
 @Entity
 data class LocationEntity(
@@ -27,3 +28,16 @@ data class Location(
         associateBy = Junction(LocationToGalleryEntity::class)
     ) val images: List<GalleryEntity>
 )
+
+fun LocationEntity.toDto() =
+    LocationRequest(
+        locationId = if(locationId < 0) null else locationId,
+        name = name,
+        address = address,
+        width = width,
+        height = height,
+        length = length,
+        type = type,
+        studioId = studioId,
+        rentPrice = rentPrice,
+    )

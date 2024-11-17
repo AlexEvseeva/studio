@@ -6,16 +6,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.collect
+import ua.rikutou.studio.R
 import ua.rikutou.studio.ui.components.ElementTitle
 import ua.rikutou.studio.ui.studio.edit.StudioEdit
 
@@ -145,5 +148,15 @@ fun LocationEditScreenContent(
                 Text(text = "Rent price")
             }
         )
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth(),
+            onClick = {
+                onAction(LocationEdit.Action.OnSave)
+            }
+        ) {
+            Text(stringResource(R.string.save))
+        }
     }
 }
