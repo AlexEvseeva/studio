@@ -53,11 +53,14 @@ android {
         compose = true
         buildConfig = true
     }
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(17)
-        }
-    }
+//    java {
+//        toolchain {
+//            languageVersion = JavaLanguageVersion.of(17)
+//        }
+//    }
+//    kotlin {
+//        jvmToolchain(17)
+//    }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.7"
     }
