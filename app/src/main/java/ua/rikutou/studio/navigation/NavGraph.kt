@@ -47,5 +47,7 @@ fun NavGraph(
         equipmentGraph(navController = navController)
 
         actorGraph(navController = navController)
+
+        profileGraph(navController = navController)
     }
 }

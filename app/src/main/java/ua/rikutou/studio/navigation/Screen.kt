@@ -21,5 +21,6 @@ sealed class Screen {
     @Serializable data object Equipment : Screen()
     @Serializable data object Department : Screen()
     @Serializable data object Actor : Screen()
+    @Serializable data object Profile : Screen()
 
 }

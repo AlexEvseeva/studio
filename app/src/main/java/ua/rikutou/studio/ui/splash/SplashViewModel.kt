@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.DataSourceResponse
 import ua.rikutou.studio.data.datasource.auth.AuthDataSource
 import ua.rikutou.studio.data.datasource.token.TokenDataSource
-import ua.rikutou.studio.data.datasource.user.UserDataSource
+import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.navigation.Screen
 import javax.inject.Inject
 
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class SplashViewModel
 @Inject constructor(
     val tokenDataSource: TokenDataSource,
-    val userDataSource: UserDataSource,
+    val profileDataSource: ProfileDataSource,
     val authDataSource: AuthDataSource
 ) : ViewModel() {
     private val TAG by lazy { SplashViewModel::class.simpleName }

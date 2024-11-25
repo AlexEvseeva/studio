@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
                                         label = {
                                             Text(
                                                 topLevelRoutes.name,
-                                                fontSize = 12.sp,
+                                                fontSize = 8.5.sp,
                                                 color = Color.White
                                             )
                                         },
@@ -120,6 +120,7 @@ val topLevelRoutes = listOf(
     TopLevelRoute(name = "Locations", destination = NestedGraph.Location, icon = R.drawable.location),
     TopLevelRoute(name = "Equipment", destination = NestedGraph.Equipment, icon = R.drawable.camera),
     TopLevelRoute(name = "Actors", destination = NestedGraph.Actor, icon = R.drawable.actors),
+    TopLevelRoute(name = "Profile", destination = NestedGraph.Profile,icon = R.drawable.profile)
 )
 
 private fun showBottomNavigation(navDestination: NavDestination?): Boolean =

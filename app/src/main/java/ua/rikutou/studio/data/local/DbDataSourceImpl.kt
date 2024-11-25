@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
-import ua.rikutou.studio.data.datasource.user.UserDataSource
+import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 
 class DbDataSourceImpl(
     private val context: Context,
-    private val userRepository: UserDataSource
+    private val userRepository: ProfileDataSource
 ) : DbDataSource {
     val TAG by lazy { DbDataSourceImpl::class.simpleName }
     override val db: AppDb

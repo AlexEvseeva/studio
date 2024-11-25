@@ -3,7 +3,6 @@ package ua.rikutou.studio.ui.location.edit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,10 +15,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.location.LocationDataSource
-import ua.rikutou.studio.data.datasource.user.UserDataSource
+import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.data.local.entity.LocationEntity
 import ua.rikutou.studio.navigation.Screen
-import ua.rikutou.studio.ui.location.details.LocationDetails
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,7 +25,7 @@ class LocationEditViewModel
 @Inject constructor(
     private val locationDataSource: LocationDataSource,
     private val savedStateHandle: SavedStateHandle,
-    private val userDataSource: UserDataSource
+    private val profileDataSource: ProfileDataSource
 ) : ViewModel(){
     private val _state = MutableStateFlow(LocationEdit.State())
     val state = _state.asStateFlow()
@@ -101,7 +99,7 @@ class LocationEditViewModel
                     length = 0F,
                     height = 0F,
                     type = "",
-                    studioId = userDataSource.user?.studioId ?: -1,
+                    studioId = profileDataSource.user?.studioId ?: -1,
                     rentPrice = 0F
                 ))
             }

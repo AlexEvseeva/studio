@@ -10,8 +10,14 @@ import ua.rikutou.studio.data.local.entity.UserEntity
 @Dao
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(userEntity: UserEntity): Long
+    suspend fun insert(list: List<UserEntity>)
 
-    @Query("SELECT * FROM userentity LIMIT 1")
-    fun get(): Flow<UserEntity>
+    @Query("SELECT * FROM userentity WHERE userId=:userId LIMIT 1")
+    fun getById(userId: Long): Flow<UserEntity>
+
+    @Query("SELECT * FROM userentity")
+    fun getAll(): Flow<List<UserEntity>>
+
+
+
 }

@@ -3,4 +3,8 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="addStudio">Add studio</string>
+    <string name="unknown">Unknown</string>
+    <string name="userId">User id</string>
+    <string name="studioId">Studio id</string>
+    <string name="deleteAccount">Delete account</string>
 </resources>

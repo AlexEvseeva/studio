@@ -9,4 +9,5 @@ sealed class NestedGraph {
     @Serializable data object Location : NestedGraph()
     @Serializable data object Equipment : NestedGraph()
     @Serializable data object Actor : NestedGraph()
+    @Serializable data object Profile : NestedGraph()
 }

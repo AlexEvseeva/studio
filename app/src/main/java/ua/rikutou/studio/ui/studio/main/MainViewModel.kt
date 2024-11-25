@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.studio.StudioDataSource
-import ua.rikutou.studio.data.datasource.user.UserDataSource
+import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.navigation.Screen
 import javax.inject.Inject
 
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class MainViewModel
 @Inject constructor(
     private val studioDataSource: StudioDataSource,
-    private val userDataSource: UserDataSource
+    private val profileDataSource: ProfileDataSource
 ): ViewModel() {
     private val _state = MutableStateFlow(Main.State())
     val state = _state.asStateFlow().onStart {
@@ -36,7 +36,7 @@ class MainViewModel
 
     private fun getStudio() {
         viewModelScope.launch {
-            userDataSource.user?.studioId?.let {
+            profileDataSource.user?.studioId?.let {
                 studioDataSource.getStudioById(studioId = it).collect { studio ->
                     _state.update {
                         it.copy(studio = studio)
@@ -48,7 +48,7 @@ class MainViewModel
     }
 
     private fun getUserInfo() = viewModelScope.launch {
-        userDataSource.userFlow.collect {
+        profileDataSource.userFlow.collect {
             it?.studioId?.let {
                 getStudio()
             }
@@ -57,7 +57,7 @@ class MainViewModel
 
     private fun loadStudio() {
         viewModelScope.launch(Dispatchers.IO) {
-            userDataSource.userFlow.mapLatest {
+            profileDataSource.userFlow.mapLatest {
                 it?.studioId
             }.collect {
                 it?.let { studioId ->

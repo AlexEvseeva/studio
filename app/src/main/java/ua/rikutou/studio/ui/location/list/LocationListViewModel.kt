@@ -9,16 +9,12 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.location.LocationDataSource
-import ua.rikutou.studio.data.datasource.user.UserDataSource
+import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
@@ -26,11 +22,11 @@ import javax.inject.Inject
 class LocationListViewModel
 @Inject constructor(
     private val locationDataSource: LocationDataSource,
-    private val userDataSource: UserDataSource
+    private val profileDataSource: ProfileDataSource
 ) : ViewModel() {
     private val _state = MutableStateFlow(LocationList.State())
     val state = _state.asStateFlow().onStart {
-        userDataSource.user?.studioId?.let {
+        profileDataSource.user?.studioId?.let {
             loadLocations(studioId = it, search = "")
             getLocations(studioId = it)
         }
@@ -44,7 +40,7 @@ class LocationListViewModel
             search
                 .collect { search ->
                     if (search.length > 2) {
-                        userDataSource.user?.studioId?.let { id ->
+                        profileDataSource.user?.studioId?.let { id ->
                             loadLocations(
                                 studioId = id,
                                 search = search

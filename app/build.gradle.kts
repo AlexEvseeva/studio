@@ -42,10 +42,10 @@ android {
     }
 //    buildConfigField("String", 'CFG_SERVER_URL', "\"http:192.168.50.79:8080\"")
 //    buildConfigField("String", "CFG_SERVER_URL", "\"https://reachtags.app/api/\"")
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
+//    compileOptions {
+//        sourceCompatibility = JavaVersion.VERSION_17
+//        targetCompatibility = JavaVersion.VERSION_17
+//    }
 //    kotlinOptions {
 //        jvmTarget = "1.8"
 //    }
@@ -53,14 +53,14 @@ android {
         compose = true
         buildConfig = true
     }
-//    java {
-//        toolchain {
-//            languageVersion = JavaLanguageVersion.of(17)
-//        }
-//    }
-//    kotlin {
-//        jvmToolchain(17)
-//    }
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+    kotlin {
+        jvmToolchain(17)
+    }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.7"
     }
@@ -74,7 +74,8 @@ androidComponents {
     onVariants {
         it.buildConfigFields.put(
             "CFG_SERVER_URL",
-            BuildConfigField(type  = "String",value = "\"http:192.168.50.79:8080\"", comment = "server config url")
+//            BuildConfigField(type  = "String",value = "\"http:192.168.50.79:8080\"", comment = "server config url")
+            BuildConfigField(type  = "String",value = "\"http:192.168.50.124:8080\"", comment = "server config url")
         )
     }
 }

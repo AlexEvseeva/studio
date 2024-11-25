@@ -2,7 +2,6 @@ package ua.rikutou.studio.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,10 +20,13 @@ import ua.rikutou.studio.data.datasource.studio.StudioDataSource
 import ua.rikutou.studio.data.datasource.studio.StudioDataSourceImpl
 import ua.rikutou.studio.data.datasource.token.TokenDataSource
 import ua.rikutou.studio.data.datasource.token.TokenDataSourceImpl
+import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
+import ua.rikutou.studio.data.datasource.profile.ProfileDataSourceImpl
 import ua.rikutou.studio.data.datasource.user.UserDataSource
 import ua.rikutou.studio.data.datasource.user.UserDataSourceImpl
 import ua.rikutou.studio.data.remote.location.LocationApi
 import ua.rikutou.studio.data.remote.studio.StudioApi
+import ua.rikutou.studio.data.remote.user.UserApi
 import javax.inject.Singleton
 
 
@@ -42,23 +44,35 @@ object DataSource {
     @Provides
     fun provideAuthRepository(
         authApi: AuthApi,
-        userDataSource: UserDataSource,
+        profileDataSource: ProfileDataSource,
         tokenDataSource: TokenDataSource,
     ) : AuthDataSource = AuthDataSourceImpl(
         authApi = authApi,
-        userDataSource = userDataSource,
+        profileDataSource = profileDataSource,
         tokenDataSource = tokenDataSource,
     )
 
     @Provides
     @Singleton
-    fun provideUserRepository(): UserDataSource = UserDataSourceImpl()
+    fun provideProfileRepository(): ProfileDataSource = ProfileDataSourceImpl()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Provides
+    fun provideUserDataSource(
+        userApi: UserApi,
+        dbDataSource: DbDataSource,
+        @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
+    ): UserDataSource = UserDataSourceImpl(
+        userApi = userApi,
+        dbDataSource = dbDataSource,
+        dbDeliveryDispatcher= dbDeliveryDispatcher
+    )
 
     @Provides
     @Singleton
     fun provideDbDataSource(
         @ApplicationContext context: Context,
-        userRepository: UserDataSource
+        userRepository: ProfileDataSource
     ): DbDataSource = DbDataSourceImpl(
         context = context,
         userRepository = userRepository
@@ -69,12 +83,12 @@ object DataSource {
     fun provideStudioDataSource(
         studioApi: StudioApi,
         dbDataSource: DbDataSource,
-        userDataSource: UserDataSource,
+        profileDataSource: ProfileDataSource,
         @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
     ): StudioDataSource = StudioDataSourceImpl(
         studioApi = studioApi,
         dbDataSource = dbDataSource,
-        userDataSource = userDataSource,
+        profileDataSource = profileDataSource,
         dbDeliveryDispatcher = dbDeliveryDispatcher
     )
 

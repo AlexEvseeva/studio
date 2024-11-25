@@ -1,11 +1,11 @@
 package ua.rikutou.studio.data.datasource.user
 
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
+import ua.rikutou.studio.data.datasource.DataSourceResponse
 import ua.rikutou.studio.data.local.entity.UserEntity
 
 interface UserDataSource {
-    val userFlow: StateFlow<UserEntity?>
-    val user: UserEntity?
-    suspend fun setUser(userEntity: UserEntity?)
-    suspend fun updateStudio(studioId: Long)
+    suspend fun getStudioUsersAndCandidates(studioId: Long): Flow<List<UserEntity>>
+    suspend fun loadStudioUsersAndCandidates(studioId: Long)
+    suspend fun deleteUserById(userId: Long): Flow<DataSourceResponse<Nothing>>
 }
