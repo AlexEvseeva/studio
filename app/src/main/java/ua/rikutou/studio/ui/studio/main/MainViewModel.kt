@@ -28,23 +28,29 @@ class MainViewModel
     private val _state = MutableStateFlow(Main.State())
     val state = _state.asStateFlow().onStart {
         loadStudio()
+        getUserInfo()
         getStudio()
     }
     private val _event = MutableSharedFlow<Main.Event>()
     val event = _event.asSharedFlow()
 
     private fun getStudio() {
-        viewModelScope.launch(Dispatchers.IO) {
-            userDataSource.userFlow.mapLatest {
-                it?.studioId
-            }.collect {
-                it?.let { studioId ->
-                    studioDataSource.getStudioById(studioId = studioId).collect { studio ->
-                        _state.update {
-                            it.copy(studio = studio)
-                        }
+        viewModelScope.launch {
+            userDataSource.user?.studioId?.let {
+                studioDataSource.getStudioById(studioId = it).collect { studio ->
+                    _state.update {
+                        it.copy(studio = studio)
                     }
                 }
+            }
+
+        }
+    }
+
+    private fun getUserInfo() = viewModelScope.launch {
+        userDataSource.userFlow.collect {
+            it?.studioId?.let {
+                getStudio()
             }
         }
     }
