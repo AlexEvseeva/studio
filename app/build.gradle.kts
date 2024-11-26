@@ -74,8 +74,8 @@ androidComponents {
     onVariants {
         it.buildConfigFields.put(
             "CFG_SERVER_URL",
-//            BuildConfigField(type  = "String",value = "\"http:192.168.50.79:8080\"", comment = "server config url")
-            BuildConfigField(type  = "String",value = "\"http:192.168.50.124:8080\"", comment = "server config url")
+            BuildConfigField(type  = "String",value = "\"http:192.168.50.79:8080\"", comment = "server config url")
+//            BuildConfigField(type  = "String",value = "\"http:192.168.50.124:8080\"", comment = "server config url")
         )
     }
 }

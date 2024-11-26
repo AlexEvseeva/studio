@@ -62,26 +62,25 @@ class ProfileViewModel @Inject constructor(
 
         if(userId != null && isOtherStudioOwnerPresent) {
             userDataSource.deleteUserById(userId = userId).collect {
-//                when(it) {
-//                    is DataSourceResponse.Error<*> -> {
-//                        _state.update {
-//                            it.copy(inProgress = false)
-//                        }
-//                    }
-//                    DataSourceResponse.InProgress -> {
-//                        _state.update {
-//                            it.copy(inProgress = true)
-//                        }
-//                    }
-//                    is DataSourceResponse.Success -> {
-//                        _state.update {
-//                            it.copy(inProgress = false)
-//                        }
-//                        _event.emit(Profile.Event.OnNavigate(route = Screen.SignIn))
-//                    }
-//                }
+                when(it) {
+                    is DataSourceResponse.Error<*> -> {
+                        _state.update {
+                            it.copy(inProgress = false)
+                        }
+                    }
+                    DataSourceResponse.InProgress -> {
+                        _state.update {
+                            it.copy(inProgress = true)
+                        }
+                    }
+                    is DataSourceResponse.Success -> {
+                        _state.update {
+                            it.copy(inProgress = false)
+                        }
+                        _event.emit(Profile.Event.OnNavigate(route = Screen.SignIn))
+                    }
+                }
             }
-            _event.emit(Profile.Event.OnNavigate(route = Screen.SignIn))
         } else {
             _event.emit(
                 Profile.Event.OnMessage(

@@ -4,12 +4,15 @@ import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.content.edit
 import kotlinx.coroutines.CloseableCoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.DataSourceResponse
 import ua.rikutou.studio.data.datasource.token.TokenDataSource
 import ua.rikutou.studio.data.local.DbDataSource
@@ -59,9 +62,11 @@ class UserDataSourceImpl(
         ).run {
             when {
                 isSuccessful -> {
-                    dbDataSource.db.clearAllTables()
-                    dbDataSource.db.close()
-                    tokenDataSource.setToken(null)
+                    CoroutineScope(Dispatchers.IO).launch {
+                        dbDataSource.db.clearAllTables()
+                        dbDataSource.db.close()
+                        tokenDataSource.setToken(null)
+                    }
                     emit(DataSourceResponse.Success())
                 }
                 else -> {
@@ -70,10 +75,13 @@ class UserDataSourceImpl(
             }
         }
     }.catch {
-        dbDataSource.db.clearAllTables()
-        dbDataSource.db.close()
-        tokenDataSource.setToken(null)
+        CoroutineScope(Dispatchers.IO).launch {
+            dbDataSource.db.clearAllTables()
+            dbDataSource.db.close()
+            tokenDataSource.setToken(null)
+        }
         it.printStackTrace()
+        emit(DataSourceResponse.Success())
     }
 
     override suspend fun updateUserStudio(user: UserEntity) {
