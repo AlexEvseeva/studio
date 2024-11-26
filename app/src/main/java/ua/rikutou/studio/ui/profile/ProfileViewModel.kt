@@ -12,8 +12,11 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ua.rikutou.studio.data.datasource.DataSourceResponse
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.data.datasource.user.UserDataSource
+import ua.rikutou.studio.data.local.entity.UserEntity
+import ua.rikutou.studio.navigation.Screen
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,12 +45,59 @@ class ProfileViewModel @Inject constructor(
     fun onAction(action: Profile.Action) = viewModelScope.launch {
         when(action) {
             is Profile.Action.OnCheckedChanged -> {
-
+                onChangeUserStudio(user = action.user)
             }
             Profile.Action.OnDeleteAccount -> {
-                userDataSource.loadStudioUsersAndCandidates()
+                deleteAccount()
             }
         }
+    }
+
+    private fun deleteAccount() = viewModelScope.launch {
+        val userId = state.value.user?.userId
+        val studioId = state.value.user?.studioId
+        val isOtherStudioOwnerPresent = studioId != null && state.value.candidatesList
+            .filter { it.studioId != null &&  it.studioId > 0 }
+            .any { it.studioId == studioId }
+
+        if(userId != null && isOtherStudioOwnerPresent) {
+            userDataSource.deleteUserById(userId = userId).collect {
+//                when(it) {
+//                    is DataSourceResponse.Error<*> -> {
+//                        _state.update {
+//                            it.copy(inProgress = false)
+//                        }
+//                    }
+//                    DataSourceResponse.InProgress -> {
+//                        _state.update {
+//                            it.copy(inProgress = true)
+//                        }
+//                    }
+//                    is DataSourceResponse.Success -> {
+//                        _state.update {
+//                            it.copy(inProgress = false)
+//                        }
+//                        _event.emit(Profile.Event.OnNavigate(route = Screen.SignIn))
+//                    }
+//                }
+            }
+            _event.emit(Profile.Event.OnNavigate(route = Screen.SignIn))
+        } else {
+            _event.emit(
+                Profile.Event.OnMessage(
+                    message = "Please transfer yours right first"
+                )
+            )
+        }
+    }
+
+    private fun onChangeUserStudio(user: UserEntity) = viewModelScope.launch {
+        userDataSource.updateUserStudio(
+            user = user.copy(
+                studioId = if(user.studioId != null && user.studioId > 0) -1 else state.value.user?.studioId ?: -1L
+
+            )
+        )
     }
 
     private fun loadUser() {

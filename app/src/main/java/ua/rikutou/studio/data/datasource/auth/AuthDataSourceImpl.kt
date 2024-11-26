@@ -70,14 +70,20 @@ class AuthDataSourceImpl(
             when {
                 isSuccessful -> {
                     body()?.let {
-                        profileDataSource.setUser(
-                            UserEntity(
-                                userId = it.userId ?: -1L,
-                                name = it.userName ?: "",
-                                studioId = it.studioId
+                        if(it.userId != null && it.studioId != null) {
+                            profileDataSource.setUser(
+                                UserEntity(
+                                    userId = it.userId ?: -1L,
+                                    name = it.userName ?: "",
+                                    studioId = it.studioId
+                                )
                             )
-                        )
-                        emit(DataSourceResponse.Success())
+                            emit(DataSourceResponse.Success())
+                        } else {
+                            tokenDataSource.setToken(null)
+                            profileDataSource.setUser(null)
+                            emit(DataSourceResponse.Error<Nothing>())
+                        }
                     }
                 }
                 else -> {

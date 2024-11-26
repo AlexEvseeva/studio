@@ -1,5 +1,7 @@
 package ua.rikutou.studio.ui.profile
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,8 +13,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,12 +27,30 @@ import ua.rikutou.studio.ui.components.ElementContent
 import ua.rikutou.studio.ui.components.ElementTitle
 import ua.rikutou.studio.ui.components.UserItem
 
+private const val TAG = "ProfileScreen"
+
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel,
     navController: NavController
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.event.collect { event ->
+            when(event) {
+                is Profile.Event.OnNavigate -> {
+                    Log.d(TAG, "ProfileScreen: naviage: ${event.route}")
+                    navController.navigate(event.route)
+                }
+
+                is Profile.Event.OnMessage -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
 
     ProfileScreenContent(
         state = state,

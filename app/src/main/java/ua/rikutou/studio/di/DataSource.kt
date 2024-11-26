@@ -61,10 +61,12 @@ object DataSource {
     fun provideUserDataSource(
         userApi: UserApi,
         dbDataSource: DbDataSource,
+        tokenDataSource: TokenDataSource,
         @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
     ): UserDataSource = UserDataSourceImpl(
         userApi = userApi,
         dbDataSource = dbDataSource,
+        tokenDataSource = tokenDataSource,
         dbDeliveryDispatcher= dbDeliveryDispatcher
     )
 

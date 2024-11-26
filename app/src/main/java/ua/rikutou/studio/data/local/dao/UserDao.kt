@@ -18,6 +18,4 @@ interface UserDao {
     @Query("SELECT * FROM userentity")
     fun getAll(): Flow<List<UserEntity>>
 
-
-
 }

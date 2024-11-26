@@ -1,10 +1,12 @@
 package ua.rikutou.studio.ui.profile
 
 import ua.rikutou.studio.data.local.entity.UserEntity
+import ua.rikutou.studio.navigation.Screen
 
 object Profile {
     sealed interface Event {
-
+        data class OnNavigate(val route: Screen) : Event
+        data class OnMessage(val message: String) : Event
     }
 
     sealed interface Action {
