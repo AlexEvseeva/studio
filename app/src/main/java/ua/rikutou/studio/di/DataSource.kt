@@ -14,6 +14,8 @@ import ua.rikutou.studio.data.local.DbDataSourceImpl
 import ua.rikutou.studio.data.remote.auth.AuthApi
 import ua.rikutou.studio.data.datasource.auth.AuthDataSource
 import ua.rikutou.studio.data.datasource.auth.AuthDataSourceImpl
+import ua.rikutou.studio.data.datasource.execute.ExecuteDataSource
+import ua.rikutou.studio.data.datasource.execute.ExecuteDataSourceImpl
 import ua.rikutou.studio.data.datasource.location.LocationDataSource
 import ua.rikutou.studio.data.datasource.location.LocationDataSourceImpl
 import ua.rikutou.studio.data.datasource.studio.StudioDataSource
@@ -24,6 +26,7 @@ import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSourceImpl
 import ua.rikutou.studio.data.datasource.user.UserDataSource
 import ua.rikutou.studio.data.datasource.user.UserDataSourceImpl
+import ua.rikutou.studio.data.remote.execute.ExecuteApi
 import ua.rikutou.studio.data.remote.location.LocationApi
 import ua.rikutou.studio.data.remote.studio.StudioApi
 import ua.rikutou.studio.data.remote.user.UserApi
@@ -104,5 +107,12 @@ object DataSource {
         locationApi = locationApi,
         dbDataSource = dbDataSource,
         dbDeliveryDispatcher = dbDeliveryDispatcher
+    )
+
+    @Provides
+    fun provideExecuteDataSource(
+        executeApi: ExecuteApi
+    ): ExecuteDataSource = ExecuteDataSourceImpl(
+        executeApi = executeApi
     )
 }

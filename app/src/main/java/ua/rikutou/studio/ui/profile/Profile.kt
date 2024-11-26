@@ -12,6 +12,7 @@ object Profile {
     sealed interface Action {
         data class OnCheckedChanged(val user: UserEntity) : Action
         data object OnDeleteAccount : Action
+        data object OnExecute : Action
     }
 
     data class State(

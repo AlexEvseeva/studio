@@ -50,6 +50,10 @@ class ProfileViewModel @Inject constructor(
             Profile.Action.OnDeleteAccount -> {
                 deleteAccount()
             }
+
+            Profile.Action.OnExecute -> {
+                _event.emit(Profile.Event.OnNavigate(route = Screen.Execute))
+            }
         }
     }
 

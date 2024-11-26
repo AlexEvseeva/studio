@@ -12,6 +12,7 @@ import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import ua.rikutou.studio.ui.execute.ExecuteScreen
 import ua.rikutou.studio.ui.location.list.LocationListScreen
 import ua.rikutou.studio.ui.studio.main.MainScreen
 import ua.rikutou.studio.ui.signin.SignInScreen
@@ -49,5 +50,12 @@ fun NavGraph(
         actorGraph(navController = navController)
 
         profileGraph(navController = navController)
+
+        composable<Screen.Execute> {
+            ExecuteScreen(
+                viewModel = hiltViewModel(),
+                navController = navController
+            )
+        }
     }
 }

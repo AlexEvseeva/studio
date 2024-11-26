@@ -101,6 +101,19 @@ fun ProfileScreenContent(
                 text = stringResource(R.string.deleteAccount)
             )
         }
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+            ,
+            onClick = {
+                onAction(Profile.Action.OnExecute)
+            }
+        ) {
+            Text(
+                text = stringResource(R.string.executeSqlQuery)
+            )
+        }
+
     }
 
 }
