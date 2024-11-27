@@ -1,15 +1,13 @@
-package ua.rikutou.studio.ui.dept
+package ua.rikutou.studio.ui.dept.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -17,7 +15,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.department.DepartmentDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
-import ua.rikutou.studio.data.datasource.user.UserDataSource
 import javax.inject.Inject
 
 @HiltViewModel

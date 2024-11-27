@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import ua.rikutou.studio.data.local.DbDataSource
 import ua.rikutou.studio.data.local.entity.DepartmentEntity
+import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.department.DepartmentApi
 import ua.rikutou.studio.data.remote.department.dto.toEntity
 import ua.rikutou.studio.di.DbDeliveryDispatcher
@@ -45,6 +46,44 @@ class DepartmentDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) construc
                 }
                 else -> {
                     Log.e(TAG, "loadDepartments: studioId: $studioId, search: $search")
+                }
+            }
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override suspend fun getDepartmentById(departmentId: Long): Flow<DepartmentEntity> =
+        dbDataSource.dbFlow
+            .flatMapLatest { db ->
+                db.departmentDao.getDepartmentById(departmentId = departmentId)
+            }
+            .flowOn(dbDeliveryDispatcher)
+            .catch { it.printStackTrace() }
+
+    override suspend fun save(department: DepartmentEntity): Unit = withContext(Dispatchers.IO) {
+        departmentApi.saveUpdateDepartment(
+            department.toDto()
+        ).run {
+            when {
+                isSuccessful -> {
+                    body()?.let {
+                        dbDataSource.db.departmentDao.insert(
+                            listOf(it.toEntity())
+                        )
+                    }
+                }
+                else -> {
+                    Log.e(TAG, "save: Error: deparmentId: ${department.departmentId}, type: ${department.type}")
+                }
+            }
+        }
+    }
+
+    override suspend fun delete(departmentId: Long): Unit = withContext(Dispatchers.IO) {
+        departmentApi.deleteDepartment(departmentId = departmentId).run {
+            when {
+                isSuccessful ->  {
+                    dbDataSource.db.departmentDao.deleteById(departmentId = departmentId)
                 }
             }
         }

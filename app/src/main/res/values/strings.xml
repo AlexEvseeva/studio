@@ -15,4 +15,8 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="departmentTitle">Departments</string>
+    <string name="typeLabel">Type</string>
+    <string name="addressLabel">Address</string>
+    <string name="workHoursLabel">Work hours</string>
+    <string name="contectPersonLabel">Contect person</string>
 </resources>

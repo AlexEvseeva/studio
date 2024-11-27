@@ -1,4 +1,4 @@
-package ua.rikutou.studio.ui.dept
+package ua.rikutou.studio.ui.dept.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,7 +19,6 @@ import ua.rikutou.studio.R
 import ua.rikutou.studio.navigation.Screen
 import ua.rikutou.studio.ui.components.ElementTitle
 import ua.rikutou.studio.ui.components.Item
-import ua.rikutou.studio.ui.location.list.LocationList
 
 @Composable
 fun DepartmentListScreen(
@@ -31,7 +30,9 @@ fun DepartmentListScreen(
     LaunchedEffect(key1 = Unit) {
         viewModel.event.collect { event ->
             when(event) {
-                is Department.Event.OnNavigate -> TODO()
+                is Department.Event.OnNavigate -> {
+                    navController.navigate(event.destionation)
+                }
             }
         }
     }

@@ -1,4 +1,4 @@
-package ua.rikutou.studio.ui.dept
+package ua.rikutou.studio.ui.dept.list
 
 import ua.rikutou.studio.data.local.entity.DepartmentEntity
 import ua.rikutou.studio.navigation.Screen
