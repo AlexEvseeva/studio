@@ -62,7 +62,9 @@ class DepartmentDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) construc
 
     override suspend fun save(department: DepartmentEntity): Unit = withContext(Dispatchers.IO) {
         departmentApi.saveUpdateDepartment(
-            department.toDto()
+            department.toDto().copy(
+                departmentId = if(department.departmentId > 0) department.departmentId else null
+            )
         ).run {
             when {
                 isSuccessful -> {

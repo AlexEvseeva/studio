@@ -103,7 +103,7 @@ fun DepartmentDetailsScreenContent(
                         onAction(
                             DepartmentDetails.Action.OnNavigate(
                                 destination = Screen.Department.Edit(
-                                    departmentId = state.department?.studioId
+                                    departmentId = state.department?.departmentId
                                 )
                             )
                         )
