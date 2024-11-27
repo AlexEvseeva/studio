@@ -14,6 +14,8 @@ import ua.rikutou.studio.data.local.DbDataSourceImpl
 import ua.rikutou.studio.data.remote.auth.AuthApi
 import ua.rikutou.studio.data.datasource.auth.AuthDataSource
 import ua.rikutou.studio.data.datasource.auth.AuthDataSourceImpl
+import ua.rikutou.studio.data.datasource.department.DepartmentDataSource
+import ua.rikutou.studio.data.datasource.department.DepartmentDataSourceImpl
 import ua.rikutou.studio.data.datasource.execute.ExecuteDataSource
 import ua.rikutou.studio.data.datasource.execute.ExecuteDataSourceImpl
 import ua.rikutou.studio.data.datasource.location.LocationDataSource
@@ -26,6 +28,7 @@ import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSourceImpl
 import ua.rikutou.studio.data.datasource.user.UserDataSource
 import ua.rikutou.studio.data.datasource.user.UserDataSourceImpl
+import ua.rikutou.studio.data.remote.department.DepartmentApi
 import ua.rikutou.studio.data.remote.execute.ExecuteApi
 import ua.rikutou.studio.data.remote.location.LocationApi
 import ua.rikutou.studio.data.remote.studio.StudioApi
@@ -114,5 +117,16 @@ object DataSource {
         executeApi: ExecuteApi
     ): ExecuteDataSource = ExecuteDataSourceImpl(
         executeApi = executeApi
+    )
+
+    @Provides
+    fun provideDepartmentDataSource(
+        departmentApi: DepartmentApi,
+        dbDataSource: DbDataSource,
+        @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
+    ): DepartmentDataSource = DepartmentDataSourceImpl(
+        departmentApi = departmentApi,
+        dbDataSource = dbDataSource,
+        dbDeliveryDispatcher = dbDeliveryDispatcher
     )
 }

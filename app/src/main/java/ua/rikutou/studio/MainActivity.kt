@@ -116,11 +116,12 @@ data class TopLevelRoute<T: Any> (
 )
 
 val topLevelRoutes = listOf(
-    TopLevelRoute(name = "Studio", destination = NestedGraph.Studio, icon = R.drawable.studio),
-    TopLevelRoute(name = "Locations", destination = NestedGraph.Location, icon = R.drawable.location),
-    TopLevelRoute(name = "Equipment", destination = NestedGraph.Equipment, icon = R.drawable.camera),
-    TopLevelRoute(name = "Actors", destination = NestedGraph.Actor, icon = R.drawable.actors),
-    TopLevelRoute(name = "Profile", destination = NestedGraph.Profile,icon = R.drawable.profile)
+    TopLevelRoute(name = "Stud", destination = NestedGraph.Studio, icon = R.drawable.studio),
+    TopLevelRoute(name = "Loc", destination = NestedGraph.Location, icon = R.drawable.location),
+    TopLevelRoute(name = "Equ", destination = NestedGraph.Equipment, icon = R.drawable.camera),
+    TopLevelRoute(name = "Dept", destination = NestedGraph.Department, icon = R.drawable.department),
+    TopLevelRoute(name = "Act", destination = NestedGraph.Actor, icon = R.drawable.actors),
+    TopLevelRoute(name = "Pro", destination = NestedGraph.Profile,icon = R.drawable.profile)
 )
 
 private fun showBottomNavigation(navDestination: NavDestination?): Boolean =

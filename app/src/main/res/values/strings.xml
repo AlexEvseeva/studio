@@ -14,4 +14,5 @@
     <string name="deleteMessage">Are your shure?</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="departmentTitle">Departments</string>
 </resources>

@@ -51,6 +51,8 @@ fun NavGraph(
 
         profileGraph(navController = navController)
 
+        departmentGraph(navController = navController)
+
         composable<Screen.Execute> {
             ExecuteScreen(
                 viewModel = hiltViewModel(),

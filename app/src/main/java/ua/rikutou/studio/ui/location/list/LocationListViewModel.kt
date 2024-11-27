@@ -107,13 +107,6 @@ class LocationListViewModel
                     )
                 }
             }.collect {}
-
-//            locationDataSource.getLocationsByStudioId(studioId = studioId)
-//                .collect { list ->
-//                    _state.update {
-//                        it.copy(locations = list)
-//                    }
-//                }
         }
     }
 }

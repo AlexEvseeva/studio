@@ -89,7 +89,6 @@ fun LocationDetailsScreenContent(
                 modifier = Modifier.fillMaxWidth(),
                 onOk = {
                     onAction(LocationDetails.Action.OnDelete)
-                    Log.d(TAG, "LocationDetailsScreenContent: delete...")
                     coroutineScope.launch {
                         bottomSheetState.bottomSheetState.hide()
                     }

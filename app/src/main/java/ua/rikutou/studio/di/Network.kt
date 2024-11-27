@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import ua.rikutou.studio.data.remote.auth.AuthApi
+import ua.rikutou.studio.data.remote.department.DepartmentApi
 import ua.rikutou.studio.data.remote.execute.ExecuteApi
 import ua.rikutou.studio.data.remote.location.LocationApi
 import ua.rikutou.studio.data.remote.studio.StudioApi
@@ -28,4 +29,7 @@ object Network {
 
     @Provides
     fun provideExecuteApi(retrofit: Retrofit): ExecuteApi = retrofit.create(ExecuteApi::class.java)
+
+    @Provides
+    fun provideDepartmentApi(retrofit: Retrofit): DepartmentApi = retrofit.create(DepartmentApi::class.java)
 }
