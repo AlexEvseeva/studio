@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.department.DepartmentDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
+import ua.rikutou.studio.data.local.entity.Department
 import ua.rikutou.studio.data.local.entity.DepartmentEntity
 import ua.rikutou.studio.navigation.Screen
 import javax.inject.Inject
@@ -43,24 +44,42 @@ class DepartmentEditViewModel @Inject constructor(
         when(action) {
             is DepartmentEdit.Action.OnFieldChanged -> {
                 action.type?.let { type ->
-                    _state.update { s ->
-                        s.copy(
-                           department = s.department?.copy(type = type)
-                        )
+                    _state.value.department?.let { dept ->
+                        _state.update {
+                            it.copy(
+                                department = dept.copy(
+                                    entity = dept.entity.copy(
+                                        type = type
+                                    )
+                                )
+                            )
+                        }
                     }
                 }
                 action.workHours?.let { wh ->
-                    _state.update { s ->
-                        s.copy(
-                            department = s.department?.copy(workHours = wh)
-                        )
+                    _state.value.department?.let { dept ->
+                        _state.update {
+                            it.copy(
+                                department = dept.copy(
+                                    entity = dept.entity.copy(
+                                        workHours = wh
+                                    )
+                                )
+                            )
+                        }
                     }
                 }
                 action.contactPerson?.let { cp ->
-                    _state.update { s ->
-                        s.copy(
-                            department = s.department?.copy(contactPerson = cp)
-                        )
+                    _state.value.department?.let { dept ->
+                        _state.update {
+                            it.copy(
+                                department = dept.copy(
+                                    entity = dept.entity.copy(
+                                        contactPerson = cp
+                                    )
+                                )
+                            )
+                        }
                     }
                 }
 
@@ -79,12 +98,15 @@ class DepartmentEditViewModel @Inject constructor(
         } ?: run {
             _state.update {
                 it.copy(
-                    department = DepartmentEntity(
-                        departmentId = -1,
-                        type = "",
-                        workHours = "",
-                        contactPerson = "",
-                        studioId = profileDataSource.user?.studioId ?: -1,
+                    department = Department(
+                        entity = DepartmentEntity(
+                            departmentId = -1,
+                            type = "",
+                            workHours = "",
+                            contactPerson = "",
+                            studioId = profileDataSource.user?.studioId ?: -1,
+                        ),
+                        sections = emptyList()
                     )
                 )
             }
@@ -92,14 +114,14 @@ class DepartmentEditViewModel @Inject constructor(
     }
 
     private fun onSave() = viewModelScope.launch(Dispatchers.IO) {
-        if(_state.value.department?.type?.isEmpty() == true
-            || _state.value.department?.workHours?.isEmpty() == true
-            || _state.value.department?.contactPerson?.isEmpty() == true) {
+        if(_state.value.department?.entity?.type?.isEmpty() == true
+            || _state.value.department?.entity?.workHours?.isEmpty() == true
+            || _state.value.department?.entity?.contactPerson?.isEmpty() == true) {
             return@launch
         }
 
         _state.value.department?.let {
-            departmentDataSource.save(department = it)
+            departmentDataSource.save(department = it.entity)
             _event.emit(DepartmentEdit.Event.OnBack)
         }
     }

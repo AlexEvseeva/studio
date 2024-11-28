@@ -101,10 +101,10 @@ class DepartmentListViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         departments = if(search.isEmpty()) {
-                            list
+                            list.map { it.entity }
                         } else {
-                            list.filter { dept ->
-                                dept.type.contains(search, ignoreCase = true)
+                            list.map { it.entity }.filter { deptEntity ->
+                                deptEntity.type.contains(search, ignoreCase = true)
                             }
                         }
                     )

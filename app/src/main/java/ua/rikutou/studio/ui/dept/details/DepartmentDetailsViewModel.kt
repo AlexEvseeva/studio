@@ -56,7 +56,7 @@ class DepartmentDetailsViewModel @Inject constructor(
     }
 
     private fun delete() = viewModelScope.launch {
-        state.value.department?.departmentId?.let {
+        state.value.department?.entity?.departmentId?.let {
             departmentDataSource.delete(departmentId = it)
         }
         _event.emit(DepartmentDetails.Event.OnNavigate())

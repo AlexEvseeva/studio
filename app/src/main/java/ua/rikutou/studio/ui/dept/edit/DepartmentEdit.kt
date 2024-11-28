@@ -1,5 +1,6 @@
 package ua.rikutou.studio.ui.dept.edit
 
+import ua.rikutou.studio.data.local.entity.Department
 import ua.rikutou.studio.data.local.entity.DepartmentEntity
 
 object DepartmentEdit {
@@ -18,6 +19,6 @@ object DepartmentEdit {
 
     data class State (
         val inProgress: Boolean = false,
-        val department: DepartmentEntity? = null,
+        val department: Department? = null,
     )
 }

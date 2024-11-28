@@ -10,10 +10,12 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import ua.rikutou.studio.data.local.DbDataSource
+import ua.rikutou.studio.data.local.entity.Department
 import ua.rikutou.studio.data.local.entity.DepartmentEntity
 import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.department.DepartmentApi
 import ua.rikutou.studio.data.remote.department.dto.toEntity
+import ua.rikutou.studio.data.remote.section.dto.toEntity
 import ua.rikutou.studio.di.DbDeliveryDispatcher
 
 class DepartmentDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructor(
@@ -24,7 +26,7 @@ class DepartmentDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) construc
     private val TAG by lazy { DepartmentDataSourceImpl::class.simpleName }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun getAllDepartments(studioId: Long): Flow<List<DepartmentEntity>> =
+    override suspend fun getAllDepartments(studioId: Long): Flow<List<Department>> =
         dbDataSource.dbFlow
             .flatMapLatest { db ->
                 db.departmentDao.getAll(studioId = studioId)
@@ -43,6 +45,11 @@ class DepartmentDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) construc
                             it.toEntity()
                         } ?: emptyList()
                     )
+                    body()?.mapNotNull { it.sections }
+                        ?.forEach {
+                            dbDataSource.db.sectionDao
+                                .insert( it.map { it.toEntity() } )
+                        }
                 }
                 else -> {
                     Log.e(TAG, "loadDepartments: studioId: $studioId, search: $search")
@@ -52,7 +59,7 @@ class DepartmentDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) construc
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun getDepartmentById(departmentId: Long): Flow<DepartmentEntity> =
+    override suspend fun getDepartmentById(departmentId: Long): Flow<Department> =
         dbDataSource.dbFlow
             .flatMapLatest { db ->
                 db.departmentDao.getDepartmentById(departmentId = departmentId)

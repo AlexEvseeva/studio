@@ -1,5 +1,6 @@
 package ua.rikutou.studio.ui.dept.details
 
+import ua.rikutou.studio.data.local.entity.Department
 import ua.rikutou.studio.data.local.entity.DepartmentEntity
 import ua.rikutou.studio.data.local.entity.Location
 import ua.rikutou.studio.navigation.Screen
@@ -16,6 +17,6 @@ object DepartmentDetails {
 
     data class State (
         val inProgress: Boolean = false,
-        val department: DepartmentEntity? = null
+        val department: Department? = null
     )
 }

@@ -97,22 +97,22 @@ fun DepartmentDetailsScreenContent(
             ) {
                 ElementTitle(
                     modifier = Modifier,
-                    title = state.department?.type ?: "",
+                    title = state.department?.entity?.type ?: "",
                     isEditEnabled = true,
                     onEdit = {
                         onAction(
                             DepartmentDetails.Action.OnNavigate(
                                 destination = Screen.Department.Edit(
-                                    departmentId = state.department?.departmentId
+                                    departmentId = state.department?.entity?.departmentId
                                 )
                             )
                         )
                     }
                 )
 
-                ElementContent(label = stringResource(R.string.typeLabel), name = state.department?.type ?: "")
-                ElementContent(label = stringResource(R.string.workHoursLabel), name = state.department?.workHours ?: "")
-                ElementContent(label = stringResource(R.string.contectPersonLabel), name = state.department?.contactPerson ?: "")
+                ElementContent(label = stringResource(R.string.typeLabel), name = state.department?.entity?.type ?: "")
+                ElementContent(label = stringResource(R.string.workHoursLabel), name = state.department?.entity?.workHours ?: "")
+                ElementContent(label = stringResource(R.string.contectPersonLabel), name = state.department?.entity?.contactPerson ?: "")
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()

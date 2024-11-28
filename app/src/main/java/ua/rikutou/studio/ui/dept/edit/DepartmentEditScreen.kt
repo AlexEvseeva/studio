@@ -59,14 +59,14 @@ private fun DepartmentEditScreenContent(
             .padding(horizontal = 8.dp)
     ) {
         ElementTitle(
-            title = state.department?.type ?: "",
+            title = state.department?.entity?.type ?: "",
             isEditActive = true,
         )
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            value = state.department?.type ?: "",
+            value = state.department?.entity?.type ?: "",
             onValueChange = {
                 onAction(DepartmentEdit.Action.OnFieldChanged(type = it))
             },
@@ -78,7 +78,7 @@ private fun DepartmentEditScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            value = state.department?.workHours ?: "",
+            value = state.department?.entity?.workHours ?: "",
             onValueChange = {
                 onAction(DepartmentEdit.Action.OnFieldChanged(workHours = it))
             },
@@ -90,7 +90,7 @@ private fun DepartmentEditScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            value = state.department?.contactPerson ?: "",
+            value = state.department?.entity?.contactPerson ?: "",
             onValueChange = {
                 onAction(DepartmentEdit.Action.OnFieldChanged(contactPerson = it))
             },
