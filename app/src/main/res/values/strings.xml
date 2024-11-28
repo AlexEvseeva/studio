@@ -23,4 +23,5 @@
     <string name="titleLabel">Title</string>
     <string name="internalPhoneNumberLabel">Internal phone number</string>
     <string name="departmentLabel">Department</string>
+    <string name="addSection">Add section</string>
 </resources>

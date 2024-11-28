@@ -12,6 +12,7 @@ import kotlinx.coroutines.withContext
 import ua.rikutou.studio.data.local.DbDataSource
 import ua.rikutou.studio.data.local.entity.Department
 import ua.rikutou.studio.data.local.entity.DepartmentEntity
+import ua.rikutou.studio.data.local.entity.SectionEntity
 import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.department.DepartmentApi
 import ua.rikutou.studio.data.remote.department.dto.toEntity
@@ -45,11 +46,11 @@ class DepartmentDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) construc
                             it.toEntity()
                         } ?: emptyList()
                     )
-                    body()?.mapNotNull { it.sections }
-                        ?.forEach {
-                            dbDataSource.db.sectionDao
-                                .insert( it.map { it.toEntity() } )
-                        }
+                    dbDataSource.db.sectionDao.syncInsert(
+                        body()
+                            ?.mapNotNull { it.sections }
+                            ?.flatten()?.map { it.toEntity() } ?: emptyList<SectionEntity>()
+                    )
                 }
                 else -> {
                     Log.e(TAG, "loadDepartments: studioId: $studioId, search: $search")

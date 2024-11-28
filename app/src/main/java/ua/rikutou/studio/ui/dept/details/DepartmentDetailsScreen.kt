@@ -161,6 +161,19 @@ fun DepartmentDetailsScreenContent(
                     modifier = Modifier
                         .fillMaxWidth(),
                     onClick = {
+                        onAction(
+                            DepartmentDetails.Action.OnNavigate(
+                                destination = Screen.Section.Edit()
+                            )
+                        )
+                    }
+                ) {
+                    Text(text = stringResource(R.string.addSection))
+                }
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    onClick = {
                         coroutineScope.launch {
                             bottomSheetState.bottomSheetState.expand()
                         }

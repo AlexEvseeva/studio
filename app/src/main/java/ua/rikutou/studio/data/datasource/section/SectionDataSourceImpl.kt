@@ -33,16 +33,12 @@ class SectionDataSourceImpl(
             .catch { it.printStackTrace() }
 
     override suspend fun deleteSectionById(sectionId: Long): Unit = withContext(Dispatchers.IO) {
-        sectionApi.deleteSectionById(sectionId = sectionId).run {
-            when {
-                isSuccessful -> {
-                    dbDataSource.db.sectionDao.deleteById(sectionId)
-                }
-                else -> {
-                    Log.e(TAG, "deleteSectionById: Error: $sectionId")
-                }
+        try {
+            sectionApi.deleteSectionById(sectionId = sectionId).run {
+                dbDataSource.db.sectionDao.deleteById(sectionId)
             }
-
+        } catch (ex: Exception) {
+            ex.printStackTrace()
         }
     }
 

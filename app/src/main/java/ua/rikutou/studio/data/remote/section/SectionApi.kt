@@ -17,6 +17,6 @@ interface SectionApi {
     @DELETE("sections/{sectionId}")
     suspend fun deleteSectionById(
         @Path("sectionId") sectionId: Long
-    ): Response<Nothing>
+    ): Response<String>
 
 }

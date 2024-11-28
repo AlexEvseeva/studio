@@ -56,7 +56,7 @@ class SectionEditViewModel @Inject constructor(
                     }
                 }
 
-                action.title?.let { act ->
+                action.address?.let { act ->
                     _state.update { s ->
                         s.copy(
                             section = s.section?.copy(
