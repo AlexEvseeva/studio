@@ -19,4 +19,7 @@
     <string name="addressLabel">Address</string>
     <string name="workHoursLabel">Work hours</string>
     <string name="contectPersonLabel">Contect person</string>
+    <string name="sections">Sections</string>
+    <string name="titleLabel">Title</string>
+    <string name="internalPhoneNumberLabel">Internal phone number</string>
 </resources>

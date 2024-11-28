@@ -26,11 +26,14 @@ import ua.rikutou.studio.data.datasource.token.TokenDataSource
 import ua.rikutou.studio.data.datasource.token.TokenDataSourceImpl
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSourceImpl
+import ua.rikutou.studio.data.datasource.section.SectionDataSource
+import ua.rikutou.studio.data.datasource.section.SectionDataSourceImpl
 import ua.rikutou.studio.data.datasource.user.UserDataSource
 import ua.rikutou.studio.data.datasource.user.UserDataSourceImpl
 import ua.rikutou.studio.data.remote.department.DepartmentApi
 import ua.rikutou.studio.data.remote.execute.ExecuteApi
 import ua.rikutou.studio.data.remote.location.LocationApi
+import ua.rikutou.studio.data.remote.section.SectionApi
 import ua.rikutou.studio.data.remote.studio.StudioApi
 import ua.rikutou.studio.data.remote.user.UserApi
 import javax.inject.Singleton
@@ -126,6 +129,17 @@ object DataSource {
         @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
     ): DepartmentDataSource = DepartmentDataSourceImpl(
         departmentApi = departmentApi,
+        dbDataSource = dbDataSource,
+        dbDeliveryDispatcher = dbDeliveryDispatcher
+    )
+
+    @Provides
+    fun provideSectionDataSource(
+        sectionApi: SectionApi,
+        dbDataSource: DbDataSource,
+        @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
+    ): SectionDataSource = SectionDataSourceImpl(
+        sectionApi = sectionApi,
         dbDataSource = dbDataSource,
         dbDeliveryDispatcher = dbDeliveryDispatcher
     )

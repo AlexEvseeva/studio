@@ -23,6 +23,10 @@ sealed class Screen {
         @Serializable data class Details(val departmentId: Long) : Department()
         @Serializable data class Edit(val departmentId: Long? = null) : Department()
     }
+    @Serializable sealed class Section : Screen() {
+        @Serializable data class Details(val sectionId: Long) : Section()
+        @Serializable data class Edit(val sectionId: Long? = null) : Section()
+    }
     @Serializable data object Equipment : Screen()
     @Serializable data object Actor : Screen()
     @Serializable data object Profile : Screen()

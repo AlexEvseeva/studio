@@ -9,6 +9,7 @@ import ua.rikutou.studio.data.remote.auth.AuthApi
 import ua.rikutou.studio.data.remote.department.DepartmentApi
 import ua.rikutou.studio.data.remote.execute.ExecuteApi
 import ua.rikutou.studio.data.remote.location.LocationApi
+import ua.rikutou.studio.data.remote.section.SectionApi
 import ua.rikutou.studio.data.remote.studio.StudioApi
 import ua.rikutou.studio.data.remote.user.UserApi
 
@@ -32,4 +33,7 @@ object Network {
 
     @Provides
     fun provideDepartmentApi(retrofit: Retrofit): DepartmentApi = retrofit.create(DepartmentApi::class.java)
+
+    @Provides
+    fun provideSectionApi(retrofit: Retrofit): SectionApi = retrofit.create(SectionApi::class.java)
 }

@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import ua.rikutou.studio.ui.execute.ExecuteScreen
 import ua.rikutou.studio.ui.location.list.LocationListScreen
+import ua.rikutou.studio.ui.section.details.SectionDetailsScreen
 import ua.rikutou.studio.ui.studio.main.MainScreen
 import ua.rikutou.studio.ui.signin.SignInScreen
 import ua.rikutou.studio.ui.signup.SignUpScreen
@@ -53,11 +54,21 @@ fun NavGraph(
 
         departmentGraph(navController = navController)
 
+//        sectionGraph(navController = navController)
+
+        composable<Screen.Section.Details> {
+            SectionDetailsScreen(
+                viewModel = hiltViewModel(),
+                navController = navController
+            )
+        }
+
         composable<Screen.Execute> {
             ExecuteScreen(
                 viewModel = hiltViewModel(),
                 navController = navController
             )
         }
+
     }
 }
