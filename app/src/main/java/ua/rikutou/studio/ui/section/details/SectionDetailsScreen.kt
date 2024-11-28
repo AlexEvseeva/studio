@@ -108,8 +108,8 @@ fun SectionDetailsScreenContent(
                     onEdit = {
                         onAction(
                             SectionDetails.Action.OnNavigate(
-                                destination = Screen.Location.Edit(
-                                    locationId = state.section?.sectionId
+                                destination = Screen.Section.Edit(
+                                    sectionId = state.section?.sectionId
                                 )
                             )
                         )
