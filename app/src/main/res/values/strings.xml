@@ -24,4 +24,5 @@
     <string name="internalPhoneNumberLabel">Internal phone number</string>
     <string name="departmentLabel">Department</string>
     <string name="addSection">Add section</string>
+    <string name="equipmentScreenTitle">Equipment</string>
 </resources>

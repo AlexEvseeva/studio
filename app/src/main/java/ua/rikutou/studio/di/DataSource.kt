@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package ua.rikutou.studio.di
 
 import android.content.Context
@@ -16,6 +18,8 @@ import ua.rikutou.studio.data.datasource.auth.AuthDataSource
 import ua.rikutou.studio.data.datasource.auth.AuthDataSourceImpl
 import ua.rikutou.studio.data.datasource.department.DepartmentDataSource
 import ua.rikutou.studio.data.datasource.department.DepartmentDataSourceImpl
+import ua.rikutou.studio.data.datasource.equipment.EquipmentDataSource
+import ua.rikutou.studio.data.datasource.equipment.EquipmentDataSourceImpl
 import ua.rikutou.studio.data.datasource.execute.ExecuteDataSource
 import ua.rikutou.studio.data.datasource.execute.ExecuteDataSourceImpl
 import ua.rikutou.studio.data.datasource.location.LocationDataSource
@@ -31,6 +35,7 @@ import ua.rikutou.studio.data.datasource.section.SectionDataSourceImpl
 import ua.rikutou.studio.data.datasource.user.UserDataSource
 import ua.rikutou.studio.data.datasource.user.UserDataSourceImpl
 import ua.rikutou.studio.data.remote.department.DepartmentApi
+import ua.rikutou.studio.data.remote.equipment.EquipmentApi
 import ua.rikutou.studio.data.remote.execute.ExecuteApi
 import ua.rikutou.studio.data.remote.location.LocationApi
 import ua.rikutou.studio.data.remote.section.SectionApi
@@ -140,6 +145,17 @@ object DataSource {
         @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
     ): SectionDataSource = SectionDataSourceImpl(
         sectionApi = sectionApi,
+        dbDataSource = dbDataSource,
+        dbDeliveryDispatcher = dbDeliveryDispatcher
+    )
+
+    @Provides
+    fun provideEquipmentDataSource(
+        equipmentApi: EquipmentApi,
+        dbDataSource: DbDataSource,
+        @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
+    ): EquipmentDataSource = EquipmentDataSourceImpl(
+        equipmentApi = equipmentApi,
         dbDataSource = dbDataSource,
         dbDeliveryDispatcher = dbDeliveryDispatcher
     )

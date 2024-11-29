@@ -3,6 +3,7 @@ package ua.rikutou.studio.data.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import ua.rikutou.studio.data.local.dao.DepartmentDao
+import ua.rikutou.studio.data.local.dao.EquipmentDao
 import ua.rikutou.studio.data.local.dao.GalleryDao
 import ua.rikutou.studio.data.local.dao.LocationDao
 import ua.rikutou.studio.data.local.dao.LocationToGalleryDao
@@ -10,6 +11,7 @@ import ua.rikutou.studio.data.local.dao.SectionDao
 import ua.rikutou.studio.data.local.dao.StudioDao
 import ua.rikutou.studio.data.local.dao.UserDao
 import ua.rikutou.studio.data.local.entity.DepartmentEntity
+import ua.rikutou.studio.data.local.entity.EquipmentEntity
 import ua.rikutou.studio.data.local.entity.GalleryEntity
 import ua.rikutou.studio.data.local.entity.LocationEntity
 import ua.rikutou.studio.data.local.entity.LocationToGalleryEntity
@@ -25,9 +27,10 @@ import ua.rikutou.studio.data.local.entity.UserEntity
         GalleryEntity::class,
         LocationToGalleryEntity::class,
         DepartmentEntity::class,
-        SectionEntity::class
+        SectionEntity::class,
+        EquipmentEntity::class
     ],
-    version = 5,
+    version = 6,
 )
 abstract class AppDb : RoomDatabase() {
     abstract val userDao: UserDao
@@ -37,4 +40,5 @@ abstract class AppDb : RoomDatabase() {
     abstract val locationToGalleryDao: LocationToGalleryDao
     abstract val departmentDao: DepartmentDao
     abstract val sectionDao: SectionDao
+    abstract val equipmentDao: EquipmentDao
 }
