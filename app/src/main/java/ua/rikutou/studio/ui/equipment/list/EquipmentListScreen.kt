@@ -72,8 +72,8 @@ private fun EquipmentListScreenContent(
             onAdd = {
                 onAction(
                     EquipmentList.Action.OnNavigate(
-                        destionation = Screen.Location.Edit(
-                            locationId = null
+                        destionation = Screen.Equipment.Edit(
+                            equipmentId = null
                         )
                     )
                 )
