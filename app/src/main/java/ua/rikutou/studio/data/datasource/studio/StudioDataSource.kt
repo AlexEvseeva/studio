@@ -8,4 +8,5 @@ interface StudioDataSource {
     suspend fun getStudioById(studioId: Long): Flow<StudioEntity?>
     suspend fun loadStudioById(studioId: Long)
     suspend fun createUpdateStudio(studio: StudioEntity): Flow<DataSourceResponse<StudioEntity>>
+    suspend fun deleteStudio(studioId: Long): Flow<DataSourceResponse<Any>>
 }

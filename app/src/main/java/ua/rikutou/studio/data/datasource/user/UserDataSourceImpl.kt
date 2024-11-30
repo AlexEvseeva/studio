@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ua.rikutou.studio.data.datasource.DataSourceResponse
 import ua.rikutou.studio.data.datasource.token.TokenDataSource
 import ua.rikutou.studio.data.local.DbDataSource
@@ -107,5 +108,9 @@ class UserDataSourceImpl(
             
         }
 
+    }
+
+    override suspend fun clearDb(): Unit = withContext(Dispatchers.IO){
+        dbDataSource.db.clearAllTables()
     }
 }

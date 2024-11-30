@@ -9,4 +9,5 @@ interface UserDataSource {
     suspend fun loadStudioUsersAndCandidates(studioId: Long)
     suspend fun deleteUserById(userId: Long): Flow<DataSourceResponse<Nothing>>
     suspend fun updateUserStudio(user: UserEntity)
+    suspend fun clearDb()
 }

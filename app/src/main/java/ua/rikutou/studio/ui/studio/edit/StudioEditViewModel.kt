@@ -12,13 +12,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.DataSourceResponse
 import ua.rikutou.studio.data.datasource.studio.StudioDataSource
+import ua.rikutou.studio.data.datasource.user.UserDataSource
 import ua.rikutou.studio.data.local.entity.StudioEntity
+import ua.rikutou.studio.navigation.NestedGraph
 import ua.rikutou.studio.navigation.Screen
 import javax.inject.Inject
 
@@ -27,6 +30,7 @@ class StudioEditViewModel
 @Inject constructor(
     private val studioDataSource: StudioDataSource,
     private val savedStateHandle: SavedStateHandle,
+    private val userDataSource: UserDataSource
 ) : ViewModel() {
     private val TAG by lazy { StudioEditViewModel::class.simpleName }
     private val _state = MutableStateFlow(StudioEdit.State())
@@ -80,6 +84,10 @@ class StudioEditViewModel
 
                 StudioEdit.Action.OnSave -> {
                     saveStudio()
+                }
+
+                StudioEdit.Action.OnDelete -> {
+                    onDeleteStudio()
                 }
             }
         }
@@ -142,6 +150,33 @@ class StudioEditViewModel
                 }
             }
         }
+    }
+
+    private fun onDeleteStudio() = viewModelScope.launch {
+        state.value.studioId?.let { studioId ->
+            studioDataSource.deleteStudio(studioId = studioId).collect {
+                when(it) {
+                    is DataSourceResponse.Error<*> -> {
+                        _state.update {
+                            it.copy(inProgress = false)
+                        }
+                    }
+                    DataSourceResponse.InProgress -> {
+                        _state.update {
+                            it.copy(inProgress = true)
+                        }
+                        userDataSource.clearDb()
+                        _event.emit(StudioEdit.Event.OnNavigate(destination = Screen.Studio.Main))
+                    }
+                    is DataSourceResponse.Success -> {
+                        _state.update {
+                            it.copy(inProgress = false)
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
 

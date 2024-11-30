@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ua.rikutou.studio.data.datasource.DataSourceResponse
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.data.local.DbDataSource
@@ -67,6 +68,22 @@ class StudioDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructor(
                 else -> {
                     Log.e(TAG, "createUpdateStudio: error")
                     emit(DataSourceResponse.Error<StudioEntity>())
+                }
+            }
+        }
+    }
+
+    override suspend fun deleteStudio(studioId: Long): Flow<DataSourceResponse<Any>> = flow {
+        emit(DataSourceResponse.InProgress)
+        studioApi.deleteStudio(
+            studioId = studioId
+        ).run {
+            when {
+                isSuccessful -> {
+                    emit(DataSourceResponse.Success())
+                }
+                else -> {
+                    emit(DataSourceResponse.Error<Nothing>())
                 }
             }
         }

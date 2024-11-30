@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.DataSourceResponse
@@ -33,27 +34,25 @@ class SplashViewModel
     val event = _event.asSharedFlow()
 
     private fun checkToken() {
-//        Log.d(TAG, "get me: ${tokenDataSource.token}")
         viewModelScope.launch {
             if (tokenDataSource.token?.isNotEmpty() == true) {
-                Log.d(TAG, "get me: ")
-                authDataSource.getMe().collect {
+                authDataSource.getMe()
+                    .catch {
+                        it.printStackTrace()
+                    }
+                    .collect {
                     when(it) {
                         is DataSourceResponse.Error<*> -> {
-                            Log.d(TAG, "get me: error")
                             _event.emit(Splash.Event.OnNavigate(Screen.SignIn))
                         }
                         DataSourceResponse.InProgress -> {
-                            Log.d(TAG, "get me: in progress")
                         }
                         is DataSourceResponse.Success -> {
-                            Log.d(TAG, "get me: success")
                             _event.emit(Splash.Event.OnNavigate(Screen.Studio.Main))
                         }
                     }
                 }
             } else {
-                Log.d(TAG, "else: ")
                 _event.emit(Splash.Event.OnNavigate(Screen.SignIn))
             }
         }

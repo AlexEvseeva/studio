@@ -1,10 +1,12 @@
 package ua.rikutou.studio.ui.studio.edit
 
 import ua.rikutou.studio.data.local.entity.StudioEntity
+import ua.rikutou.studio.navigation.Screen
 
 object StudioEdit {
     sealed interface Event{
         data object OnBack : Event
+        data class OnNavigate(val destination: Screen) : Event
     }
 
     sealed interface Action{
@@ -17,6 +19,7 @@ object StudioEdit {
             val facebook: String? = null
         ) : Action
         data object OnSave : Action
+        data object OnDelete : Action
     }
     data class State(
         val inProgress: Boolean = false,
