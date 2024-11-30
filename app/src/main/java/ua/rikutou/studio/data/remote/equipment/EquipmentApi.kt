@@ -24,7 +24,7 @@ interface EquipmentApi {
         @Path("equipmentId") equipmentId: Long
     ): Response<Any>
 
-    @POST("equipments")
+    @POST("equipment")
     suspend fun saveUpdateEquipment(
         @Body body: EquipmentRequest
     ): Response<EquipmentDto>
