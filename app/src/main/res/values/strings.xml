@@ -25,4 +25,7 @@
     <string name="departmentLabel">Department</string>
     <string name="addSection">Add section</string>
     <string name="equipmentScreenTitle">Equipment</string>
+    <string name="nameLabel">Name</string>
+    <string name="commentLabel">Comment</string>
+    <string name="rentPriceLabel">Rent price</string>
 </resources>
