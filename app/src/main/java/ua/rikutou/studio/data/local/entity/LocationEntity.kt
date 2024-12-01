@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.Junction
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import ua.rikutou.studio.data.remote.location.LocationType
 import ua.rikutou.studio.data.remote.location.dto.LocationRequest
 
 @Entity
@@ -15,7 +16,7 @@ data class LocationEntity(
     val width: Float,
     val length: Float,
     val height: Float,
-    val type: String,
+    val type: LocationType,
     val studioId: Long,
     val rentPrice: Float,
 )
@@ -37,7 +38,7 @@ fun LocationEntity.toDto() =
         width = width,
         height = height,
         length = length,
-        type = type,
+        type = type.name.lowercase(),
         studioId = studioId,
         rentPrice = rentPrice,
     )

@@ -2,6 +2,7 @@ package ua.rikutou.studio.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import ua.rikutou.studio.data.local.dao.DepartmentDao
 import ua.rikutou.studio.data.local.dao.EquipmentDao
 import ua.rikutou.studio.data.local.dao.GalleryDao
@@ -32,6 +33,7 @@ import ua.rikutou.studio.data.local.entity.UserEntity
     ],
     version = 6,
 )
+@TypeConverters(DbConverters::class)
 abstract class AppDb : RoomDatabase() {
     abstract val userDao: UserDao
     abstract val studioDao: StudioDao

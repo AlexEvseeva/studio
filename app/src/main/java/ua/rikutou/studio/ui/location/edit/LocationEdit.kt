@@ -16,10 +16,10 @@ object LocationEdit {
             val width: Float? = null,
             val length: Float? = null,
             val height: Float? = null,
-            val type: String? = null,
             val rentPrice: Float? = null,
         ) : Action
         data object OnSave : Action
+        data class OnTypeSelected(val option: String) : Action
     }
 
     data class State (

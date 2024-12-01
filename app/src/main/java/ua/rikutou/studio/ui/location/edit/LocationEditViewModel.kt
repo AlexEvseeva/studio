@@ -1,5 +1,6 @@
 package ua.rikutou.studio.ui.location.edit
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.location.LocationDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.data.local.entity.LocationEntity
+import ua.rikutou.studio.data.remote.location.LocationType
 import ua.rikutou.studio.navigation.Screen
 import javax.inject.Inject
 
@@ -27,6 +29,8 @@ class LocationEditViewModel
     private val savedStateHandle: SavedStateHandle,
     private val profileDataSource: ProfileDataSource
 ) : ViewModel(){
+    private val TAG by lazy { LocationEditViewModel::class.simpleName }
+
     private val _state = MutableStateFlow(LocationEdit.State())
     val state = _state.asStateFlow()
         .onStart {
@@ -67,11 +71,6 @@ class LocationEditViewModel
                         s.copy(location = s.location?.copy(height = action.height))
                     }
                 }
-                action.type?.let {
-                    _state.update { s ->
-                        s.copy(location = s.location?.copy(type = action.type))
-                    }
-                }
                 action.rentPrice?.let {
                     _state.update { s ->
                         s.copy(location = s.location?.copy(rentPrice = action.rentPrice))
@@ -79,6 +78,16 @@ class LocationEditViewModel
                 }
             }
             LocationEdit.Action.OnSave -> onSave()
+            is LocationEdit.Action.OnTypeSelected -> {
+                Log.d(TAG, "onAction: ${action.option}")
+                _state.update { s ->
+                    s.copy(
+                        location = s.location?.copy(
+                            type = LocationType.valueOf(action.option)
+                        )
+                    )
+                }
+            }
         }
     }
 
@@ -98,7 +107,7 @@ class LocationEditViewModel
                     width = 0F,
                     length = 0F,
                     height = 0F,
-                    type = "",
+                    type = LocationType.pavilion,
                     studioId = profileDataSource.user?.studioId ?: -1,
                     rentPrice = 0F
                 ))
@@ -109,7 +118,6 @@ class LocationEditViewModel
     private fun onSave() = viewModelScope.launch {
         if (state.value.location?.name?.isEmpty() == true
             || state.value.location?.address?.isEmpty() == true
-            || state.value.location?.type?.isEmpty() == true
             ) {
             return@launch
         }

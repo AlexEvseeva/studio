@@ -1,26 +1,36 @@
 package ua.rikutou.studio.ui.location.edit
 
+import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
+import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.collect
 import ua.rikutou.studio.R
+import ua.rikutou.studio.data.remote.location.LocationType
 import ua.rikutou.studio.ui.components.ElementTitle
 import ua.rikutou.studio.ui.studio.edit.StudioEdit
+
+private const val TAG = "LocationEditScreen"
 
 @Composable
 fun LocationEditScreen(
@@ -122,18 +132,33 @@ fun LocationEditScreenContent(
                 Text(text = "Height")
             }
         )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            value = state.value.location?.type ?: "",
-            onValueChange = {
-                onAction(LocationEdit.Action.OnFieldChanged(type = it))
-            },
-            label = {
-                Text(text = "Type")
+
+        Column(
+            modifier = Modifier.selectableGroup()
+        ) {
+            LocationType.entries.map {
+                it.name
+            }.forEach { type ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+
+                ) {
+                    RadioButton(
+                        selected = state.value.location?.type?.name == type,
+                        onClick = {
+                            onAction(LocationEdit.Action.OnTypeSelected(option = type))
+                        }
+                    )
+                    Text(
+                        text = type
+                    )
+
+                }
+
             }
-        )
+
+        }
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -156,7 +181,10 @@ fun LocationEditScreenContent(
                 onAction(LocationEdit.Action.OnSave)
             }
         ) {
-            Text(stringResource(R.string.save))
+            Text(
+                text = stringResource(R.string.save),
+                color = Color.White
+            )
         }
     }
 }
