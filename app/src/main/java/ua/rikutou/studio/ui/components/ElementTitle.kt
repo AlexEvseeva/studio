@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -28,6 +29,7 @@ import ua.rikutou.studio.R
 fun ElementTitle(
     modifier: Modifier = Modifier,
     title: String,
+    textColor: Color = Color.Black,
     isEditEnabled: Boolean = false,
     isEditActive: Boolean = false,
     isSearchEnabled: Boolean = false,
@@ -55,7 +57,8 @@ fun ElementTitle(
                     text =title,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Start
+                    textAlign = TextAlign.Start,
+                    color = textColor
                 )
                 Image(
                     modifier = Modifier
@@ -64,7 +67,7 @@ fun ElementTitle(
                             onEdit()
                         },
                     painter = painterResource(R.drawable.edit),
-                    contentDescription = "Edit"
+                    contentDescription = "Edit",
                 )
             }
             isSearchEnabled -> {
