@@ -12,6 +12,7 @@ import ua.rikutou.studio.data.remote.execute.ExecuteApi
 import ua.rikutou.studio.data.remote.location.LocationApi
 import ua.rikutou.studio.data.remote.section.SectionApi
 import ua.rikutou.studio.data.remote.studio.StudioApi
+import ua.rikutou.studio.data.remote.transport.TransportApi
 import ua.rikutou.studio.data.remote.user.UserApi
 
 @InstallIn(SingletonComponent::class)
@@ -40,4 +41,7 @@ object Network {
 
     @Provides
     fun providesEquipmentApi(retrofit: Retrofit): EquipmentApi = retrofit.create(EquipmentApi::class.java)
+
+    @Provides
+    fun provideTransportApi(retrofit: Retrofit): TransportApi = retrofit.create(TransportApi::class.java)
 }

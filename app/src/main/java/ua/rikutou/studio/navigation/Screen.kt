@@ -24,6 +24,7 @@ sealed class Screen {
         @Serializable data class Edit(val departmentId: Long? = null) : Department()
     }
     @Serializable sealed class Section : Screen() {
+        @Serializable data object List : Section()
         @Serializable data class Details(val sectionId: Long) : Section()
         @Serializable data class Edit(val sectionId: Long? = null) : Section()
     }
@@ -37,8 +38,9 @@ sealed class Screen {
     @Serializable data object Execute : Screen()
 
     @Serializable sealed class Transport : Screen() {
+        @Serializable data object List: Transport()
         @Serializable data class Details(val transportId: Long) : Transport()
-        @Serializable data class Edit(val transportId: Long) : Transport()
+        @Serializable data class Edit(val transportId: Long? = null) : Transport()
     }
 
 }

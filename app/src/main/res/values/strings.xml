@@ -36,4 +36,9 @@
     <string name="to">to</string>
     <string name="length">length</string>
     <string name="height">height</string>
+    <string name="mark">Mark</string>
+    <string name="manufactoreDate">Manufacture date</string>
+    <string name="seatsLabel">Seats</string>
+    <string name="colorLabel">Color</string>
+    <string name="technicalStateLabel">Technical state</string>
 </resources>

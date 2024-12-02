@@ -55,21 +55,7 @@ fun NavGraph(
 
         departmentGraph(navController = navController)
 
-//        sectionGraph(navController = navController)
-
-        composable<Screen.Section.Details> {
-            SectionDetailsScreen(
-                viewModel = hiltViewModel(),
-                navController = navController
-            )
-        }
-
-        composable<Screen.Section.Edit> {
-            SectionEditScreen(
-                viewModel = hiltViewModel(),
-                navController = navController
-            )
-        }
+        sectionGraph(navController = navController)
 
         composable<Screen.Execute> {
             ExecuteScreen(
@@ -77,6 +63,8 @@ fun NavGraph(
                 navController = navController
             )
         }
+
+        transportGraph(navController = navController)
 
     }
 }
