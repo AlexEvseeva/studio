@@ -2,6 +2,7 @@ package ua.rikutou.studio.ui.location.list
 
 import ua.rikutou.studio.data.local.entity.Location
 import ua.rikutou.studio.data.local.entity.LocationEntity
+import ua.rikutou.studio.data.remote.location.LocationType
 import ua.rikutou.studio.navigation.Screen
 
 object LocationList {
@@ -14,6 +15,9 @@ object LocationList {
         data class OnSearchChanged(val search: String) : Action
         data object OnSearch : Action
         data object OnCancel : Action
+        data class OnTypeSelect(val type: LocationType?) : Action
+        data object OnClearFilters : Action
+        data class OnDimansionsChange(val dimensions: Dimensions) : Action
     }
 
     data class State (
@@ -21,5 +25,6 @@ object LocationList {
         val locations: List<Location> = emptyList(),
         val isSearchActive: Boolean = false,
         val isSearchEnabled: Boolean = true,
+        val typeFilter: LocationType? = null
     )
 }

@@ -29,4 +29,11 @@
     <string name="commentLabel">Comment</string>
     <string name="rentPriceLabel">Rent price</string>
     <string name="locationScreenTitle">Locations</string>
+    <string name="transport">Transport</string>
+    <string name="all">All</string>
+    <string name="from">from</string>
+    <string name="width">width</string>
+    <string name="to">to</string>
+    <string name="length">length</string>
+    <string name="height">height</string>
 </resources>

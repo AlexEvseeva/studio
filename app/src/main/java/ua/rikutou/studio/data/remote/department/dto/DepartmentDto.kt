@@ -2,6 +2,7 @@ package ua.rikutou.studio.data.remote.department.dto
 
 import ua.rikutou.studio.data.local.entity.DepartmentEntity
 import ua.rikutou.studio.data.remote.section.dto.SectionDto
+import ua.rikutou.studio.data.remote.transport.dto.TransportDto
 
 data class DepartmentDto(
     val departmentId: Long,
@@ -9,7 +10,8 @@ data class DepartmentDto(
     val workHours: String,
     val contactPerson: String,
     val studioId: Long,
-    val sections: List<SectionDto>?
+    val sections: List<SectionDto>?,
+    val transport: List<TransportDto>?,
 )
 
 fun DepartmentDto.toEntity() =

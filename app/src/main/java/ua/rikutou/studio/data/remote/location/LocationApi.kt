@@ -15,6 +15,13 @@ interface LocationApi {
     suspend fun getAllLocations(
         @Query("studioId") studioId: Long,
         @Query("search") search: String? = null,
+        @Query("type") type: String? = null,
+        @Query("widthFrom") widthFrom: Int? = null,
+        @Query("widthTo") widthTo: Int? = null,
+        @Query("lengthFrom") lengthFrom: Int? = null,
+        @Query("lengthTo") lengthTo: Int? = null,
+        @Query("heightFrom") heightFrom: Int? = null,
+        @Query("heightTo") heightTo: Int? = null
     ): Response<List<LocationResponse>>
 
     @DELETE("locations/{locationId}")

@@ -114,9 +114,14 @@ class SectionEditViewModel @Inject constructor(
     private fun getDepartments() = viewModelScope.launch {
         profileDataSource.user?.studioId?.let { studioId ->
             departmentDataSource.getAllDepartments(studioId = studioId).collect { list ->
-                _state.update {
-                    it.copy(
-                        departments = list.map { it.entity }
+                _state.update { s ->
+                    s.copy(
+                        departments = list.map { it.entity },
+                        section = if((s.section?.departmentId ?: -1L) < 0) {
+                            s.section?.copy(departmentId = list.first().entity.departmentId)
+                        } else {
+                            s.section
+                        }
                     )
                 }
             }

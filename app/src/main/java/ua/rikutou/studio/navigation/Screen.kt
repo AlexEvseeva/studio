@@ -36,4 +36,9 @@ sealed class Screen {
     @Serializable data object Profile : Screen()
     @Serializable data object Execute : Screen()
 
+    @Serializable sealed class Transport : Screen() {
+        @Serializable data class Details(val transportId: Long) : Transport()
+        @Serializable data class Edit(val transportId: Long) : Transport()
+    }
+
 }

@@ -21,7 +21,12 @@ data class Department(
         entity = SectionEntity::class,
         entityColumn = "departmentId",
         parentColumn = "departmentId"
-    ) val sections: List<SectionEntity>
+    ) val sections: List<SectionEntity>,
+    @Relation(
+        entity = TransportEntity::class,
+        entityColumn = "departmentId",
+        parentColumn = "departmentId"
+    ) val transport: List<TransportEntity>
 )
 
 fun DepartmentEntity.toDto() =

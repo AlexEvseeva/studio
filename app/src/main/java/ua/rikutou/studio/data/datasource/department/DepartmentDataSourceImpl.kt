@@ -17,6 +17,7 @@ import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.department.DepartmentApi
 import ua.rikutou.studio.data.remote.department.dto.toEntity
 import ua.rikutou.studio.data.remote.section.dto.toEntity
+import ua.rikutou.studio.data.remote.transport.dto.toEntity
 import ua.rikutou.studio.di.DbDeliveryDispatcher
 
 class DepartmentDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructor(
@@ -50,6 +51,12 @@ class DepartmentDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) construc
                         body()
                             ?.mapNotNull { it.sections }
                             ?.flatten()?.map { it.toEntity() } ?: emptyList<SectionEntity>()
+                    )
+                    dbDataSource.db.transportDao.syncInsert(
+                        body()
+                            ?.mapNotNull { it.transport }
+                            ?.flatten()
+                            ?.map { it.toEntity() } ?: emptyList()
                     )
                 }
                 else -> {

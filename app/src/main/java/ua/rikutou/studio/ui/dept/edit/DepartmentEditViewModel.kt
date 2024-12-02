@@ -106,7 +106,8 @@ class DepartmentEditViewModel @Inject constructor(
                             contactPerson = "",
                             studioId = profileDataSource.user?.studioId ?: -1,
                         ),
-                        sections = emptyList()
+                        sections = emptyList(),
+                        transport = emptyList()
                     )
                 )
             }

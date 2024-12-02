@@ -17,6 +17,7 @@ import ua.rikutou.studio.data.local.entity.LocationToGalleryEntity
 import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.gallery.dto.toEntity
 import ua.rikutou.studio.data.remote.location.LocationApi
+import ua.rikutou.studio.data.remote.location.LocationType
 import ua.rikutou.studio.data.remote.location.dto.toEntity
 import ua.rikutou.studio.di.DbDeliveryDispatcher
 
@@ -36,11 +37,28 @@ class LocationDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructo
             .catch { it.printStackTrace() }
 
 
-    override suspend fun loadLocations(studioId: Long, search: String) {
+    override suspend fun loadLocations(
+        studioId: Long,
+        search: String,
+        type: LocationType?,
+        widthFrom: Int?,
+        widthTo: Int?,
+        lengthFrom: Int?,
+        lengthTo: Int?,
+        heightFrom: Int?,
+        heightTo: Int?
+    ) {
         CoroutineScope(Dispatchers.IO).launch {
             locationApi.getAllLocations(
                 studioId = studioId,
-                search = if (search.isEmpty()) null else search
+                search = if (search.isEmpty()) null else search,
+                type = type?.name,
+                widthFrom = widthFrom,
+                widthTo = widthTo,
+                lengthFrom = lengthFrom,
+                lengthTo = lengthTo,
+                heightFrom = heightFrom,
+                heightTo = heightTo,
             )
                 .run {
                     when {

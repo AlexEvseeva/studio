@@ -10,6 +10,7 @@ import ua.rikutou.studio.data.local.dao.LocationDao
 import ua.rikutou.studio.data.local.dao.LocationToGalleryDao
 import ua.rikutou.studio.data.local.dao.SectionDao
 import ua.rikutou.studio.data.local.dao.StudioDao
+import ua.rikutou.studio.data.local.dao.TransportDao
 import ua.rikutou.studio.data.local.dao.UserDao
 import ua.rikutou.studio.data.local.entity.DepartmentEntity
 import ua.rikutou.studio.data.local.entity.EquipmentEntity
@@ -18,6 +19,7 @@ import ua.rikutou.studio.data.local.entity.LocationEntity
 import ua.rikutou.studio.data.local.entity.LocationToGalleryEntity
 import ua.rikutou.studio.data.local.entity.SectionEntity
 import ua.rikutou.studio.data.local.entity.StudioEntity
+import ua.rikutou.studio.data.local.entity.TransportEntity
 import ua.rikutou.studio.data.local.entity.UserEntity
 
 @Database(
@@ -29,9 +31,10 @@ import ua.rikutou.studio.data.local.entity.UserEntity
         LocationToGalleryEntity::class,
         DepartmentEntity::class,
         SectionEntity::class,
-        EquipmentEntity::class
+        EquipmentEntity::class,
+        TransportEntity::class
     ],
-    version = 6,
+    version = 7,
 )
 @TypeConverters(DbConverters::class)
 abstract class AppDb : RoomDatabase() {
@@ -43,4 +46,5 @@ abstract class AppDb : RoomDatabase() {
     abstract val departmentDao: DepartmentDao
     abstract val sectionDao: SectionDao
     abstract val equipmentDao: EquipmentDao
+    abstract val transportDao: TransportDao
 }

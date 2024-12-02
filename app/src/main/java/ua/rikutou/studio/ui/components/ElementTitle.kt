@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +41,7 @@ fun ElementTitle(
     onSearchChanged: (String) -> Unit = {},
     onSearch: () -> Unit = {},
     onCancel: () -> Unit = {},
+    onClearFilters: () -> Unit = {},
 ) {
     Row(
         modifier = modifier
@@ -75,9 +78,19 @@ fun ElementTitle(
                     modifier = modifier
                         .weight(1f),
                     text =title,
+                    color = textColor,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start
+                )
+                Image(
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .clickable {
+                            onClearFilters()
+                        },
+                    painter = painterResource(R.drawable.clear),
+                    contentDescription = "Clear"
                 )
                 Image(
                     modifier = Modifier
@@ -123,6 +136,7 @@ fun ElementTitle(
                     modifier = modifier
                         .weight(1f),
                     text =title,
+                    color = textColor,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start
@@ -132,7 +146,8 @@ fun ElementTitle(
                 Text(
                     modifier = modifier
                         .weight(1f),
-                    text =title,
+                    text = title,
+                    color = textColor,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Start

@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,13 +15,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropValue
-import androidx.compose.material.Text
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,11 +27,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import ua.rikutou.studio.BuildConfig
 import ua.rikutou.studio.R
 import ua.rikutou.studio.navigation.Screen
 import ua.rikutou.studio.ui.components.ElementTitle
 import ua.rikutou.studio.ui.components.Item
+import ua.rikutou.studio.ui.location.list.components.LocationFilterElement
 
 private val TAG by lazy { "LocationListScreen" }
 
@@ -44,7 +40,8 @@ fun LocationListScreen(
     viewModel: LocationListViewModel,
     navController: NavController
 ) {
-    val state = viewModel.state.collectAsStateWithLifecycle(LocationList.State())
+    val state by viewModel.state.collectAsStateWithLifecycle(LocationList.State())
+    val filer by viewModel.filter.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = Unit) {
         viewModel.event.collect {
@@ -55,25 +52,29 @@ fun LocationListScreen(
             }
         }
     }
-    LocationListScreenContent(state = state, onAction = viewModel::onAction)
+    
+    LocationListScreenContent(state = state, filter = filer, onAction = viewModel::onAction)
 
 }
 
 @Composable
 private fun LocationListScreenContent(
-    state: State<LocationList.State>,
+    state: LocationList.State,
+    filter: LocationFilter,
     onAction: (LocationList.Action) -> Unit
 ) {
     BackdropScaffold(
+        modifier = Modifier
+            .background(color = Color(0xFFF5F5F5))
+        ,
         scaffoldState = rememberBackdropScaffoldState(initialValue = BackdropValue.Concealed),
         frontLayerShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
         appBar = {
             ElementTitle(
                 modifier = Modifier,
                 title = stringResource(R.string.locationScreenTitle),
-                textColor = Color.White,
-                isSearchEnabled = state.value.isSearchEnabled,
-                isSearchActive = state.value.isSearchActive,
+                isSearchEnabled = state.isSearchEnabled,
+                isSearchActive = state.isSearchActive,
                 onSearch = {
                     onAction(LocationList.Action.OnSearch)
                 },
@@ -91,15 +92,23 @@ private fun LocationListScreenContent(
                             )
                         )
                     )
+                },
+                onClearFilters = {
+                    onAction(LocationList.Action.OnClearFilters)
                 }
             )
         },
         backLayerContent = {
-            Text(
-                modifier = Modifier.padding(vertical = 50.dp),
-                text = "Filter layer here"
+            LocationFilterElement(
+                state = state,
+                filter = filter,
+                onTypeSelect = {
+                    onAction(LocationList.Action.OnTypeSelect(it))
+                },
+                onDimentionsChange = {
+                    onAction(LocationList.Action.OnDimansionsChange(dimensions = it))
+                }
             )
-
         },
         frontLayerContent = {
             Column(
@@ -122,7 +131,7 @@ private fun LocationListScreenContent(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     items(
-                        items = state.value.locations,
+                        items = state.locations,
                         key = { it.location.locationId }
                     ) { item ->
                         Item(
@@ -148,5 +157,5 @@ private fun LocationListScreenContent(
 @Composable
 @Preview(showSystemUi = true)
 private fun LocationListScreenContentPreview(modifier: Modifier = Modifier) {
-    LocationListScreenContent(state = remember { mutableStateOf(LocationList.State()) }) { }
+    LocationListScreenContent(state = LocationList.State(), filter = LocationFilter()) { }
 }

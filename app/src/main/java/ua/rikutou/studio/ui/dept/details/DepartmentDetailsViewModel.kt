@@ -1,5 +1,6 @@
 package ua.rikutou.studio.ui.dept.details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,6 +24,8 @@ class DepartmentDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val departmentDataSource: DepartmentDataSource
 ) : ViewModel() {
+    private val TAG by lazy { DepartmentDetailsViewModel::class.simpleName }
+
     private val _state = MutableStateFlow(DepartmentDetails.State())
     val state = _state.asStateFlow()
         .onStart {
