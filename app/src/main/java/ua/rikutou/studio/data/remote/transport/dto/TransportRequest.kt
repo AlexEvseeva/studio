@@ -6,7 +6,7 @@ data class TransportRequest(
     val mark: String,
     val manufactureDate: Long,
     val seats: Int,
-    val departmentId: Int,
+    val departmentId: Long,
     val color: String,
     val technicalState: String,
 )

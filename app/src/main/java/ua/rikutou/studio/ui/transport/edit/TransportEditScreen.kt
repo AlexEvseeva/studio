@@ -1,22 +1,21 @@
-package ua.rikutou.studio.ui.section.edit
+package ua.rikutou.studio.ui.transport.edit
 
 import android.util.Log
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ExposedDropdownMenuBox
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.OutlinedTextField
@@ -32,18 +31,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import ua.rikutou.studio.R
+import ua.rikutou.studio.ui.components.DatePickerModal
 import ua.rikutou.studio.ui.components.ElementTitle
+import ua.rikutou.studio.ui.section.edit.SectionEdit
+import java.util.Date
 
-private const val TAG ="SectionEditScreen"
+private const val TAG = "TransportEditScreen"
 
 @Composable
-fun SectionEditScreen(
-    viewModel: SectionEditViewModel,
+fun TransportEditScreen(
+    viewModel: TransportEditViewModel,
     navController: NavController
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -51,12 +52,12 @@ fun SectionEditScreen(
     LaunchedEffect(key1 = Unit) {
         viewModel.event.collect {
             when(it) {
-                is SectionEdit.Event.OnBack -> navController.popBackStack()
+                is TransportEdit.Event.OnBack -> navController.popBackStack()
             }
         }
     }
 
-    SectionEditScreenContent(
+    TransportEditScreenContent(
         state = state,
         onAction = viewModel::onAction
     )
@@ -65,9 +66,9 @@ fun SectionEditScreen(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SectionEditScreenContent(
-    state: SectionEdit.State,
-    onAction: (SectionEdit.Action) -> Unit
+fun TransportEditScreenContent(
+    state: TransportEdit.State,
+    onAction: (TransportEdit.Action) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -81,7 +82,7 @@ fun SectionEditScreenContent(
             mutableStateOf(
                 state.departments
                     ?.mapIndexed { index, department ->
-                        if(department.departmentId == state.section?.departmentId) {
+                        if(department.departmentId == state.transport?.departmentId) {
                             index
                         } else null
                     }
@@ -90,49 +91,60 @@ fun SectionEditScreenContent(
             )
         }
 
-
         ElementTitle(
-            title = state.section?.title ?: "",
+            title = state.transport?.mark ?: "",
             isEditActive = true
         )
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            value = state.transport?.type ?: "",
+            onValueChange = {
+                onAction(TransportEdit.Action.OnFieldChanged(type = it))
+            },
+            label = {
+                Text(text = stringResource(R.string.typeLabel))
+            }
+        )
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            value = state.transport?.mark ?: "",
+            onValueChange = {
+                onAction(TransportEdit.Action.OnFieldChanged(mark = it))
+            },
+            label = {
+                Text(text = stringResource(R.string.mark))
+            }
+        )
+
+        Text(
+            modifier = Modifier
+                .clickable {
+                    onAction(TransportEdit.Action.OnSelectDate)
+                }
+            ,
+            text = (state.transport?.manufactureDate ?: Date()).toString()
+        )
 
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            value = state.section?.title ?: "",
+            value = state.transport?.seats?.let {
+                it.toString()
+            } ?: "",
             onValueChange = {
-                onAction(SectionEdit.Action.OnFieldChanged(title = it))
+                it.runCatching { toInt() }.getOrNull()?.let {
+                    onAction(TransportEdit.Action.OnFieldChanged(seats = it))
+                }
             },
             label = {
-                Text(text = stringResource(R.string.titleLabel))
+                Text(text = stringResource(R.string.seatsLabel))
             }
         )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            value = state.section?.address ?: "",
-            onValueChange = {
-                onAction(SectionEdit.Action.OnFieldChanged(address = it))
-            },
-            label = {
-                Text(text = stringResource(R.string.addressLabel))
-            }
-        )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            value = state.section?.internalPhoneNumber ?: "",
-            onValueChange = {
-                onAction(SectionEdit.Action.OnFieldChanged(internalPhoneNumber = it))
-            },
-            label = {
-                Text(text = stringResource(R.string.internalPhoneNumberLabel))
-            }
-        )
-
 
         state.departments?.let { departments ->
             Row(
@@ -179,7 +191,7 @@ fun SectionEditScreenContent(
                                 onClick = {
                                     expanded = false
                                     itemPosition = index
-                                    onAction(SectionEdit.Action.OnDepartmentSelect(departmentId = dept.departmentId))
+                                    onAction(TransportEdit.Action.OnDepartmentSelect(departmentId = dept.departmentId))
                                 }
                             )
                         }
@@ -192,11 +204,36 @@ fun SectionEditScreenContent(
 
         }
 
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            value = state.transport?.color ?: "",
+            onValueChange = {
+                onAction(TransportEdit.Action.OnFieldChanged(color = it))
+            },
+            label = {
+                Text(text = stringResource(R.string.colorLabel))
+            }
+        )
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            value = state.transport?.technicalState ?: "",
+            onValueChange = {
+                onAction(TransportEdit.Action.OnFieldChanged(technicalState = it))
+            },
+            label = {
+                Text(text = stringResource(R.string.technicalStateLabel))
+            }
+        )
+
         Button(
             modifier = Modifier
                 .fillMaxWidth(),
             onClick = {
-                onAction(SectionEdit.Action.OnSave)
+                onAction(TransportEdit.Action.OnSave)
             }
         ) {
             Text(
@@ -204,14 +241,20 @@ fun SectionEditScreenContent(
                 color = Color.White
             )
         }
+
+        if(state.isSelectDateDialogActive) {
+            DatePickerModal(
+                onDateSelected = { time ->
+                    Log.d(TAG, "TransportEditScreenContent: $time")
+                    time?.let {
+                        onAction(TransportEdit.Action.OnFieldChanged(manufactureDate = Date(it)))
+                    }
+                },
+                onDismiss = {
+                    onAction(TransportEdit.Action.OnDismissDatePicker)
+                }
+            )
+        }
     }
-
 }
 
-@Preview(showSystemUi = true)
-@Composable
-fun SectionEditScreenPreview(modifier: Modifier = Modifier) {
-    SectionEditScreenContent(
-        state = SectionEdit.State()
-    ) { }
-}

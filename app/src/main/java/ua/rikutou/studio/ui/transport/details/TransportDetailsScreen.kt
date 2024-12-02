@@ -104,8 +104,8 @@ private fun TransportDetailsScreenContent(
                     onEdit = {
                         onAction(
                             TransportDetails.Action.OnNavigate(
-                                destination = Screen.Location.Edit(
-                                    locationId = state.transport?.transportId
+                                destination = Screen.Transport.Edit(
+                                    transportId = state.transport?.transportId
                                 )
                             )
                         )

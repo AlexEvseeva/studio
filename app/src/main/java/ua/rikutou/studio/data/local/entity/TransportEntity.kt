@@ -13,7 +13,7 @@ data class TransportEntity(
     val mark: String,
     val manufactureDate: Date,
     val seats: Int,
-    val departmentId: Int,
+    val departmentId: Long,
     val color: String,
     val technicalState: String,
 )
