@@ -134,6 +134,7 @@ private fun showBottomNavigation(navDestination: NavDestination?): Boolean =
             Screen.Equipment::class.qualifiedName,
             Screen.Department.List::class.qualifiedName,
             Screen.Equipment.List::class.qualifiedName,
-            Screen.Transport.List::class.qualifiedName
+            Screen.Transport.List::class.qualifiedName,
+            Screen.Actor.List::class.qualifiedName,
         )
     } ?: false

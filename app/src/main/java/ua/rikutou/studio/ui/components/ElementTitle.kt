@@ -45,7 +45,9 @@ fun ElementTitle(
 ) {
     Row(
         modifier = modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(start = 4.dp)
+        ,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ) {

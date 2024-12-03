@@ -11,6 +11,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CloseableCoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import ua.rikutou.studio.data.datasource.actor.ActorDataSource
+import ua.rikutou.studio.data.datasource.actor.ActorDataSourceImpl
 import ua.rikutou.studio.data.local.DbDataSource
 import ua.rikutou.studio.data.local.DbDataSourceImpl
 import ua.rikutou.studio.data.remote.auth.AuthApi
@@ -36,6 +38,7 @@ import ua.rikutou.studio.data.datasource.transport.TransportDataSource
 import ua.rikutou.studio.data.datasource.transport.TransportDataSourceImpl
 import ua.rikutou.studio.data.datasource.user.UserDataSource
 import ua.rikutou.studio.data.datasource.user.UserDataSourceImpl
+import ua.rikutou.studio.data.remote.actor.ActorApi
 import ua.rikutou.studio.data.remote.department.DepartmentApi
 import ua.rikutou.studio.data.remote.equipment.EquipmentApi
 import ua.rikutou.studio.data.remote.execute.ExecuteApi
@@ -170,6 +173,17 @@ object DataSource {
         @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
     ): TransportDataSource = TransportDataSourceImpl(
         transportApi = transportApi,
+        dbDataSource = dbDataSource,
+        dbDeliveryDispatcher = dbDeliveryDispatcher
+    )
+
+    @Provides
+    fun provideActorDataSource(
+        actorApi: ActorApi,
+        dbDataSource: DbDataSource,
+        @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
+    ): ActorDataSource = ActorDataSourceImpl(
+        actorApi = actorApi,
         dbDataSource = dbDataSource,
         dbDeliveryDispatcher = dbDeliveryDispatcher
     )

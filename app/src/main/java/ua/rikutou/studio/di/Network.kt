@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import ua.rikutou.studio.data.remote.actor.ActorApi
 import ua.rikutou.studio.data.remote.auth.AuthApi
 import ua.rikutou.studio.data.remote.department.DepartmentApi
 import ua.rikutou.studio.data.remote.equipment.EquipmentApi
@@ -44,4 +45,7 @@ object Network {
 
     @Provides
     fun provideTransportApi(retrofit: Retrofit): TransportApi = retrofit.create(TransportApi::class.java)
+
+    @Provides
+    fun provideActorApi(retrofit: Retrofit): ActorApi = retrofit.create(ActorApi::class.java)
 }
