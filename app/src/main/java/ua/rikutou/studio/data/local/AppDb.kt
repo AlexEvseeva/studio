@@ -34,7 +34,7 @@ import ua.rikutou.studio.data.local.entity.UserEntity
         EquipmentEntity::class,
         TransportEntity::class
     ],
-    version = 8,
+    version = 11,
 )
 @TypeConverters(DbConverters::class)
 abstract class AppDb : RoomDatabase() {

@@ -19,6 +19,7 @@ import ua.rikutou.studio.data.datasource.department.DepartmentDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.data.datasource.transport.TransportDataSource
 import ua.rikutou.studio.data.local.entity.TransportEntity
+import ua.rikutou.studio.data.remote.transport.TransportType
 import ua.rikutou.studio.navigation.Screen
 import java.util.Date
 import javax.inject.Inject
@@ -50,7 +51,7 @@ class TransportEditViewModel @Inject constructor(
                     _state.update { s ->
                         s.copy(
                             transport = s.transport?.copy(
-                                type = type
+                                type = type.runCatching { TransportType.valueOf(type) }.getOrNull() ?: TransportType.Sedan
                             )
                         )
                     }
@@ -141,7 +142,7 @@ class TransportEditViewModel @Inject constructor(
             _state.update {
                 it.copy(transport = TransportEntity(
                     transportId = -1L,
-                    type = "",
+                    type = TransportType.Sedan,
                     mark = "",
                     manufactureDate = Date(),
                     seats = 0,
@@ -172,7 +173,7 @@ class TransportEditViewModel @Inject constructor(
     }
 
     private fun onSave() = viewModelScope.launch {
-        if (state.value.transport?.type?.isEmpty() == true
+        if (state.value.transport?.type != null
             || state.value.transport?.mark?.isEmpty() == true
             || state.value.transport?.seats == 0
             || state.value.transport?.color?.isEmpty() == true

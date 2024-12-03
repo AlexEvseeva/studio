@@ -15,8 +15,10 @@ import ua.rikutou.studio.data.local.DbDataSource
 import ua.rikutou.studio.data.local.entity.TransportEntity
 import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.transport.TransportApi
+import ua.rikutou.studio.data.remote.transport.TransportType
 import ua.rikutou.studio.data.remote.transport.dto.toEntity
 import ua.rikutou.studio.di.DbDeliveryDispatcher
+import java.util.Date
 
 class TransportDataSourceImpl constructor(
     private val transportApi: TransportApi,
@@ -63,6 +65,40 @@ class TransportDataSourceImpl constructor(
                 isSuccessful -> {}
                 else -> {
                     Log.e(TAG, "delete: Error: $transportId", )
+                }
+            }
+        }
+    }
+
+    override suspend fun loadTransport(
+        studioId: Long,
+        search: String?,
+        type: TransportType?,
+        manufactureDateFrom: Date?,
+        manufactureDateTo: Date?,
+        seatsFrom: Int?,
+        seatsTo: Int?
+    ): Unit = withContext(Dispatchers.IO) {
+        transportApi.getTransport(
+            studioId = studioId,
+            search = search,
+            type = type,
+            manufactureDateFrom = manufactureDateFrom?.time,
+            manufactureDateTo = manufactureDateTo?.time,
+            seatsFrom = seatsFrom,
+            seatsTo = seatsTo
+        ).run {
+            when {
+                isSuccessful -> {
+                    dbDataSource.db.transportDao.insert(
+                        body()?.map {
+                            it.toEntity()
+                        } ?: emptyList()
+                    )
+
+                }
+                else -> {
+                    Log.e(TAG, "loadTransport: Error: studioId: $studioId")
                 }
             }
         }

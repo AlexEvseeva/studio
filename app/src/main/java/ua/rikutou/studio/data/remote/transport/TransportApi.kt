@@ -9,11 +9,18 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import ua.rikutou.studio.data.remote.transport.dto.TransportDto
 import ua.rikutou.studio.data.remote.transport.dto.TransportRequest
+import java.util.Date
 
 interface TransportApi {
     @GET("transport")
     suspend fun getTransport(
         @Query("studioId") studioId: Long,
+        @Query("search") search: String?,
+        @Query("type") type: TransportType?,
+        @Query("manufactureDateFrom") manufactureDateFrom: Long?,
+        @Query("manufactureDateTo") manufactureDateTo: Long?,
+        @Query("seatsFrom") seatsFrom: Int?,
+        @Query("seatsTo") seatsTo: Int?
     ): Response<List<TransportDto>>
 
     @DELETE("transport/{transportId}")

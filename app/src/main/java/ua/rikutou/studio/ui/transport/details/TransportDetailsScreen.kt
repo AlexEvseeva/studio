@@ -112,7 +112,7 @@ private fun TransportDetailsScreenContent(
                     }
                 )
 
-                ElementContent(label = stringResource(R.string.typeLabel), name = state.transport?.type ?: "")
+                ElementContent(label = stringResource(R.string.typeLabel), name = state.transport?.type?.name ?: "")
                 ElementContent(label = stringResource(R.string.mark), name = state.transport?.mark ?: "")
                 ElementContent(label = stringResource(R.string.manufactoreDate), name = state.transport?.manufactureDate.toString())
                 ElementContent(label = stringResource(R.string.seatsLabel), name = (state.transport?.seats ?: 0).toString())

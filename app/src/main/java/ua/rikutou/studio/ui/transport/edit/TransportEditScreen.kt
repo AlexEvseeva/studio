@@ -99,7 +99,7 @@ fun TransportEditScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            value = state.transport?.type ?: "",
+            value = state.transport?.type?.name ?: "",
             onValueChange = {
                 onAction(TransportEdit.Action.OnFieldChanged(type = it))
             },

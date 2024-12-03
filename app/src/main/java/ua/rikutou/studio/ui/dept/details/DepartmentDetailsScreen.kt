@@ -171,7 +171,7 @@ fun DepartmentDetailsScreenContent(
                         items(state.department.transport) { transport ->
                             Item(
                                 title = transport.mark,
-                                comment = transport.type,
+                                comment = transport.type.name,
                                 onItemClick = {
                                     onAction(
                                         DepartmentDetails.Action.OnNavigate(

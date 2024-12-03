@@ -120,6 +120,7 @@ val topLevelRoutes = listOf(
     TopLevelRoute(name = "Loc", destination = NestedGraph.Location, icon = R.drawable.location),
     TopLevelRoute(name = "Equ", destination = NestedGraph.Equipment, icon = R.drawable.camera),
     TopLevelRoute(name = "Dept", destination = NestedGraph.Department, icon = R.drawable.department),
+    TopLevelRoute(name = "Tra", destination = NestedGraph.Transport, icon = R.drawable.transport),
     TopLevelRoute(name = "Act", destination = NestedGraph.Actor, icon = R.drawable.actors),
     TopLevelRoute(name = "Pro", destination = NestedGraph.Profile,icon = R.drawable.profile)
 )
@@ -132,6 +133,7 @@ private fun showBottomNavigation(navDestination: NavDestination?): Boolean =
             Screen.Actor::class.qualifiedName,
             Screen.Equipment::class.qualifiedName,
             Screen.Department.List::class.qualifiedName,
-            Screen.Equipment.List::class.qualifiedName
+            Screen.Equipment.List::class.qualifiedName,
+            Screen.Transport.List::class.qualifiedName
         )
     } ?: false

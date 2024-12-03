@@ -41,4 +41,5 @@
     <string name="seatsLabel">Seats</string>
     <string name="colorLabel">Color</string>
     <string name="technicalStateLabel">Technical state</string>
+    <string name="transportTitle">Transport</string>
 </resources>

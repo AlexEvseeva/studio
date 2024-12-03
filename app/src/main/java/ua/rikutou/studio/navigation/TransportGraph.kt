@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import ua.rikutou.studio.ui.transport.details.TransportDetailsScreen
 import ua.rikutou.studio.ui.transport.edit.TransportEditScreen
+import ua.rikutou.studio.ui.transport.list.TransportListScreen
 
 fun NavGraphBuilder.transportGraph(
     navController: NavController
@@ -15,7 +16,12 @@ fun NavGraphBuilder.transportGraph(
     navigation<NestedGraph.Transport>(
         startDestination = Screen.Transport.List
     ) {
-        composable<Screen.Transport.List> {}
+        composable<Screen.Transport.List> {
+            TransportListScreen(
+                viewModel = hiltViewModel(),
+                navController = navController
+            )
+        }
 
         composable<Screen.Transport.Details> {
             TransportDetailsScreen(
