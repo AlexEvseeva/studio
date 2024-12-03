@@ -131,7 +131,7 @@ class TransportEditViewModel @Inject constructor(
     }
 
     private fun getTransport() = viewModelScope.launch {
-        savedStateHandle.toRoute<Screen.Location.Edit>().locationId?.let { id ->
+        savedStateHandle.toRoute<Screen.Transport.Edit>().transportId?.let { id ->
             transportDataSource.getTransportById(transportId = id).collect { transport ->
                 _state.update {
                     it.copy(transport = transport)
