@@ -130,7 +130,6 @@ private fun showBottomNavigation(navDestination: NavDestination?): Boolean =
         destination.route in listOf(
             Screen.Studio.Main::class.qualifiedName,
             Screen.Location.List::class.qualifiedName,
-            Screen.Actor::class.qualifiedName,
             Screen.Equipment::class.qualifiedName,
             Screen.Department.List::class.qualifiedName,
             Screen.Equipment.List::class.qualifiedName,

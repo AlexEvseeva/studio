@@ -43,4 +43,8 @@
     <string name="technicalStateLabel">Technical state</string>
     <string name="transportTitle">Transport</string>
     <string name="actorsListScreenTitle">Actors</string>
+    <string name="nicknameLabel">Nickname</string>
+    <string name="roleLael">Role</string>
+    <string name="filesHeader">Films</string>
+    <string name="phonesHeader">Phones</string>
 </resources>

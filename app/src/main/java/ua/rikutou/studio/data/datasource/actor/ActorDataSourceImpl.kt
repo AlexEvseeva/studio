@@ -14,9 +14,13 @@ import kotlinx.coroutines.withContext
 import ua.rikutou.studio.data.local.DbDataSource
 import ua.rikutou.studio.data.local.entity.Actor
 import ua.rikutou.studio.data.local.entity.ActorEntity
+import ua.rikutou.studio.data.local.entity.ActorToPhoneEntity
 import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.actor.ActorApi
 import ua.rikutou.studio.data.remote.actor.dto.toEntity
+import ua.rikutou.studio.data.remote.actor.phone.dto.toEntity
+import ua.rikutou.studio.data.remote.actor.phone.dto.toRefEntity
+import ua.rikutou.studio.data.remote.film.dto.toEntity
 import ua.rikutou.studio.di.DbDeliveryDispatcher
 
 class ActorDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructor(
@@ -68,12 +72,47 @@ class ActorDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructor(
     }
 
     override suspend fun load(studioId: Long, search: String?): Unit = withContext(Dispatchers.IO) {
-        actorApi.getActors(studioId = studioId, search =search).run {
+        actorApi.getActors(studioId = studioId, search = if(search?.isEmpty() == true) null else search).run {
             when {
                 isSuccessful -> {
                     dbDataSource.db.actorDao.syncInsert(
                         body()?.map { it.toEntity() } ?: emptyList()
                     )
+                    dbDataSource.db.filmDao.insert(
+                        body()
+                            ?.map {
+                                it.films
+                            }
+                            ?.filterNotNull()
+                            ?.flatten()
+                            ?.map { it.toEntity() } ?: emptyList()
+                    )
+                    dbDataSource.db.actorToFilm.insert(
+                        body()
+                            ?.map {
+                                it.actorFilms
+                            }
+                            ?.filterNotNull()
+                            ?.flatten()
+                            ?.toSet()
+                            ?.map { it.toEntity() } ?: emptyList()
+                    )
+                    dbDataSource.db.phoneDao.insert(
+                        body()
+                            ?.map { it.phones }
+                            ?.filterNotNull()
+                            ?.flatten()
+                            ?.toSet()
+                            ?.map { it.toEntity() } ?: emptyList()
+                    )
+                    dbDataSource.db.actorToPhoneDao.insert(
+                        body()?.map { actor ->
+                            actor.phones?.map {
+                                it.toRefEntity(actorId = actor.actorId)
+                            }
+                        }?.filterNotNull()?.flatten() ?: emptyList()
+                    )
+
                 }
             }
         }

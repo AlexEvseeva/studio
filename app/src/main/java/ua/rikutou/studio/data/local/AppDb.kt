@@ -4,25 +4,38 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import ua.rikutou.studio.data.local.dao.ActorDao
+import ua.rikutou.studio.data.local.dao.ActorToFilmDao
+import ua.rikutou.studio.data.local.dao.ActorToPhoneDao
 import ua.rikutou.studio.data.local.dao.DepartmentDao
 import ua.rikutou.studio.data.local.dao.EquipmentDao
+import ua.rikutou.studio.data.local.dao.FilmDao
+import ua.rikutou.studio.data.local.dao.FilmToGenreDao
 import ua.rikutou.studio.data.local.dao.GalleryDao
+import ua.rikutou.studio.data.local.dao.GenreDao
 import ua.rikutou.studio.data.local.dao.LocationDao
 import ua.rikutou.studio.data.local.dao.LocationToGalleryDao
+import ua.rikutou.studio.data.local.dao.PhoneDao
 import ua.rikutou.studio.data.local.dao.SectionDao
 import ua.rikutou.studio.data.local.dao.StudioDao
 import ua.rikutou.studio.data.local.dao.TransportDao
 import ua.rikutou.studio.data.local.dao.UserDao
 import ua.rikutou.studio.data.local.entity.ActorEntity
+import ua.rikutou.studio.data.local.entity.ActorToFilmEntity
+import ua.rikutou.studio.data.local.entity.ActorToPhoneEntity
 import ua.rikutou.studio.data.local.entity.DepartmentEntity
 import ua.rikutou.studio.data.local.entity.EquipmentEntity
+import ua.rikutou.studio.data.local.entity.FilmEntity
+import ua.rikutou.studio.data.local.entity.FilmToGenreEntity
 import ua.rikutou.studio.data.local.entity.GalleryEntity
+import ua.rikutou.studio.data.local.entity.GenreEntity
 import ua.rikutou.studio.data.local.entity.LocationEntity
 import ua.rikutou.studio.data.local.entity.LocationToGalleryEntity
+import ua.rikutou.studio.data.local.entity.PhoneEntity
 import ua.rikutou.studio.data.local.entity.SectionEntity
 import ua.rikutou.studio.data.local.entity.StudioEntity
 import ua.rikutou.studio.data.local.entity.TransportEntity
 import ua.rikutou.studio.data.local.entity.UserEntity
+import ua.rikutou.studio.data.remote.actor.dto.ActorToFilmDto
 
 @Database(
     entities = [
@@ -35,9 +48,15 @@ import ua.rikutou.studio.data.local.entity.UserEntity
         SectionEntity::class,
         EquipmentEntity::class,
         TransportEntity::class,
-        ActorEntity::class
+        ActorEntity::class,
+        FilmEntity::class,
+        ActorToFilmEntity::class,
+        GenreEntity::class,
+        FilmToGenreEntity::class,
+        ActorToPhoneEntity::class,
+        PhoneEntity::class,
     ],
-    version = 12,
+    version = 14,
 )
 @TypeConverters(DbConverters::class)
 abstract class AppDb : RoomDatabase() {
@@ -51,4 +70,10 @@ abstract class AppDb : RoomDatabase() {
     abstract val equipmentDao: EquipmentDao
     abstract val transportDao: TransportDao
     abstract val actorDao: ActorDao
+    abstract val filmDao: FilmDao
+    abstract val actorToFilm: ActorToFilmDao
+    abstract val genreDao: GenreDao
+    abstract val filmToGenreDao: FilmToGenreDao
+    abstract val actorToPhoneDao: ActorToPhoneDao
+    abstract val phoneDao: PhoneDao
 }

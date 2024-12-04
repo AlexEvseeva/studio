@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import ua.rikutou.studio.ui.actor.detail.ActorDetailsScreen
 import ua.rikutou.studio.ui.actor.list.ActorListScreen
 
 fun NavGraphBuilder.actorGraph(navController: NavController) {
@@ -20,6 +21,10 @@ fun NavGraphBuilder.actorGraph(navController: NavController) {
         }
 
         composable<Screen.Actor.Details> {
+            ActorDetailsScreen(
+                viewModel = hiltViewModel(),
+                navController = navController
+            )
 
         }
 

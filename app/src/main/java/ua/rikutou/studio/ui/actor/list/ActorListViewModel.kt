@@ -1,5 +1,6 @@
 package ua.rikutou.studio.ui.actor.list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +24,8 @@ class ActorListViewModel @Inject constructor(
     private val actorDataSource: ActorDataSource,
     private val profileDataSource: ProfileDataSource
 ) : ViewModel() {
+    private val TAG by lazy { ActorListViewModel::class.simpleName }
+
     private val _state = MutableStateFlow(ActorList.State())
     val state = _state
         .onStart {
@@ -115,6 +118,7 @@ class ActorListViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         actors = if (search.isEmpty() && filter.dummy == null) {
+                            list.forEach { Log.d(TAG, "getActors: ${list.map { it.films }}") }
                             list
                         } else {
                             list.filter { actor ->
