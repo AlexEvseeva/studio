@@ -24,6 +24,8 @@ import ua.rikutou.studio.data.datasource.equipment.EquipmentDataSource
 import ua.rikutou.studio.data.datasource.equipment.EquipmentDataSourceImpl
 import ua.rikutou.studio.data.datasource.execute.ExecuteDataSource
 import ua.rikutou.studio.data.datasource.execute.ExecuteDataSourceImpl
+import ua.rikutou.studio.data.datasource.film.FilmDataSource
+import ua.rikutou.studio.data.datasource.film.FilmDataSourceImpl
 import ua.rikutou.studio.data.datasource.location.LocationDataSource
 import ua.rikutou.studio.data.datasource.location.LocationDataSourceImpl
 import ua.rikutou.studio.data.datasource.studio.StudioDataSource
@@ -184,6 +186,15 @@ object DataSource {
         @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
     ): ActorDataSource = ActorDataSourceImpl(
         actorApi = actorApi,
+        dbDataSource = dbDataSource,
+        dbDeliveryDispatcher = dbDeliveryDispatcher
+    )
+
+    @Provides
+    fun provideFilmDataSource(
+        dbDataSource: DbDataSource,
+        @DbDeliveryDispatcher dbDeliveryDispatcher: CloseableCoroutineDispatcher,
+    ): FilmDataSource = FilmDataSourceImpl(
         dbDataSource = dbDataSource,
         dbDeliveryDispatcher = dbDeliveryDispatcher
     )

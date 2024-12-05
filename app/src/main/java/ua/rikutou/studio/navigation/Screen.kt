@@ -47,4 +47,10 @@ sealed class Screen {
         @Serializable data class Edit(val transportId: Long? = null) : Transport()
     }
 
+    @Serializable sealed class Film: Screen() {
+        @Serializable data object List : Film()
+        @Serializable data class Details(val filmId: Long) : Film()
+        @Serializable data class Edit(val filmId: Long? = null) : Film()
+    }
+
 }

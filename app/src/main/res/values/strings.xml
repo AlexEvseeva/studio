@@ -47,4 +47,9 @@
     <string name="roleLael">Role</string>
     <string name="filesHeader">Films</string>
     <string name="phonesHeader">Phones</string>
+    <string name="directorLabel">Director</string>
+    <string name="writerLabel">Writer</string>
+    <string name="yearLabel">Year</string>
+    <string name="budgetLabel">Budget</string>
+    <string name="genreLabel">Genres</string>
 </resources>

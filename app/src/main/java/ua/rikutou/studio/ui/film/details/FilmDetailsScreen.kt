@@ -1,4 +1,4 @@
-package ua.rikutou.studio.ui.actor.detail
+package ua.rikutou.studio.ui.film.details
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -6,14 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -22,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -32,14 +28,12 @@ import ua.rikutou.studio.navigation.Screen
 import ua.rikutou.studio.ui.components.DeleteDialog
 import ua.rikutou.studio.ui.components.ElementContent
 import ua.rikutou.studio.ui.components.ElementTitle
-import ua.rikutou.studio.ui.components.ImageItem
 import ua.rikutou.studio.ui.components.Item
-import ua.rikutou.studio.ui.components.dateFormatter
 import ua.rikutou.studio.ui.components.yearFormatter
 
 @Composable
-fun ActorDetailsScreen(
-    viewModel: ActorDetailsViewModel,
+fun FilmDetailsScreen(
+    viewModel: FilmDetailsViewModel,
     navController: NavController
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -47,7 +41,7 @@ fun ActorDetailsScreen(
     LaunchedEffect(key1 = Unit) {
         viewModel.event.collect {
             when(it) {
-                is ActorDetails.Event.OnNavigate -> {
+                is FilmDetails.Event.OnNavigate -> {
                     if (it.destination == null) {
                         navController.popBackStack()
                     } else {
@@ -57,7 +51,7 @@ fun ActorDetailsScreen(
             }
         }
     }
-    ActorDetailsScreenContent(
+    FilmDetailsScreenContent(
         state = state,
         onAction = viewModel::onAction
     )
@@ -65,9 +59,9 @@ fun ActorDetailsScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ActorDetailsScreenContent(
-    state: ActorDetails.State,
-    onAction: (ActorDetails.Action) -> Unit
+fun FilmDetailsScreenContent(
+    state: FilmDetails.State,
+    onAction: (FilmDetails.Action) -> Unit
 ) {
     val bottomSheetState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
@@ -79,14 +73,15 @@ private fun ActorDetailsScreenContent(
 
     BottomSheetScaffold(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+        ,
         scaffoldState = bottomSheetState,
         sheetPeekHeight = 0.dp,
         sheetContent = {
             DeleteDialog(
                 modifier = Modifier.fillMaxWidth(),
                 onOk = {
-                    onAction(ActorDetails.Action.OnDelete)
+                    onAction(FilmDetails.Action.OnDelete)
                     coroutineScope.launch {
                         bottomSheetState.bottomSheetState.hide()
                     }
@@ -106,79 +101,51 @@ private fun ActorDetailsScreenContent(
             ) {
                 ElementTitle(
                     modifier = Modifier,
-                    title = state.actor?.entity?.nickName ?: state.actor?.entity?.name ?: "",
+                    title = state.film?.entity?.title ?: "",
                     isEditEnabled = true,
                     onEdit = {
                         onAction(
-                            ActorDetails.Action.OnNavigate(
-                                destination = Screen.Actor.Edit(
-                                    actorId = state.actor?.entity?.actorId
+                            FilmDetails.Action.OnNavigate(
+                                destination = Screen.Film.Edit(
+                                    filmId = state.film?.entity?.filmId
                                 )
                             )
                         )
                     }
                 )
-                ElementContent(
-                    label = stringResource(R.string.nameLabel),
-                    name = state.actor?.entity?.name ?: ""
-                )
-                ElementContent(
-                    label = stringResource(R.string.nicknameLabel),
-                    name = state.actor?.entity?.nickName ?: ""
-                )
-                ElementContent(
-                    label = stringResource(R.string.roleLael),
-                    name = state.actor?.entity?.role ?: ""
-                )
+                ElementContent(label = stringResource(R.string.titleLabel), name = state.film?.entity?.title ?: "")
+                ElementContent(label = stringResource(R.string.directorLabel), name = state.film?.entity?.director ?: "")
+                ElementContent(label = stringResource(R.string.writerLabel), name = state.film?.entity?.writer ?: "")
+                ElementContent(label = stringResource(R.string.yearLabel), name = state.film?.entity?.date?.let { yearFormatter.format(it) } ?: "")
+                ElementContent(label = stringResource(R.string.budgetLabel), name = state.film?.entity?.budget?.let { it.toString() } ?: "")
 
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1F),
+                        .weight(1F)
+                    ,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    state.actor?.films?.let { films ->
+                    if(state.film?.genres?.isNotEmpty() == true) {
                         item {
                             Text(
-                                modifier = Modifier
-                                    .padding(vertical = 4.dp),
-                                text = stringResource(R.string.filesHeader)
+                                text = stringResource(R.string.genreLabel)
                             )
                         }
-                        items(items = films) { film ->
-                            Item(
-                                title = film.title,
-                                comment = yearFormatter.format(film.date),
-                                onItemClick = {
-                                    onAction(
-                                        ActorDetails.Action.OnNavigate(
-                                            destination = Screen.Film.Details(filmId = film.filmId)
-                                        )
-                                    )
-                                }
+                        items(state.film.genres) { genre ->
+                            Text(
+                                text = genre.genre.name
                             )
                         }
                     }
-                    state.actor?.phones?.let { phones ->
-                        item {
-                            Text(
-                                modifier = Modifier
-                                    .padding(vertical = 4.dp),
-                                text = stringResource(R.string.phonesHeader)
-                            )
-                        }
-                        items(items = phones) { item ->
-                            Item(
-                                title = item.phoneNumber,
-                                comment = ""
-                            )
-                        }
-                    }
+
                 }
 
                 Button(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                    ,
+                    enabled = false,
                     onClick = {
                         coroutineScope.launch {
                             bottomSheetState.bottomSheetState.expand()
@@ -190,13 +157,5 @@ private fun ActorDetailsScreenContent(
             }
         },
     )
-}
 
-@Preview(showSystemUi = true)
-@Composable
-private fun ActorDetailsScreenPreview() {
-    ActorDetailsScreenContent(
-        state = ActorDetails.State(),
-        onAction = {}
-    )
 }
