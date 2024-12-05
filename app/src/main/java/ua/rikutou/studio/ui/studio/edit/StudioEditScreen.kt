@@ -1,5 +1,6 @@
 package ua.rikutou.studio.ui.studio.edit
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,6 +50,7 @@ fun StudioEditScreen(
     navController: NavController
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = Unit) {
         viewModel.event.collect {
@@ -61,6 +64,10 @@ fun StudioEditScreen(
                         launchSingleTop = true
                         restoreState = true
                     }
+                }
+
+                is StudioEdit.Event.OnMessage -> {
+                    Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 }
             }
         }

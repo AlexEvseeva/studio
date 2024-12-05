@@ -7,6 +7,7 @@ object StudioEdit {
     sealed interface Event{
         data object OnBack : Event
         data class OnNavigate(val destination: Screen) : Event
+        data class OnMessage(val message: String) : Event
     }
 
     sealed interface Action{

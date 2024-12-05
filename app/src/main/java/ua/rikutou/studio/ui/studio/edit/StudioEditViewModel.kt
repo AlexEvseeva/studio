@@ -112,13 +112,14 @@ class StudioEditViewModel
     }
 
     private fun saveStudio() = viewModelScope.launch {
-        if(state.value.name?.isEmpty() == true
-            && state.value.address?.isEmpty() == true
-            && state.value.postIndex?.isEmpty() == true
-            && state.value.site?.isEmpty() == true
-            && state.value.youtube?.isEmpty() == true
-            && state.value.facebook?.isEmpty() == true
+        if(state.value.name?.isBlank() == true
+            || state.value.address?.isBlank() == true
+            || state.value.postIndex?.isBlank() == true
+            || state.value.site?.isBlank() == true
+            || state.value.youtube?.isBlank() == true
+            || state.value.facebook?.isBlank() == true
             ) {
+            _event.emit(StudioEdit.Event.OnMessage("Please fill all fields"))
             return@launch
         } else {
             studioDataSource.createUpdateStudio(
