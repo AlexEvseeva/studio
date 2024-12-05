@@ -98,6 +98,7 @@ fun StudioEditScreenContent(
                     onAction(StudioEdit.Action.OnDelete)
                     coroutineScope.launch {
                         bottomSheetState.bottomSheetState.hide()
+                        onAction(StudioEdit.Action.OnDelete)
                     }
                 },
                 onCancel = {
