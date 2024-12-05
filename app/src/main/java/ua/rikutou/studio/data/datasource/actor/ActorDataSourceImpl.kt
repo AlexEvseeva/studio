@@ -14,9 +14,12 @@ import kotlinx.coroutines.withContext
 import ua.rikutou.studio.data.local.DbDataSource
 import ua.rikutou.studio.data.local.entity.Actor
 import ua.rikutou.studio.data.local.entity.ActorEntity
+import ua.rikutou.studio.data.local.entity.ActorToEmailEntity
 import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.actor.ActorApi
 import ua.rikutou.studio.data.remote.actor.dto.toEntity
+import ua.rikutou.studio.data.remote.email.dto.toActorRerEntity
+import ua.rikutou.studio.data.remote.email.dto.toEntity
 import ua.rikutou.studio.data.remote.phone.dto.toEntity
 import ua.rikutou.studio.data.remote.phone.dto.toActorRefEntity
 import ua.rikutou.studio.data.remote.film.dto.toEntity
@@ -110,6 +113,23 @@ class ActorDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructor(
                                 it.toActorRefEntity(actorId = actor.actorId)
                             }
                         }?.filterNotNull()?.flatten() ?: emptyList()
+                    )
+                    dbDataSource.db.emailDao.insert(
+                        body()
+                            ?.map {
+                                it.emails
+                            }
+                            ?.filterNotNull()
+                            ?.flatten()
+                            ?.map { it.toEntity() } ?: emptyList()
+                    )
+                    dbDataSource.db.actorToEmailDao.insert(
+                        body()
+                            ?.map { actor ->
+                                actor.emails?.map { it.toActorRerEntity(actorId = actor.actorId) }
+                            }
+                            ?.filterNotNull()
+                            ?.flatten() ?: emptyList()
                     )
 
                 }

@@ -52,4 +52,6 @@
     <string name="yearLabel">Year</string>
     <string name="budgetLabel">Budget</string>
     <string name="genreLabel">Genres</string>
+    <string name="emailsHeader">Emails</string>
+    <string name="sendEmail">Send email</string>
 </resources>

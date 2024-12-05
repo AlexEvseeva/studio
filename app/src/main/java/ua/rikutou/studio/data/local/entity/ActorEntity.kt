@@ -27,7 +27,12 @@ data class Actor(
         parentColumn = "actorId",
         entityColumn = "phoneId",
         associateBy = Junction(ActorToPhoneEntity::class)
-    ) val phones: List<PhoneEntity>
+    ) val phones: List<PhoneEntity>,
+    @Relation(
+        associateBy = Junction(ActorToEmailEntity::class),
+        parentColumn = "actorId",
+        entityColumn = "emailId"
+    ) val emails: List<EmailEntity>
 )
 
 fun ActorEntity.toDto() =

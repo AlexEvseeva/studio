@@ -108,7 +108,8 @@ class DepartmentEditViewModel @Inject constructor(
                         ),
                         sections = emptyList(),
                         transport = emptyList(),
-                        phones = emptyList()
+                        phones = emptyList(),
+                        emails = emptyList()
                     )
                 )
             }

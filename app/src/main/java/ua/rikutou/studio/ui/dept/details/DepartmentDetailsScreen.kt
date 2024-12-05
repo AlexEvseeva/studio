@@ -79,6 +79,7 @@ fun DepartmentDetailsScreenContent(
     )
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+    val sendEmaiTitle = stringResource(R.string.sendEmail)
 
     BottomSheetScaffold(
         modifier = Modifier
@@ -199,12 +200,28 @@ fun DepartmentDetailsScreenContent(
                                 title = phone.phoneNumber,
                                 comment = "",
                                 onItemClick = {
-                                    context.startActivity(
-                                        Intent(Intent.ACTION_DIAL).apply {
+                                    with(context) {
+                                        val intent = Intent(Intent.ACTION_DIAL).apply {
                                             data = Uri.parse("tel:${phone.phoneNumber}")
                                         }
-                                    )
+                                        if (intent.resolveActivity(packageManager) != null) {
+                                            startActivity(intent)
+                                        }
+                                    }
                                 }
+                            )
+                        }
+                    }
+                    if(state.department?.emails?.isNotEmpty() == true) {
+                        item {
+                            Text(
+                                text = stringResource(R.string.emailsHeader)
+                            )
+                        }
+                        items(state.department.emails) { email ->
+                            Item(
+                                title = email.email,
+                                comment = ""
                             )
                         }
                     }

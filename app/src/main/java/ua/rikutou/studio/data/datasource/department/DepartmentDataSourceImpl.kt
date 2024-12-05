@@ -17,6 +17,9 @@ import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.phone.dto.toEntity
 import ua.rikutou.studio.data.remote.department.DepartmentApi
 import ua.rikutou.studio.data.remote.department.dto.toEntity
+import ua.rikutou.studio.data.remote.email.dto.toActorRerEntity
+import ua.rikutou.studio.data.remote.email.dto.toDepartmentRefEntity
+import ua.rikutou.studio.data.remote.email.dto.toEntity
 import ua.rikutou.studio.data.remote.phone.dto.toDepartmentRefEntity
 import ua.rikutou.studio.data.remote.section.dto.toEntity
 import ua.rikutou.studio.data.remote.transport.dto.toEntity
@@ -72,6 +75,23 @@ class DepartmentDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) construc
                         body()
                             ?.map { dep ->
                                 dep.phones?.map { it.toDepartmentRefEntity(departmentId = dep.departmentId) }
+                            }
+                            ?.filterNotNull()
+                            ?.flatten() ?: emptyList()
+                    )
+                    dbDataSource.db.emailDao.insert(
+                        body()
+                            ?.map {
+                                it.emails
+                            }
+                            ?.filterNotNull()
+                            ?.flatten()
+                            ?.map { it.toEntity() } ?: emptyList()
+                    )
+                    dbDataSource.db.departmentToEmailDao.insert(
+                        body()
+                            ?.map { dept ->
+                                dept.emails?.map { it.toDepartmentRefEntity(departmentId = dept.departmentId) }
                             }
                             ?.filterNotNull()
                             ?.flatten() ?: emptyList()

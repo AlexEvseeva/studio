@@ -4,10 +4,13 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import ua.rikutou.studio.data.local.dao.ActorDao
+import ua.rikutou.studio.data.local.dao.ActorToEmailDao
 import ua.rikutou.studio.data.local.dao.ActorToFilmDao
 import ua.rikutou.studio.data.local.dao.ActorToPhoneDao
 import ua.rikutou.studio.data.local.dao.DepartmentDao
+import ua.rikutou.studio.data.local.dao.DepartmentToEmailDao
 import ua.rikutou.studio.data.local.dao.DepartmentToPhoneDao
+import ua.rikutou.studio.data.local.dao.EmailDao
 import ua.rikutou.studio.data.local.dao.EquipmentDao
 import ua.rikutou.studio.data.local.dao.FilmDao
 import ua.rikutou.studio.data.local.dao.FilmToGenreDao
@@ -21,10 +24,13 @@ import ua.rikutou.studio.data.local.dao.StudioDao
 import ua.rikutou.studio.data.local.dao.TransportDao
 import ua.rikutou.studio.data.local.dao.UserDao
 import ua.rikutou.studio.data.local.entity.ActorEntity
+import ua.rikutou.studio.data.local.entity.ActorToEmailEntity
 import ua.rikutou.studio.data.local.entity.ActorToFilmEntity
 import ua.rikutou.studio.data.local.entity.ActorToPhoneEntity
 import ua.rikutou.studio.data.local.entity.DepartmentEntity
+import ua.rikutou.studio.data.local.entity.DepartmentToEmailEntity
 import ua.rikutou.studio.data.local.entity.DepartmentToPhoneEntity
+import ua.rikutou.studio.data.local.entity.EmailEntity
 import ua.rikutou.studio.data.local.entity.EquipmentEntity
 import ua.rikutou.studio.data.local.entity.FilmEntity
 import ua.rikutou.studio.data.local.entity.FilmToGenreEntity
@@ -58,8 +64,11 @@ import ua.rikutou.studio.data.remote.actor.dto.ActorToFilmDto
         ActorToPhoneEntity::class,
         PhoneEntity::class,
         DepartmentToPhoneEntity::class,
+        ActorToEmailEntity::class,
+        DepartmentToEmailEntity::class,
+        EmailEntity::class
     ],
-    version = 15,
+    version = 16,
 )
 @TypeConverters(DbConverters::class)
 abstract class AppDb : RoomDatabase() {
@@ -80,4 +89,7 @@ abstract class AppDb : RoomDatabase() {
     abstract val actorToPhoneDao: ActorToPhoneDao
     abstract val phoneDao: PhoneDao
     abstract val departToPhoneDao: DepartmentToPhoneDao
+    abstract val emailDao: EmailDao
+    abstract val departmentToEmailDao: DepartmentToEmailDao
+    abstract val actorToEmailDao: ActorToEmailDao
 }

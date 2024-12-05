@@ -1,6 +1,7 @@
 package ua.rikutou.studio.data.remote.actor.dto
 
 import ua.rikutou.studio.data.local.entity.ActorEntity
+import ua.rikutou.studio.data.remote.email.dto.EmailDto
 import ua.rikutou.studio.data.remote.phone.dto.PhoneDto
 import ua.rikutou.studio.data.remote.film.dto.FilmDto
 
@@ -13,6 +14,7 @@ data class ActorDto(
     val films: List<FilmDto>? = null,
     val actorFilms: List<ActorToFilmDto>? = null,
     val phones: List<PhoneDto>? = null,
+    val emails: List<EmailDto>? = null,
 )
 
 fun ActorDto.toEntity() =

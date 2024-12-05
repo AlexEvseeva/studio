@@ -1,5 +1,7 @@
 package ua.rikutou.studio.ui.actor.detail
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +23,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -76,6 +79,7 @@ private fun ActorDetailsScreenContent(
     )
 
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     BottomSheetScaffold(
         modifier = Modifier
@@ -170,6 +174,29 @@ private fun ActorDetailsScreenContent(
                         items(items = phones) { item ->
                             Item(
                                 title = item.phoneNumber,
+                                comment = "",
+                                onItemClick = {
+                                    with(context) {
+                                        val intent = Intent(android.content.Intent.ACTION_DIAL).apply {
+                                            data = android.net.Uri.parse("tel:${item.phoneNumber}")
+                                        }
+                                        if (intent.resolveActivity(packageManager) != null) {
+                                            startActivity(intent)
+                                        }
+                                    }
+                                }
+                            )
+                        }
+                    }
+                    if(state.actor?.emails?.isNotEmpty() == true) {
+                        item {
+                            Text(
+                                text = stringResource(R.string.emailsHeader)
+                            )
+                        }
+                        items(state.actor.emails) { email ->
+                            Item(
+                                title = email.email,
                                 comment = ""
                             )
                         }

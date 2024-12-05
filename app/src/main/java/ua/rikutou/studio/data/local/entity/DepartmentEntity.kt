@@ -32,7 +32,12 @@ data class Department(
         associateBy = Junction(DepartmentToPhoneEntity::class),
         parentColumn = "departmentId",
         entityColumn = "phoneId"
-    ) val phones: List<PhoneEntity>
+    ) val phones: List<PhoneEntity>,
+    @Relation(
+        associateBy = Junction(DepartmentToEmailEntity::class),
+        parentColumn = "departmentId",
+        entityColumn = "emailId"
+    ) val emails: List<EmailEntity>
 )
 
 fun DepartmentEntity.toDto() =
