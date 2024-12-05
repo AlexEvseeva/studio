@@ -10,9 +10,12 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ua.rikutou.studio.data.local.AppDb
 import ua.rikutou.studio.data.local.DbDataSource
 import ua.rikutou.studio.data.local.entity.Location
 import ua.rikutou.studio.data.local.entity.LocationEntity
+import ua.rikutou.studio.data.local.entity.LocationSelectionEntity
 import ua.rikutou.studio.data.local.entity.LocationToGalleryEntity
 import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.gallery.dto.toEntity
@@ -33,6 +36,14 @@ class LocationDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructo
         dbDataSource.dbFlow
             .flatMapLatest { db ->
                 db.locationDao.getByStudioId(studioId = studioId)
+            }.flowOn(dbDeliveryDispatcher)
+            .catch { it.printStackTrace() }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override suspend fun getLocationsSelection(): Flow<List<Long>> =
+        dbDataSource.dbFlow
+            .flatMapLatest<AppDb, List<Long>> { db ->
+                db.locationSelectionDao.getSelected()
             }.flowOn(dbDeliveryDispatcher)
             .catch { it.printStackTrace() }
 
@@ -134,6 +145,14 @@ class LocationDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructo
                     }
                 }
             }
+        }
+    }
+
+    override suspend fun updateLocaitionSelection(locationId: Long, checked: Boolean): Unit = withContext(Dispatchers.IO) {
+        if(checked) {
+            dbDataSource.db.locationSelectionDao.insert(LocationSelectionEntity(locationId = locationId))
+        } else {
+            dbDataSource.db.locationSelectionDao.deleteById(locationId = locationId)
         }
     }
 }

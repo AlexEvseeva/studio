@@ -10,6 +10,7 @@ object Main {
 
     sealed interface Action {
         data object OnEdit : Action
+        data class OnNavigate(val destination: Screen) : Action
     }
 
     data class State (

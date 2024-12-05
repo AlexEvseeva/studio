@@ -3,6 +3,7 @@ package ua.rikutou.studio.ui.studio.main
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -21,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import ua.rikutou.studio.R
 import ua.rikutou.studio.data.local.entity.StudioEntity
+import ua.rikutou.studio.navigation.Screen
 import ua.rikutou.studio.ui.components.ElementContent
 import ua.rikutou.studio.ui.components.ElementTitle
 
@@ -82,6 +84,22 @@ private fun MainScreenContent(
             ElementContent(label = "site", name = state.value.studio?.site ?: "")
             ElementContent(label = "youtube site", name = state.value.studio?.youtube ?: "")
             ElementContent(label = "facebook site", name = state.value.studio?.facebook ?: "")
+
+            Spacer(
+                modifier = Modifier
+                    .weight(1F)
+            )
+            Button(
+                onClick = {
+                    onAction(Main.Action.OnNavigate(
+                        destination = Screen.Document.Create)
+                    )
+                }
+            ) {
+                Text(
+                    text = stringResource(R.string.createDocument)
+                )
+            }
         }
     }
 

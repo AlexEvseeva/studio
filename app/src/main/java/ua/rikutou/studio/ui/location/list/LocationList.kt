@@ -18,6 +18,7 @@ object LocationList {
         data class OnTypeSelect(val type: LocationType?) : Action
         data object OnClearFilters : Action
         data class OnDimansionsChange(val dimensions: Dimensions) : Action
+        data class OnCheckedChange(val locationId: Long, val checked: Boolean) : Action
     }
 
     data class State (
@@ -25,6 +26,7 @@ object LocationList {
         val locations: List<Location> = emptyList(),
         val isSearchActive: Boolean = false,
         val isSearchEnabled: Boolean = true,
-        val typeFilter: LocationType? = null
+        val typeFilter: LocationType? = null,
+        val selectedLocations: List<Long> = emptyList()
     )
 }

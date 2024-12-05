@@ -54,4 +54,9 @@
     <string name="genreLabel">Genres</string>
     <string name="emailsHeader">Emails</string>
     <string name="sendEmail">Send email</string>
+    <string name="createDocument">Create document</string>
+    <string name="documentHeader">Lease agreement</string>
+    <string name="documentMessage">The studio undertakes to provide the following equipment for rent:</string>
+    <string name="documentLocationsLabel">Locations:</string>
+    <string name="subtotal">"Subtotal: "</string>
 </resources>

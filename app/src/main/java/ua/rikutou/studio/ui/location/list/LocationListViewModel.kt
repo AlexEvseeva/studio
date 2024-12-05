@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
@@ -32,6 +33,7 @@ class LocationListViewModel
         profileDataSource.user?.studioId?.let {
             loadLocations(studioId = it, search = "")
             getLocations(studioId = it)
+            getSelectedLocations()
         }
     }
     private val _event = MutableSharedFlow<LocationList.Event>()
@@ -111,6 +113,13 @@ class LocationListViewModel
                         )
                     )
                 }
+
+                is LocationList.Action.OnCheckedChange -> {
+                    updateLocationSelection(
+                        locationId = action.locationId,
+                        checked = action.checked
+                    )
+                }
             }
         }
 
@@ -169,6 +178,20 @@ class LocationListViewModel
                 }
             }.collect {}
         }
+    }
+
+    private fun getSelectedLocations() = viewModelScope.launch(Dispatchers.IO) {
+        locationDataSource.getLocationsSelection().collect { selected ->
+            _state.update {
+                it.copy(
+                    selectedLocations = selected
+                )
+            }
+        }
+    }
+
+    private fun updateLocationSelection(locationId: Long, checked: Boolean) = viewModelScope.launch {
+        locationDataSource.updateLocaitionSelection(locationId = locationId, checked = checked)
     }
 }
 

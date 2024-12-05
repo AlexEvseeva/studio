@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
+import androidx.compose.material3.Checkbox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,8 +33,10 @@ fun Item(
     modifier: Modifier = Modifier,
     imageURL: String? = null,
     title: String,
+    checked: Boolean = false,
     comment: String,
-    onItemClick: () -> Unit = {}
+    onItemClick: () -> Unit = {},
+    onCheckedChange: (Boolean) -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -79,6 +82,12 @@ fun Item(
                 text = comment
             )
         }
+        Checkbox(
+            checked = checked,
+            onCheckedChange = {
+                onCheckedChange(it)
+            }
+        )
     }
 }
 

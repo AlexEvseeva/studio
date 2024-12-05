@@ -14,4 +14,5 @@ sealed class NestedGraph {
     @Serializable data object Section : NestedGraph()
     @Serializable data object Transport : NestedGraph()
     @Serializable data object Film : NestedGraph()
+    @Serializable data object Document : NestedGraph()
 }

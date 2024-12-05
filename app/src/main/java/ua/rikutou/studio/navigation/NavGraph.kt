@@ -43,6 +43,6 @@ fun NavGraph(
         sectionGraph(navController = navController)
         transportGraph(navController = navController)
         filmGraph(navController = navController)
-
+        documentGraph(navController = navController)
     }
 }

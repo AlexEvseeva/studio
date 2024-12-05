@@ -73,6 +73,10 @@ class MainViewModel
                 Main.Action.OnEdit -> {
                     _event.emit(Main.Event.OnNavigate(destination = Screen.Studio.Edit(studioId = _state.value.studio?.studioId)))
                 }
+
+                is Main.Action.OnNavigate -> {
+                    _event.emit(Main.Event.OnNavigate(destination = action.destination))
+                }
             }
         }
     }

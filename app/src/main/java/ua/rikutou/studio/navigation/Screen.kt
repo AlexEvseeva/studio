@@ -53,4 +53,8 @@ sealed class Screen {
         @Serializable data class Edit(val filmId: Long? = null) : Film()
     }
 
+    @Serializable sealed class Document : Screen() {
+        @Serializable data object Create : Document()
+    }
+
 }

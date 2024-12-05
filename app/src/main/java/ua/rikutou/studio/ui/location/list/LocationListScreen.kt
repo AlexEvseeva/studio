@@ -142,10 +142,15 @@ private fun LocationListScreenContent(
                                 ""
                             },
                             title = item.location.name,
-                            comment = item.location.address
-                        ) {
-                            onAction(LocationList.Action.OnNavigate(Screen.Location.Details(locationId = item.location.locationId)))
-                        }
+                            comment = item.location.address,
+                            checked = item.location.locationId in state.selectedLocations,
+                            onItemClick = {
+                                onAction(LocationList.Action.OnNavigate(Screen.Location.Details(locationId = item.location.locationId)))
+                            },
+                            onCheckedChange = { checked ->
+                                onAction(LocationList.Action.OnCheckedChange(locationId = item.location.locationId, checked = checked))
+                            }
+                        )
                     }
                 }
             }
