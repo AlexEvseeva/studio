@@ -1,5 +1,6 @@
 package ua.rikutou.studio.ui.signup
 
+import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ua.rikutou.studio.config.passwordMinLength
 import ua.rikutou.studio.data.datasource.DataSourceResponse
 import ua.rikutou.studio.data.datasource.auth.AuthDataSource
 import ua.rikutou.studio.navigation.Screen
@@ -47,7 +49,16 @@ class SignUpViewModel
         }
     }
     suspend fun register(name: String, password: String) {
-        if (state.value.name.isEmpty() || state.value.password.isEmpty()) {
+        if(state.value.name.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(state.value.name).matches()) {
+            _event.emit(SignUp.Event.OnMessage(message = "Name empty or not valid email"))
+            return
+        }
+        if (state.value.password.isEmpty()
+            || state.value.password.length < passwordMinLength
+            || !state.value.password.contains(Regex("""\d"""))
+            || !state.value.password.contains(Regex("""[A-Z]"""))
+            ) {
+            _event.emit(SignUp.Event.OnMessage(message = "Password must be longer then $passwordMinLength, has Uppercase and digits"))
             return
         }
         authRepository.signUp(
