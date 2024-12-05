@@ -1,6 +1,7 @@
-package ua.rikutou.studio.data.remote.actor.phone.dto
+package ua.rikutou.studio.data.remote.phone.dto
 
 import ua.rikutou.studio.data.local.entity.ActorToPhoneEntity
+import ua.rikutou.studio.data.local.entity.DepartmentToPhoneEntity
 import ua.rikutou.studio.data.local.entity.PhoneEntity
 
 data class PhoneDto(
@@ -14,8 +15,16 @@ fun PhoneDto.toEntity() =
         phoneNumber = phoneNumber
     )
 
-fun PhoneDto.toRefEntity(actorId: Long) =
+fun PhoneDto.toActorRefEntity(actorId: Long) =
     ActorToPhoneEntity(
         actorId = actorId,
         phoneId = phoneId
     )
+
+fun PhoneDto.toDepartmentRefEntity(departmentId: Long) =
+    DepartmentToPhoneEntity(
+        departmentId = departmentId,
+        phoneId = phoneId
+    )
+
+

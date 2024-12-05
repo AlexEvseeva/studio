@@ -1,7 +1,7 @@
 package ua.rikutou.studio.data.remote.actor.dto
 
 import ua.rikutou.studio.data.local.entity.ActorEntity
-import ua.rikutou.studio.data.remote.actor.phone.dto.PhoneDto
+import ua.rikutou.studio.data.remote.phone.dto.PhoneDto
 import ua.rikutou.studio.data.remote.film.dto.FilmDto
 
 data class ActorDto(

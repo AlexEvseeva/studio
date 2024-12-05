@@ -1,5 +1,7 @@
 package ua.rikutou.studio.ui.dept.details
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -75,6 +78,7 @@ fun DepartmentDetailsScreenContent(
         )
     )
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     BottomSheetScaffold(
         modifier = Modifier
@@ -179,6 +183,26 @@ fun DepartmentDetailsScreenContent(
                                                 transportId = transport.transportId
                                             )
                                         )
+                                    )
+                                }
+                            )
+                        }
+                    }
+                    if(state.department?.phones?.isNotEmpty() == true) {
+                        item {
+                            Text(
+                                text = stringResource(R.string.phonesHeader)
+                            )
+                        }
+                        items(state.department.phones) { phone ->
+                            Item(
+                                title = phone.phoneNumber,
+                                comment = "",
+                                onItemClick = {
+                                    context.startActivity(
+                                        Intent(Intent.ACTION_DIAL).apply {
+                                            data = Uri.parse("tel:${phone.phoneNumber}")
+                                        }
                                     )
                                 }
                             )

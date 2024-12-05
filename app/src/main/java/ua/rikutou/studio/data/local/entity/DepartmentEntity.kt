@@ -2,6 +2,7 @@ package ua.rikutou.studio.data.local.entity
 
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Junction
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import ua.rikutou.studio.data.remote.department.dto.DepartmentRequest
@@ -26,7 +27,12 @@ data class Department(
         entity = TransportEntity::class,
         entityColumn = "departmentId",
         parentColumn = "departmentId"
-    ) val transport: List<TransportEntity>
+    ) val transport: List<TransportEntity>,
+    @Relation(
+        associateBy = Junction(DepartmentToPhoneEntity::class),
+        parentColumn = "departmentId",
+        entityColumn = "phoneId"
+    ) val phones: List<PhoneEntity>
 )
 
 fun DepartmentEntity.toDto() =

@@ -14,8 +14,10 @@ import ua.rikutou.studio.data.local.entity.Department
 import ua.rikutou.studio.data.local.entity.DepartmentEntity
 import ua.rikutou.studio.data.local.entity.SectionEntity
 import ua.rikutou.studio.data.local.entity.toDto
+import ua.rikutou.studio.data.remote.phone.dto.toEntity
 import ua.rikutou.studio.data.remote.department.DepartmentApi
 import ua.rikutou.studio.data.remote.department.dto.toEntity
+import ua.rikutou.studio.data.remote.phone.dto.toDepartmentRefEntity
 import ua.rikutou.studio.data.remote.section.dto.toEntity
 import ua.rikutou.studio.data.remote.transport.dto.toEntity
 import ua.rikutou.studio.di.DbDeliveryDispatcher
@@ -57,6 +59,22 @@ class DepartmentDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) construc
                             ?.mapNotNull { it.transport }
                             ?.flatten()
                             ?.map { it.toEntity() } ?: emptyList()
+                    )
+                    dbDataSource.db.phoneDao.insert(
+                        body()
+                            ?.map {
+                                it.phones
+                            }
+                            ?.filterNotNull()?.flatten()
+                            ?.map { it.toEntity() } ?: emptyList()
+                    )
+                    dbDataSource.db.departToPhoneDao.insert(
+                        body()
+                            ?.map { dep ->
+                                dep.phones?.map { it.toDepartmentRefEntity(departmentId = dep.departmentId) }
+                            }
+                            ?.filterNotNull()
+                            ?.flatten() ?: emptyList()
                     )
                 }
                 else -> {

@@ -14,12 +14,11 @@ import kotlinx.coroutines.withContext
 import ua.rikutou.studio.data.local.DbDataSource
 import ua.rikutou.studio.data.local.entity.Actor
 import ua.rikutou.studio.data.local.entity.ActorEntity
-import ua.rikutou.studio.data.local.entity.ActorToPhoneEntity
 import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.actor.ActorApi
 import ua.rikutou.studio.data.remote.actor.dto.toEntity
-import ua.rikutou.studio.data.remote.actor.phone.dto.toEntity
-import ua.rikutou.studio.data.remote.actor.phone.dto.toRefEntity
+import ua.rikutou.studio.data.remote.phone.dto.toEntity
+import ua.rikutou.studio.data.remote.phone.dto.toActorRefEntity
 import ua.rikutou.studio.data.remote.film.dto.toEntity
 import ua.rikutou.studio.di.DbDeliveryDispatcher
 
@@ -108,7 +107,7 @@ class ActorDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructor(
                     dbDataSource.db.actorToPhoneDao.insert(
                         body()?.map { actor ->
                             actor.phones?.map {
-                                it.toRefEntity(actorId = actor.actorId)
+                                it.toActorRefEntity(actorId = actor.actorId)
                             }
                         }?.filterNotNull()?.flatten() ?: emptyList()
                     )

@@ -7,6 +7,7 @@ import ua.rikutou.studio.data.local.dao.ActorDao
 import ua.rikutou.studio.data.local.dao.ActorToFilmDao
 import ua.rikutou.studio.data.local.dao.ActorToPhoneDao
 import ua.rikutou.studio.data.local.dao.DepartmentDao
+import ua.rikutou.studio.data.local.dao.DepartmentToPhoneDao
 import ua.rikutou.studio.data.local.dao.EquipmentDao
 import ua.rikutou.studio.data.local.dao.FilmDao
 import ua.rikutou.studio.data.local.dao.FilmToGenreDao
@@ -23,6 +24,7 @@ import ua.rikutou.studio.data.local.entity.ActorEntity
 import ua.rikutou.studio.data.local.entity.ActorToFilmEntity
 import ua.rikutou.studio.data.local.entity.ActorToPhoneEntity
 import ua.rikutou.studio.data.local.entity.DepartmentEntity
+import ua.rikutou.studio.data.local.entity.DepartmentToPhoneEntity
 import ua.rikutou.studio.data.local.entity.EquipmentEntity
 import ua.rikutou.studio.data.local.entity.FilmEntity
 import ua.rikutou.studio.data.local.entity.FilmToGenreEntity
@@ -55,8 +57,9 @@ import ua.rikutou.studio.data.remote.actor.dto.ActorToFilmDto
         FilmToGenreEntity::class,
         ActorToPhoneEntity::class,
         PhoneEntity::class,
+        DepartmentToPhoneEntity::class,
     ],
-    version = 14,
+    version = 15,
 )
 @TypeConverters(DbConverters::class)
 abstract class AppDb : RoomDatabase() {
@@ -76,4 +79,5 @@ abstract class AppDb : RoomDatabase() {
     abstract val filmToGenreDao: FilmToGenreDao
     abstract val actorToPhoneDao: ActorToPhoneDao
     abstract val phoneDao: PhoneDao
+    abstract val departToPhoneDao: DepartmentToPhoneDao
 }
