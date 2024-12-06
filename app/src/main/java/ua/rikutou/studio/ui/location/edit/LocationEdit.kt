@@ -13,10 +13,10 @@ object LocationEdit {
         data class OnFieldChanged(
             val name: String? = null,
             val address: String? = null,
-            val width: Float? = null,
-            val length: Float? = null,
-            val height: Float? = null,
-            val rentPrice: Float? = null,
+            val width: String? = null,
+            val length: String? = null,
+            val height: String? = null,
+            val rentPrice: String? = null,
         ) : Action
         data object OnSave : Action
         data class OnTypeSelected(val option: String) : Action

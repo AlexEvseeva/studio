@@ -56,24 +56,28 @@ class LocationEditViewModel
                         s.copy(location = s.location?.copy(address = action.address))
                     }
                 }
-                action.width?.let {
+                action.width?.let { width ->
+                    val w = width.runCatching { width.toFloat() }.getOrNull() ?: 0F
                     _state.update { s ->
-                        s.copy(location = s.location?.copy(width = action.width))
+                        s.copy(location = s.location?.copy(width = if(w >= 0F) w else -1 * w ))
                     }
                 }
-                action.length?.let {
+                action.length?.let { length ->
+                    val l = length.runCatching { length.toFloat() }.getOrNull() ?: 0F
                     _state.update { s ->
-                        s.copy(location = s.location?.copy(length = action.length))
+                        s.copy(location = s.location?.copy(length = if(l >= 0F) l else -1 * l))
                     }
                 }
-                action.height?.let {
+                action.height?.let { height ->
+                    val h = height.runCatching { height.toFloat() }.getOrNull() ?: 0F
                     _state.update { s ->
-                        s.copy(location = s.location?.copy(height = action.height))
+                        s.copy(location = s.location?.copy(height = if(h >= 0F) h else -1 * h))
                     }
                 }
-                action.rentPrice?.let {
+                action.rentPrice?.let { price ->
+                    val p = price.runCatching { price.toFloat() }.getOrNull() ?: 0F
                     _state.update { s ->
-                        s.copy(location = s.location?.copy(rentPrice = action.rentPrice))
+                        s.copy(location = s.location?.copy(rentPrice = if(p >= 0F) p else -1 * p))
                     }
                 }
             }

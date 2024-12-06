@@ -26,6 +26,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.collect
 import ua.rikutou.studio.R
+import ua.rikutou.studio.config.floatFieldMaxLength
+import ua.rikutou.studio.config.locationAddressLength
+import ua.rikutou.studio.config.locationNameLength
 import ua.rikutou.studio.data.remote.location.LocationType
 import ua.rikutou.studio.ui.components.ElementTitle
 import ua.rikutou.studio.ui.studio.edit.StudioEdit
@@ -71,7 +74,9 @@ fun LocationEditScreenContent(
                 .padding(bottom = 8.dp),
             value = state.value.location?.name ?: "",
             onValueChange = {
-                onAction(LocationEdit.Action.OnFieldChanged(name = it))
+                if(it.length < locationNameLength) {
+                    onAction(LocationEdit.Action.OnFieldChanged(name = it))
+                }
             },
             label = {
                 Text(text = "Name")
@@ -83,7 +88,9 @@ fun LocationEditScreenContent(
                 .padding(bottom = 8.dp),
             value = state.value.location?.address ?: "",
             onValueChange = {
-                onAction(LocationEdit.Action.OnFieldChanged(address = it))
+                if(it.length < locationAddressLength) {
+                    onAction(LocationEdit.Action.OnFieldChanged(address = it))
+                }
             },
             label = {
                 Text(text = "Address")
@@ -98,7 +105,9 @@ fun LocationEditScreenContent(
                 it.toString()
             } ?: "",
             onValueChange = {
-                onAction(LocationEdit.Action.OnFieldChanged(width = it.toFloat()))
+                if(it.length < floatFieldMaxLength) {
+                    onAction(LocationEdit.Action.OnFieldChanged(width = it))
+                }
             },
             label = {
                 Text(text = "Width")
@@ -112,7 +121,9 @@ fun LocationEditScreenContent(
                 it.toString()
             } ?: "",
             onValueChange = {
-                onAction(LocationEdit.Action.OnFieldChanged(length = it.toFloat()))
+                if(it.length < floatFieldMaxLength) {
+                    onAction(LocationEdit.Action.OnFieldChanged(length = it))
+                }
             },
             label = {
                 Text(text = "Length")
@@ -126,7 +137,9 @@ fun LocationEditScreenContent(
                 it.toString()
             } ?: "",
             onValueChange = {
-                onAction(LocationEdit.Action.OnFieldChanged(height = it.toFloat()))
+                if(it.length < floatFieldMaxLength) {
+                    onAction(LocationEdit.Action.OnFieldChanged(height = it))
+                }
             },
             label = {
                 Text(text = "Height")
@@ -167,7 +180,9 @@ fun LocationEditScreenContent(
                 it.toString()
             } ?: "",
             onValueChange = {
-                onAction(LocationEdit.Action.OnFieldChanged(rentPrice = it.toFloat()))
+                if(it.length < floatFieldMaxLength) {
+                    onAction(LocationEdit.Action.OnFieldChanged(rentPrice = it))
+                }
             },
             label = {
                 Text(text = "Rent price")
