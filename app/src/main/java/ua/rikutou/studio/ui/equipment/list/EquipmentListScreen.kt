@@ -90,17 +90,21 @@ private fun EquipmentListScreenContent(
                 Item(
                     modifier = Modifier.fillMaxWidth(),
                     title = item.name,
-                    comment = item.comment
-                ) {
-                    onAction(
-                        EquipmentList.Action
-                            .OnNavigate(
-                                Screen.Equipment.Details(
-                                    equipmentId = item.equipmentId
+                    comment = item.comment,
+                    onItemClick = {
+                        onAction(
+                            EquipmentList.Action
+                                .OnNavigate(
+                                    Screen.Equipment.Details(
+                                        equipmentId = item.equipmentId
+                                    )
                                 )
-                            )
-                    )
-                }
+                        )
+                    },
+                    onCheckedChange = {
+
+                    }
+                )
             }
         }
     }

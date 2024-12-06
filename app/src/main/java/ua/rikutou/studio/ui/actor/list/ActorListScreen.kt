@@ -123,16 +123,20 @@ fun ActorListScreenContent(
                         Item(
                             modifier = Modifier.fillMaxWidth(),
                             title = item.entity.nickName ?: item.entity.name,
-                            comment = item.entity.role ?: ""
-                        ) {
-                            onAction(
-                                ActorList.Action.OnNavigate(
-                                    destionation = Screen.Actor.Details(
-                                        actorId = item.entity.actorId
+                            comment = item.entity.role ?: "",
+                            onItemClick = {
+                                onAction(
+                                    ActorList.Action.OnNavigate(
+                                        destionation = Screen.Actor.Details(
+                                            actorId = item.entity.actorId
+                                        )
                                     )
                                 )
-                            )
-                        }
+                            },
+                            onCheckedChange = {
+
+                            }
+                        )
                     }
                 }
             }

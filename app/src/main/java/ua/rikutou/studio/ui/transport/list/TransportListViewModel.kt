@@ -135,6 +135,13 @@ class TransportListViewModel @Inject constructor(
                         )
                     }
                 }
+
+                is TransportList.Action.OnCheckedChange -> {
+                    transportDataSource.updateSelection(
+                        transportId = action.transportId,
+                        checked = action.checked
+                    )
+                }
             }
         }
 

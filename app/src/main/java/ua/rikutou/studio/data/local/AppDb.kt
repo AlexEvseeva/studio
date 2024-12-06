@@ -23,6 +23,7 @@ import ua.rikutou.studio.data.local.dao.PhoneDao
 import ua.rikutou.studio.data.local.dao.SectionDao
 import ua.rikutou.studio.data.local.dao.StudioDao
 import ua.rikutou.studio.data.local.dao.TransportDao
+import ua.rikutou.studio.data.local.dao.TransportSelectionDao
 import ua.rikutou.studio.data.local.dao.UserDao
 import ua.rikutou.studio.data.local.entity.ActorEntity
 import ua.rikutou.studio.data.local.entity.ActorToEmailEntity
@@ -44,6 +45,7 @@ import ua.rikutou.studio.data.local.entity.PhoneEntity
 import ua.rikutou.studio.data.local.entity.SectionEntity
 import ua.rikutou.studio.data.local.entity.StudioEntity
 import ua.rikutou.studio.data.local.entity.TransportEntity
+import ua.rikutou.studio.data.local.entity.TransportSelectionEntity
 import ua.rikutou.studio.data.local.entity.UserEntity
 import ua.rikutou.studio.data.remote.actor.dto.ActorToFilmDto
 
@@ -69,9 +71,10 @@ import ua.rikutou.studio.data.remote.actor.dto.ActorToFilmDto
         ActorToEmailEntity::class,
         DepartmentToEmailEntity::class,
         EmailEntity::class,
-        LocationSelectionEntity::class
+        LocationSelectionEntity::class,
+        TransportSelectionEntity::class
     ],
-    version = 17,
+    version = 18,
 )
 @TypeConverters(DbConverters::class)
 abstract class AppDb : RoomDatabase() {
@@ -96,4 +99,5 @@ abstract class AppDb : RoomDatabase() {
     abstract val departmentToEmailDao: DepartmentToEmailDao
     abstract val actorToEmailDao: ActorToEmailDao
     abstract val locationSelectionDao: LocationSelectionDao
+    abstract val transportSelectionDao: TransportSelectionDao
 }

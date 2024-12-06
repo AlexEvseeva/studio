@@ -11,8 +11,10 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import ua.rikutou.studio.data.local.AppDb
 import ua.rikutou.studio.data.local.DbDataSource
 import ua.rikutou.studio.data.local.entity.TransportEntity
+import ua.rikutou.studio.data.local.entity.TransportSelectionEntity
 import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.transport.TransportApi
 import ua.rikutou.studio.data.remote.transport.TransportType
@@ -103,4 +105,26 @@ class TransportDataSourceImpl constructor(
             }
         }
     }
+
+    override suspend fun updateSelection(transportId: Long, checked: Boolean): Unit = withContext(Dispatchers.IO) {
+        if(checked) {
+            dbDataSource.db.transportSelectionDao
+                .insert(
+                    TransportSelectionEntity(
+                        transportId = transportId
+                    )
+                )
+        } else {
+            dbDataSource.db.transportSelectionDao
+                .delete(transportId = transportId)
+        }
+    }
+
+    override suspend fun getSelections(): Flow<List<Long>> =
+        dbDataSource.dbFlow
+            .flatMapLatest<AppDb, List<Long>> { db ->
+                db.transportSelectionDao.getAll()
+            }
+            .flowOn(dbDeliveryDispatcher)
+            .catch { it.printStackTrace() }
 }

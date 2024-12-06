@@ -90,10 +90,14 @@ private fun DepartmentListScreenContent(
                 Item(
                     modifier = Modifier.fillMaxWidth(),
                     title = item.type,
-                    comment = item.workHours
-                ) {
-                    onAction(Department.Action.OnNavigate(Screen.Department.Details(departmentId = item.departmentId)))
-                }
+                    comment = item.workHours,
+                    onItemClick = {
+                        onAction(Department.Action.OnNavigate(Screen.Department.Details(departmentId = item.departmentId)))
+                    },
+                    onCheckedChange = {
+
+                    }
+                )
             }
         }
         

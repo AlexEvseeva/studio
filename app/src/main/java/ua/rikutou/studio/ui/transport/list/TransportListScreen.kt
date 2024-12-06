@@ -144,10 +144,24 @@ private fun TransportListScreenContent(
                         Item(
                             modifier = Modifier.fillMaxWidth(),
                             title = item.mark,
-                            comment = item.type.name
-                        ) {
-                            onAction(TransportList.Action.OnNavigate(Screen.Transport.Details(transportId = item.transportId)))
-                        }
+                            comment = item.type.name,
+                            onItemClick = {
+                                onAction(
+                                    TransportList.Action.OnNavigate(
+                                        Screen.Transport.Details(transportId = item.transportId)
+                                    )
+                                )
+                            },
+                            onCheckedChange = { checked ->
+                                onAction(
+                                    TransportList.Action.OnCheckedChange(
+                                        transportId = item.transportId,
+                                        checked = checked
+                                    )
+                                )
+                            }
+
+                        )
                     }
                 }
             }
