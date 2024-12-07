@@ -19,6 +19,7 @@ interface TransportDataSource {
         seatsFrom: Int? = null,
         seatsTo: Int? = null,
     )
-    suspend fun updateSelection(transportId: Long, checked: Boolean)
     suspend fun getSelections(): Flow<List<Long>>
+    suspend fun addToCart(transportId: Long)
+    suspend fun removeFromCart(transportIds: List<Long>)
 }

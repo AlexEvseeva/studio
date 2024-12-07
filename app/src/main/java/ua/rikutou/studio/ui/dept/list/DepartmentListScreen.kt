@@ -94,7 +94,7 @@ private fun DepartmentListScreenContent(
                     onItemClick = {
                         onAction(Department.Action.OnNavigate(Screen.Department.Details(departmentId = item.departmentId)))
                     },
-                    onCheckedChange = {
+                    onAddToCart = {
 
                     }
                 )

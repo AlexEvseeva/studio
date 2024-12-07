@@ -20,7 +20,6 @@ import ua.rikutou.studio.R
 import ua.rikutou.studio.navigation.Screen
 import ua.rikutou.studio.ui.components.ElementTitle
 import ua.rikutou.studio.ui.components.Item
-import ua.rikutou.studio.ui.location.list.LocationList
 
 @Composable
 fun EquipmentListScreen(
@@ -85,24 +84,25 @@ private fun EquipmentListScreenContent(
         ) {
             items(
                 items = state.equipment,
-                key = { it.equipmentId }
+                key = { it.equipment.equipmentId }
             ) { item ->
                 Item(
                     modifier = Modifier.fillMaxWidth(),
-                    title = item.name,
-                    comment = item.comment,
+                    title = item.equipment.name,
+                    comment = item.equipment.comment,
+                    checked = item.isSelected,
                     onItemClick = {
                         onAction(
                             EquipmentList.Action
                                 .OnNavigate(
                                     Screen.Equipment.Details(
-                                        equipmentId = item.equipmentId
+                                        equipmentId = item.equipment.equipmentId
                                     )
                                 )
                         )
                     },
-                    onCheckedChange = {
-
+                    onAddToCart = {
+                        onAction(EquipmentList.Action.OnAddToCart(equipmentId = item.equipment.equipmentId))
                     }
                 )
             }

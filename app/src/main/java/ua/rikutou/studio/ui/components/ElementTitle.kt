@@ -36,12 +36,14 @@ fun ElementTitle(
     isEditActive: Boolean = false,
     isSearchEnabled: Boolean = false,
     isSearchActive: Boolean = false,
+    isCartEnable: Boolean = false,
     onEdit: () -> Unit = {},
     onAdd: () -> Unit = {},
     onSearchChanged: (String) -> Unit = {},
     onSearch: () -> Unit = {},
     onCancel: () -> Unit = {},
     onClearFilters: () -> Unit = {},
+    onCart: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -156,6 +158,18 @@ fun ElementTitle(
                 )
             }
         }
+        if(isCartEnable) {
+            Image(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .clickable {
+                        onCart()
+                    },
+                painter = painterResource(R.drawable.cart),
+                contentDescription = "Clear"
+            )
+        }
+
     }
 }
 

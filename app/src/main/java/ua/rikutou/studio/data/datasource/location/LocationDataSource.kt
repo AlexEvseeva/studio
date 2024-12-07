@@ -3,7 +3,6 @@ package ua.rikutou.studio.data.datasource.location
 import kotlinx.coroutines.flow.Flow
 import ua.rikutou.studio.data.local.entity.Location
 import ua.rikutou.studio.data.local.entity.LocationEntity
-import ua.rikutou.studio.data.local.entity.LocationSelectionEntity
 import ua.rikutou.studio.data.remote.location.LocationType
 
 
@@ -24,5 +23,6 @@ interface LocationDataSource {
     suspend fun getLocationById(locationId: Long): Flow<Location>
     suspend fun save(location: LocationEntity)
     suspend fun delete(locationId: Long)
-    suspend fun updateLocaitionSelection(locationId: Long, checked: Boolean)
+    suspend fun addToCart(locationId: Long)
+    suspend fun removeFromCart(locationIds: List<Long>)
 }

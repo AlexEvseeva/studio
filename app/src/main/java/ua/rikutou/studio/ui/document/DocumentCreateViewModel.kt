@@ -14,19 +14,31 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ua.rikutou.studio.data.datasource.equipment.EquipmentDataSource
 import ua.rikutou.studio.data.datasource.location.LocationDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
+import ua.rikutou.studio.data.datasource.studio.StudioDataSource
+import ua.rikutou.studio.data.datasource.transport.TransportDataSource
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
 class DocumentCreateViewModel @Inject constructor(
     private val locationDataSource: LocationDataSource,
     private val profileDataSource: ProfileDataSource,
+    private val studioDataSource: StudioDataSource,
+    private val transportDataSource: TransportDataSource,
+    private val equipmentDataSource: EquipmentDataSource,
 ) : ViewModel() {
     private val TAG by lazy { DocumentCreateViewModel::class.simpleName }
     private val _state = MutableStateFlow(DocumentCreate.State())
     val state = _state.onStart {
-        getSelectedLocations()
+        profileDataSource.user?.studioId?.let { studioId ->
+            getSelectedLocations(studioId = studioId)
+            getStudio(studioId = studioId)
+            getSelectedTransport()
+            getSelectedEquipment(studioId = studioId)
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000L),
@@ -36,27 +48,100 @@ class DocumentCreateViewModel @Inject constructor(
     private val _event = MutableSharedFlow<DocumentCreate.Event>()
     val event = _event.asSharedFlow()
 
-    fun onAction(actin: DocumentCreate.Action) {
+    fun onAction(actin: DocumentCreate.Action) = viewModelScope.launch {
+        when(actin) {
+            is DocumentCreate.Action.OnNavigate -> {
+                _event.emit(DocumentCreate.Event.OnNavigate(destination = actin.destination))
+            }
+            is DocumentCreate.Action.OnRemoveEquipmentFromCart -> {
+                equipmentDataSource.removeFromCart(listOf(actin.equipmentId))
+            }
+            is DocumentCreate.Action.OnRemoveLocationFromCart -> {
+                locationDataSource.removeFromCart(listOf(actin.locationId))
+            }
+            is DocumentCreate.Action.OnRemoveTransportFromCart -> {
+                transportDataSource.removeFromCart(listOf(actin.transportId))
+            }
+
+            is DocumentCreate.Action.OnSelectFromDate -> {
+                val currentDate = Date().time
+                if(actin.time >= currentDate) {
+                    _state.update {
+                        it.copy(fromDate = Date(actin.time))
+                    }
+                } else {
+                    _event.emit(DocumentCreate.Event.OnMessage(message = "Date in past not allowed"))
+                }
+            }
+            is DocumentCreate.Action.OnSelectToDays -> {
+                _state.update {
+                    it.copy(toDays = when {
+                        actin.days < 0 -> actin.days * -1
+                        actin.days == 0 -> 1
+                        else -> actin.days
+                    })
+                }
+            }
+        }
 
     }
 
-    private fun getSelectedLocations() = viewModelScope.launch {
-        profileDataSource.user?.studioId?.let { studioId ->
-            combine(
-                locationDataSource.getLocationsSelection(),
-                locationDataSource.getLocationsByStudioId(studioId = studioId)
-            ) { selected, list ->
-                val filteredLocations = list.filter { it.location.locationId in selected }
-                Log.d(TAG, "getSelectedLocations: ${selected.size}, ${list.size}: $filteredLocations")
-                _state.update {
-                    it.copy(
-                        locations = filteredLocations,
-                        locationSum = filteredLocations.fold(initial = 0F) { acc, location ->
-                            acc + location.location.rentPrice
-                        }
-                    )
-                }
-            }.collect()
+    private fun getSelectedLocations(studioId: Long) = viewModelScope.launch {
+        combine(
+            locationDataSource.getLocationsSelection(),
+            locationDataSource.getLocationsByStudioId(studioId = studioId)
+        ) { selected, list ->
+            val filteredLocations = list.filter { it.location.locationId in selected }
+            _state.update {
+                it.copy(
+                    locations = filteredLocations,
+                    locationSum = filteredLocations.fold(initial = 0F) { acc, location ->
+                        acc + location.location.rentPrice
+                    }
+                )
+            }
+        }.collect()
+    }
+
+    private fun getSelectedTransport() = viewModelScope.launch {
+        combine(
+            transportDataSource.getTransport(),
+            transportDataSource.getSelections()
+        ) { list, selection ->
+            val filtered = list.filter { it.transportId in selection }
+            _state.update {
+                it.copy(
+                    transport = filtered,
+                )
+            }
+        }.collect()
+    }
+
+    private fun getSelectedEquipment(studioId: Long) = viewModelScope.launch {
+        combine(
+            equipmentDataSource.getAllEquipment(studioId = studioId),
+            equipmentDataSource.getAllSelected()
+        ) { list, selected ->
+            val filterd = list.filter { it.equipmentId in selected }
+            _state.update {
+                it.copy(
+                    equipment = filterd,
+                    equipmentSum = filterd.fold(initial = 0F) { acc, equipment ->
+                        acc + equipment.rentPrice
+                    }
+                )
+            }
+        }.collect()
+    }
+
+    private fun getStudio(studioId: Long) = viewModelScope.launch {
+        studioDataSource.getStudioById(studioId = studioId).collect { studio ->
+            _state.update {
+                it.copy(
+                    studio = studio
+                )
+            }
         }
+
     }
 }

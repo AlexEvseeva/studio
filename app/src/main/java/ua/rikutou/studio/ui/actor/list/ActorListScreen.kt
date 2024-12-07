@@ -133,7 +133,7 @@ fun ActorListScreenContent(
                                     )
                                 )
                             },
-                            onCheckedChange = {
+                            onAddToCart = {
 
                             }
                         )

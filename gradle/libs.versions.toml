@@ -20,6 +20,7 @@ room = "2.6.1"
 kotlinxSerialization = "1.6.3"
 material = "1.7.4"
 coil = "3.0.0-rc02"
+itextPdf = "7.1.15"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -56,6 +57,7 @@ kotlinx-serialization-json = { group="org.jetbrains.kotlinx", name="kotlinx-seri
 androidx-compose-material = {group = "androidx.compose.material", name = "material", version.ref = "material"}
 coil-compose = {group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil"}
 coil-network = {group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil"}
+itextPdf = { group= "com.itextpdf", name="itext7-core", version.ref="itextPdf"}
 
 
 [plugins]

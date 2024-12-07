@@ -9,13 +9,13 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.location.LocationDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
+import ua.rikutou.studio.data.local.entity.Location
 import ua.rikutou.studio.data.remote.location.LocationType
 import javax.inject.Inject
 
@@ -33,7 +33,7 @@ class LocationListViewModel
         profileDataSource.user?.studioId?.let {
             loadLocations(studioId = it, search = "")
             getLocations(studioId = it)
-            getSelectedLocations()
+//            getSelectedLocations()
         }
     }
     private val _event = MutableSharedFlow<LocationList.Event>()
@@ -114,11 +114,8 @@ class LocationListViewModel
                     )
                 }
 
-                is LocationList.Action.OnCheckedChange -> {
-                    updateLocationSelection(
-                        locationId = action.locationId,
-                        checked = action.checked
-                    )
+                is LocationList.Action.OnAddToCart -> {
+                    addLocationToCart(locationId = action.locationId)
                 }
             }
         }
@@ -153,12 +150,13 @@ class LocationListViewModel
         viewModelScope.launch(Dispatchers.IO) {
             combine(
                 locationDataSource.getLocationsByStudioId(studioId = studioId),
+                locationDataSource.getLocationsSelection(),
                 search,
                 filter
-                ) { list, search, filter ->
+                ) { list, selected, search, filter ->
                 _state.update {
                     it.copy(
-                        locations = if (search.isEmpty() && filter.byType == null && filter.dimensions == null) {
+                        locationsHolder = if (search.isEmpty() && filter.byType == null && filter.dimensions == null) {
                             list
                         } else {
                             list.filter { location ->
@@ -173,6 +171,8 @@ class LocationListViewModel
                                                     && d.heightTo?.let { location.location.height <= it } ?: true
                                         } ?: true)
                             }
+                        }.map {
+                            LocationHolder(location = it, isSelected = it.location.locationId in selected)
                         }
                     )
                 }
@@ -180,18 +180,8 @@ class LocationListViewModel
         }
     }
 
-    private fun getSelectedLocations() = viewModelScope.launch(Dispatchers.IO) {
-        locationDataSource.getLocationsSelection().collect { selected ->
-            _state.update {
-                it.copy(
-                    selectedLocations = selected
-                )
-            }
-        }
-    }
-
-    private fun updateLocationSelection(locationId: Long, checked: Boolean) = viewModelScope.launch {
-        locationDataSource.updateLocaitionSelection(locationId = locationId, checked = checked)
+    private fun addLocationToCart(locationId: Long) = viewModelScope.launch {
+        locationDataSource.addToCart(locationId = locationId)
     }
 }
 
@@ -207,4 +197,9 @@ data class Dimensions(
     val lengthTo: Int? = null,
     val heightFrom: Int? = null,
     val heightTo: Int? = null,
+)
+
+data class LocationHolder(
+    val location: Location,
+    val isSelected: Boolean = false,
 )

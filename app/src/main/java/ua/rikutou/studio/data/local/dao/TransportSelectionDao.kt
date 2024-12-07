@@ -12,8 +12,8 @@ interface TransportSelectionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: TransportSelectionEntity)
 
-    @Query("DELETE FROM transportselectionentity WHERE transportId=:transportId")
-    suspend fun delete(transportId: Long)
+    @Query("DELETE FROM transportselectionentity WHERE transportId IN (:transportIds)")
+    suspend fun delete(transportIds: List<Long>)
 
     @Query("SELECT transportId FROM TransportSelectionEntity")
     fun getAll(): Flow<List<Long>>

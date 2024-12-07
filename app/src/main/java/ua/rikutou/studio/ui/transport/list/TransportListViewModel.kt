@@ -16,7 +16,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.data.datasource.transport.TransportDataSource
+import ua.rikutou.studio.data.local.entity.TransportEntity
 import ua.rikutou.studio.data.remote.transport.TransportType
+import ua.rikutou.studio.navigation.Screen
 import java.util.Date
 import javax.inject.Inject
 
@@ -135,12 +137,9 @@ class TransportListViewModel @Inject constructor(
                         )
                     }
                 }
-
-                is TransportList.Action.OnCheckedChange -> {
-                    transportDataSource.updateSelection(
-                        transportId = action.transportId,
-                        checked = action.checked
-                    )
+                
+                is TransportList.Action.OnAddToCart -> {
+                    transportDataSource.addToCart(transportId = action.transportId)
                 }
             }
         }
@@ -171,9 +170,10 @@ class TransportListViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             combine(
                 transportDataSource.getTransport(),
+                transportDataSource.getSelections(),
                 search,
                 filter
-            ) { list, search, filter ->
+            ) { list, selectios, search, filter ->
                 _state.update {
                     it.copy(
                         transport = if (search.isEmpty()
@@ -192,6 +192,8 @@ class TransportListViewModel @Inject constructor(
                                         && filter.seatsFrom?.let { transport.seats >= it } ?: true
                                         && filter.seatsTo?.let { transport.seats <= it } ?: true
                             }
+                        }.map {
+                            TransportHolder(transport = it, isSelected = it.transportId in selectios)
                         }
                     )
                 }
@@ -207,4 +209,9 @@ data class TransportFilter(
     val manufactureDateTo: Date? = null,
     val seatsFrom: Int? = null,
     val seatsTo: Int? = null
+)
+
+data class TransportHolder(
+    val transport: TransportEntity,
+    val isSelected: Boolean = false,
 )

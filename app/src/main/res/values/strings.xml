@@ -56,7 +56,9 @@
     <string name="sendEmail">Send email</string>
     <string name="createDocument">Create document</string>
     <string name="documentHeader">Lease agreement</string>
-    <string name="documentMessage">The studio undertakes to provide the following equipment for rent:</string>
+    <string name="documentMessage">The %s (studio) undertakes to provide the following equipment for rent:</string>
     <string name="documentLocationsLabel">Locations:</string>
     <string name="subtotal">"Subtotal: "</string>
+    <string name="export">Export as PDF</string>
+    <string name="sumFooter">"Sum: $"</string>
 </resources>

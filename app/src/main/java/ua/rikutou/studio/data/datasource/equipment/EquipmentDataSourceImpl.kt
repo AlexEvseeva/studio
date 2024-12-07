@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import ua.rikutou.studio.data.local.DbDataSource
 import ua.rikutou.studio.data.local.entity.EquipmentEntity
+import ua.rikutou.studio.data.local.entity.EquipmentSelectionEntity
 import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.equipment.EquipmentApi
 import ua.rikutou.studio.data.remote.equipment.dto.toEntity
@@ -97,4 +98,20 @@ class EquipmentDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) construct
             }
         }
     }
+
+    override suspend fun addToCart(equipmentId: Long): Unit = withContext(Dispatchers.IO) {
+        dbDataSource.db.equipmentSelectionDao.insert(EquipmentSelectionEntity(equipmentId = equipmentId))
+    }
+
+    override suspend fun removeFromCart(equipmentIds: List<Long>): Unit = withContext(Dispatchers.IO) {
+        dbDataSource.db.equipmentSelectionDao.delete(list = equipmentIds)
+    }
+
+    override suspend fun getAllSelected(): Flow<List<Long>> =
+        dbDataSource.dbFlow
+            .flatMapLatest { db ->
+                db.equipmentSelectionDao.getAll()
+            }
+            .flowOn(dbDeliveryDispatcher)
+            .catch { it.printStackTrace() }
 }

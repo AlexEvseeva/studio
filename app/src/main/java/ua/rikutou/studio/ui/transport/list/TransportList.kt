@@ -24,12 +24,12 @@ object TransportList {
             val seatsFrom: Int? = null,
             val seatsTo: Int? = null
         ) : Action
-        data class OnCheckedChange(val transportId: Long, val checked: Boolean) : Action
+        data class OnAddToCart(val transportId: Long) : Action
     }
 
     data class State (
         val inProgress: Boolean = false,
-        val transport: List<TransportEntity> = emptyList(),
+        val transport: List<TransportHolder> = emptyList(),
         val isSearchActive: Boolean = false,
         val isSearchEnabled: Boolean = true,
         val typeFilter: TransportType? = null,

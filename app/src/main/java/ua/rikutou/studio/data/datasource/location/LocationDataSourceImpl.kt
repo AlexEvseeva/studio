@@ -148,11 +148,13 @@ class LocationDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructo
         }
     }
 
-    override suspend fun updateLocaitionSelection(locationId: Long, checked: Boolean): Unit = withContext(Dispatchers.IO) {
-        if(checked) {
-            dbDataSource.db.locationSelectionDao.insert(LocationSelectionEntity(locationId = locationId))
-        } else {
-            dbDataSource.db.locationSelectionDao.deleteById(locationId = locationId)
-        }
+    override suspend fun addToCart(locationId: Long): Unit = withContext(Dispatchers.IO) {
+        dbDataSource.db.locationSelectionDao.insert(LocationSelectionEntity(locationId = locationId))
     }
+
+    override suspend fun removeFromCart(locationIds: List<Long>): Unit = withContext(Dispatchers.IO) {
+        dbDataSource.db.locationSelectionDao.deleteByIds(locationIds = locationIds)
+    }
+
+
 }

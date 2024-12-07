@@ -106,20 +106,6 @@ class TransportDataSourceImpl constructor(
         }
     }
 
-    override suspend fun updateSelection(transportId: Long, checked: Boolean): Unit = withContext(Dispatchers.IO) {
-        if(checked) {
-            dbDataSource.db.transportSelectionDao
-                .insert(
-                    TransportSelectionEntity(
-                        transportId = transportId
-                    )
-                )
-        } else {
-            dbDataSource.db.transportSelectionDao
-                .delete(transportId = transportId)
-        }
-    }
-
     override suspend fun getSelections(): Flow<List<Long>> =
         dbDataSource.dbFlow
             .flatMapLatest<AppDb, List<Long>> { db ->
@@ -127,4 +113,12 @@ class TransportDataSourceImpl constructor(
             }
             .flowOn(dbDeliveryDispatcher)
             .catch { it.printStackTrace() }
+
+    override suspend fun addToCart(transportId: Long): Unit = withContext(Dispatchers.IO) {
+        dbDataSource.db.transportSelectionDao.insert(TransportSelectionEntity(transportId = transportId))
+    }
+
+    override suspend fun removeFromCart(transportIds: List<Long>): Unit = withContext(Dispatchers.IO) {
+        dbDataSource.db.transportSelectionDao.delete(transportIds = transportIds)
+    }
 }

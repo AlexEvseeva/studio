@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.equipment.EquipmentDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
+import ua.rikutou.studio.data.local.entity.EquipmentEntity
 import javax.inject.Inject
 
 @HiltViewModel
@@ -83,6 +84,10 @@ class EquipmentListViewModel @Inject constructor(
                 is EquipmentList.Action.OnSearchChanged -> {
                     search.value = action.search
                 }
+
+                is EquipmentList.Action.OnAddToCart -> {
+                    equipmentDataSource.addToCart(equipmentId = action.equipmentId)
+                }
             }
         }
 
@@ -96,8 +101,9 @@ class EquipmentListViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             combine(
                 equipmentDataSource.getAllEquipment(studioId = studioId),
+                equipmentDataSource.getAllSelected(),
                 search
-            ) { list, search ->
+            ) { list, selected, search ->
                 _state.update {
                     it.copy(
                         equipment = if (search.isEmpty()) {
@@ -108,6 +114,8 @@ class EquipmentListViewModel @Inject constructor(
                                         || equipment.type.contains(search,ignoreCase = true)
                                         || equipment.comment.contains(search, ignoreCase = true)
                             }
+                        }.map {
+                            EquipmentHolder(equipment = it, isSelected = it.equipmentId in selected)
                         }
                     )
                 }
@@ -115,3 +123,8 @@ class EquipmentListViewModel @Inject constructor(
         }
     }
 }
+
+data class EquipmentHolder(
+    val equipment: EquipmentEntity,
+    val isSelected: Boolean = false,
+)

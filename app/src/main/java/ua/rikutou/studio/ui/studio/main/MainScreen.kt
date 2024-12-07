@@ -77,6 +77,12 @@ private fun MainScreenContent(
                 isEditEnabled = true,
                 onEdit = {
                     onAction(Main.Action.OnEdit)
+                },
+                isCartEnable = true,
+                onCart = {
+                    onAction(Main.Action.OnNavigate(
+                        destination = Screen.Document.Create)
+                    )
                 }
             )
             ElementContent(label = "address", name = state.value.studio?.address ?: "")
@@ -84,22 +90,6 @@ private fun MainScreenContent(
             ElementContent(label = "site", name = state.value.studio?.site ?: "")
             ElementContent(label = "youtube site", name = state.value.studio?.youtube ?: "")
             ElementContent(label = "facebook site", name = state.value.studio?.facebook ?: "")
-
-            Spacer(
-                modifier = Modifier
-                    .weight(1F)
-            )
-            Button(
-                onClick = {
-                    onAction(Main.Action.OnNavigate(
-                        destination = Screen.Document.Create)
-                    )
-                }
-            ) {
-                Text(
-                    text = stringResource(R.string.createDocument)
-                )
-            }
         }
     }
 

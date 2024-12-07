@@ -139,24 +139,24 @@ private fun TransportListScreenContent(
                 ) {
                     items(
                         items = state.transport,
-                        key = { it.transportId }
+                        key = { it.transport.transportId }
                     ) { item ->
                         Item(
                             modifier = Modifier.fillMaxWidth(),
-                            title = item.mark,
-                            comment = item.type.name,
+                            title = item.transport.mark,
+                            checked = item.isSelected,
+                            comment = item.transport.type.name,
                             onItemClick = {
                                 onAction(
                                     TransportList.Action.OnNavigate(
-                                        Screen.Transport.Details(transportId = item.transportId)
+                                        Screen.Transport.Details(transportId = item.transport.transportId)
                                     )
                                 )
                             },
-                            onCheckedChange = { checked ->
+                            onAddToCart = {
                                 onAction(
-                                    TransportList.Action.OnCheckedChange(
-                                        transportId = item.transportId,
-                                        checked = checked
+                                    TransportList.Action.OnAddToCart(
+                                        transportId = item.transport.transportId,
                                     )
                                 )
                             }

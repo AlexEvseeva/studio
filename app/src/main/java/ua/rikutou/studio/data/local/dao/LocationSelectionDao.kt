@@ -13,8 +13,8 @@ interface LocationSelectionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: LocationSelectionEntity)
 
-    @Query("DELETE FROM locationselectionentity WHERE locationId=:locationId")
-    suspend fun deleteById(locationId: Long)
+    @Query("DELETE FROM locationselectionentity WHERE locationId in (:locationIds)")
+    suspend fun deleteByIds(locationIds: List<Long>)
 
     @Query("SELECT locationId FROM locationselectionentity")
     fun getSelected(): Flow<List<Long>>

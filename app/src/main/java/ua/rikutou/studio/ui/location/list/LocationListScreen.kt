@@ -1,6 +1,5 @@
 package ua.rikutou.studio.ui.location.list
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -131,24 +130,24 @@ private fun LocationListScreenContent(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     items(
-                        items = state.locations,
-                        key = { it.location.locationId }
+                        items = state.locationsHolder,
+                        key = { it.location.location.locationId }
                     ) { item ->
                         Item(
                             modifier = Modifier.fillMaxWidth(),
-                            imageURL = if (item.images.isNotEmpty()) {
-                                item.images.first().url
+                            imageURL = if (item.location.images.isNotEmpty()) {
+                                item.location.images.first().url
                             } else {
                                 ""
                             },
-                            title = item.location.name,
-                            comment = item.location.address,
-                            checked = item.location.locationId in state.selectedLocations,
+                            title = item.location.location.name,
+                            comment = item.location.location.address,
+                            checked = item.isSelected,
                             onItemClick = {
-                                onAction(LocationList.Action.OnNavigate(Screen.Location.Details(locationId = item.location.locationId)))
+                                onAction(LocationList.Action.OnNavigate(Screen.Location.Details(locationId = item.location.location.locationId)))
                             },
-                            onCheckedChange = { checked ->
-                                onAction(LocationList.Action.OnCheckedChange(locationId = item.location.locationId, checked = checked))
+                            onAddToCart = {
+                                onAction(LocationList.Action.OnAddToCart(locationId = item.location.location.locationId))
                             }
                         )
                     }

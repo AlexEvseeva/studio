@@ -13,11 +13,12 @@ object EquipmentList {
         data class OnSearchChanged(val search: String) : Action
         data object OnSearch : Action
         data object OnCancel : Action
+        data class OnAddToCart(val equipmentId: Long) : Action
     }
 
     data class State (
         val inProgress: Boolean = false,
-        val equipment: List<EquipmentEntity> = emptyList(),
+        val equipment: List<EquipmentHolder> = emptyList(),
         val isSearchActive: Boolean = false,
         val isSearchEnabled: Boolean = true,
     )

@@ -10,23 +10,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material3.Checkbox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
+import ua.rikutou.studio.R
 
 @Composable
 fun Item(
@@ -36,7 +36,7 @@ fun Item(
     checked: Boolean = false,
     comment: String,
     onItemClick: () -> Unit = {},
-    onCheckedChange: (Boolean) -> Unit = {}
+    onAddToCart: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -82,12 +82,15 @@ fun Item(
                 text = comment
             )
         }
-        Checkbox(
-            checked = checked,
-            onCheckedChange = {
-                onCheckedChange(it)
-            }
+        Icon(
+            modifier = Modifier.clickable {
+                onAddToCart()
+            },
+            painter = painterResource(R.drawable.cart),
+            contentDescription = null,
+            tint = if(checked) Color.Gray else Color.Black
         )
+
     }
 }
 

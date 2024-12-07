@@ -9,4 +9,7 @@ interface EquipmentDataSource {
     suspend fun deleteEquipmentById(equipmentId: Long)
     suspend fun updateEquipment(equipment: EquipmentEntity)
     suspend fun loadEquipment(studioId: Long, search: String? = null)
+    suspend fun addToCart(equipmentId: Long)
+    suspend fun removeFromCart(equipmentIds: List<Long>)
+    suspend fun getAllSelected(): Flow<List<Long>>
 }
