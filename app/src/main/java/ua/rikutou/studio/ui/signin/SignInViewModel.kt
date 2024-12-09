@@ -56,7 +56,7 @@ class SignInViewModel
             || !state.value.password.contains(Regex("""\d"""))
             || !state.value.password.contains(Regex("""[A-Z]"""))
         ) {
-            _event.emit(SignIn.Event.OnMessage(message = "Password must be longer then $passwordMinLength, has Uppercase and digits"))
+            _event.emit(SignIn.Event.OnMessage(message = "Password must be longer then $passwordMinLength, has Uppercase and a digit"))
             return
         }
         authRepository.signIn(name = name, password = password).collect {

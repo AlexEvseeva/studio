@@ -83,7 +83,7 @@ class TransportDataSourceImpl constructor(
     ): Unit = withContext(Dispatchers.IO) {
         transportApi.getTransport(
             studioId = studioId,
-            search = search,
+            search = if(search?.isEmpty() == true) {null} else {search},
             type = type,
             manufactureDateFrom = manufactureDateFrom?.time,
             manufactureDateTo = manufactureDateTo?.time,
