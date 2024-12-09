@@ -20,6 +20,8 @@ import ua.rikutou.studio.data.datasource.auth.AuthDataSource
 import ua.rikutou.studio.data.datasource.auth.AuthDataSourceImpl
 import ua.rikutou.studio.data.datasource.department.DepartmentDataSource
 import ua.rikutou.studio.data.datasource.department.DepartmentDataSourceImpl
+import ua.rikutou.studio.data.datasource.document.DocumentDataSource
+import ua.rikutou.studio.data.datasource.document.DocumentDataSourceImpl
 import ua.rikutou.studio.data.datasource.equipment.EquipmentDataSource
 import ua.rikutou.studio.data.datasource.equipment.EquipmentDataSourceImpl
 import ua.rikutou.studio.data.datasource.execute.ExecuteDataSource
@@ -42,6 +44,7 @@ import ua.rikutou.studio.data.datasource.user.UserDataSource
 import ua.rikutou.studio.data.datasource.user.UserDataSourceImpl
 import ua.rikutou.studio.data.remote.actor.ActorApi
 import ua.rikutou.studio.data.remote.department.DepartmentApi
+import ua.rikutou.studio.data.remote.document.DocumentApi
 import ua.rikutou.studio.data.remote.equipment.EquipmentApi
 import ua.rikutou.studio.data.remote.execute.ExecuteApi
 import ua.rikutou.studio.data.remote.location.LocationApi
@@ -197,5 +200,12 @@ object DataSource {
     ): FilmDataSource = FilmDataSourceImpl(
         dbDataSource = dbDataSource,
         dbDeliveryDispatcher = dbDeliveryDispatcher
+    )
+
+    @Provides
+    fun provideDocumentDataSource(
+        documentApi: DocumentApi
+    ): DocumentDataSource = DocumentDataSourceImpl(
+        documentApi = documentApi
     )
 }

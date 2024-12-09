@@ -20,6 +20,7 @@ object DocumentCreate {
         data class OnRemoveEquipmentFromCart(val equipmentId: Long) : Action
         data class OnSelectFromDate(val time: Long) : Action
         data class OnSelectToDays(val days: Int) : Action
+        data object OnCreateDocument : Action
     }
 
     data class State(

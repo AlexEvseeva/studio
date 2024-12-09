@@ -1,5 +1,6 @@
 package ua.rikutou.studio.di
 
+import androidx.annotation.RestrictTo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -8,6 +9,7 @@ import retrofit2.Retrofit
 import ua.rikutou.studio.data.remote.actor.ActorApi
 import ua.rikutou.studio.data.remote.auth.AuthApi
 import ua.rikutou.studio.data.remote.department.DepartmentApi
+import ua.rikutou.studio.data.remote.document.DocumentApi
 import ua.rikutou.studio.data.remote.equipment.EquipmentApi
 import ua.rikutou.studio.data.remote.execute.ExecuteApi
 import ua.rikutou.studio.data.remote.location.LocationApi
@@ -48,4 +50,6 @@ object Network {
 
     @Provides
     fun provideActorApi(retrofit: Retrofit): ActorApi = retrofit.create(ActorApi::class.java)
+    @Provides
+    fun provideDocumentApi(retrofit: Retrofit): DocumentApi = retrofit.create(DocumentApi::class.java)
 }

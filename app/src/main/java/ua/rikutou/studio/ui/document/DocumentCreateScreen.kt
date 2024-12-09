@@ -132,6 +132,7 @@ fun DocumentCreateScreenContent(
                         )
                     }
                 }
+                onAction(DocumentCreate.Action.OnCreateDocument)
             }
         }
     )

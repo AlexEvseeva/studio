@@ -14,11 +14,13 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ua.rikutou.studio.data.datasource.document.DocumentDataSource
 import ua.rikutou.studio.data.datasource.equipment.EquipmentDataSource
 import ua.rikutou.studio.data.datasource.location.LocationDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.data.datasource.studio.StudioDataSource
 import ua.rikutou.studio.data.datasource.transport.TransportDataSource
+import ua.rikutou.studio.navigation.Screen
 import java.util.Date
 import javax.inject.Inject
 
@@ -29,6 +31,7 @@ class DocumentCreateViewModel @Inject constructor(
     private val studioDataSource: StudioDataSource,
     private val transportDataSource: TransportDataSource,
     private val equipmentDataSource: EquipmentDataSource,
+    private val documentDataSource: DocumentDataSource
 ) : ViewModel() {
     private val TAG by lazy { DocumentCreateViewModel::class.simpleName }
     private val _state = MutableStateFlow(DocumentCreate.State())
@@ -82,6 +85,8 @@ class DocumentCreateViewModel @Inject constructor(
                     })
                 }
             }
+
+            DocumentCreate.Action.OnCreateDocument -> createDocument()
         }
 
     }
@@ -142,6 +147,16 @@ class DocumentCreateViewModel @Inject constructor(
                 )
             }
         }
+    }
 
+    private fun createDocument() = viewModelScope.launch {
+        documentDataSource.createDocument(
+            dataStart = state.value.fromDate ?: Date(),
+            days = state.value.toDays,
+            locations = state.value.locations.map { it.location.locationId },
+            transport = state.value.transport.map { it.transportId },
+            equipment = state.value.equipment.map { it.equipmentId }
+        )
+        _event.emit(DocumentCreate.Event.OnNavigate(destination = Screen.Studio.Main))
     }
 }
