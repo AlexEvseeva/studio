@@ -14,6 +14,7 @@ import ua.rikutou.studio.data.remote.equipment.EquipmentApi
 import ua.rikutou.studio.data.remote.execute.ExecuteApi
 import ua.rikutou.studio.data.remote.location.LocationApi
 import ua.rikutou.studio.data.remote.section.SectionApi
+import ua.rikutou.studio.data.remote.statistic.StatisticApi
 import ua.rikutou.studio.data.remote.studio.StudioApi
 import ua.rikutou.studio.data.remote.transport.TransportApi
 import ua.rikutou.studio.data.remote.user.UserApi
@@ -52,4 +53,6 @@ object Network {
     fun provideActorApi(retrofit: Retrofit): ActorApi = retrofit.create(ActorApi::class.java)
     @Provides
     fun provideDocumentApi(retrofit: Retrofit): DocumentApi = retrofit.create(DocumentApi::class.java)
+    @Provides
+    fun provideStatisticApi(retrofit: Retrofit): StatisticApi = retrofit.create(StatisticApi::class.java)
 }

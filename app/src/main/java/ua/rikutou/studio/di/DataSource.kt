@@ -38,6 +38,8 @@ import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSourceImpl
 import ua.rikutou.studio.data.datasource.section.SectionDataSource
 import ua.rikutou.studio.data.datasource.section.SectionDataSourceImpl
+import ua.rikutou.studio.data.datasource.statistic.StatisticDataSource
+import ua.rikutou.studio.data.datasource.statistic.StatisticDataSourceImpl
 import ua.rikutou.studio.data.datasource.transport.TransportDataSource
 import ua.rikutou.studio.data.datasource.transport.TransportDataSourceImpl
 import ua.rikutou.studio.data.datasource.user.UserDataSource
@@ -49,6 +51,7 @@ import ua.rikutou.studio.data.remote.equipment.EquipmentApi
 import ua.rikutou.studio.data.remote.execute.ExecuteApi
 import ua.rikutou.studio.data.remote.location.LocationApi
 import ua.rikutou.studio.data.remote.section.SectionApi
+import ua.rikutou.studio.data.remote.statistic.StatisticApi
 import ua.rikutou.studio.data.remote.studio.StudioApi
 import ua.rikutou.studio.data.remote.transport.TransportApi
 import ua.rikutou.studio.data.remote.user.UserApi
@@ -207,5 +210,12 @@ object DataSource {
         documentApi: DocumentApi
     ): DocumentDataSource = DocumentDataSourceImpl(
         documentApi = documentApi
+    )
+
+    @Provides
+    fun provideStatisticDataSource(
+        statisticApi: StatisticApi
+    ): StatisticDataSource = StatisticDataSourceImpl(
+        statisticApi = statisticApi
     )
 }

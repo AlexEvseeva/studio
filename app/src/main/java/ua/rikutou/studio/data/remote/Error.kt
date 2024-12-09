@@ -25,3 +25,15 @@ fun parseError(errorBody: ResponseBody?): DataSourceResponse<Error> =
             }
         }
     )
+
+fun parseErrorMessage(errorBody: ResponseBody?): String? =
+    errorBody?.let {
+        try {
+            GsonBuilder()
+                .setLenient()
+                .create()
+                .fromJson(it.string(), Error::class.java).message
+        } catch (ex: JsonSyntaxException) {
+            null
+        }
+    }

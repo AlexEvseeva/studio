@@ -9,12 +9,15 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ua.rikutou.studio.data.datasource.DataSourceResponse
 import ua.rikutou.studio.data.datasource.studio.StudioDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
+import ua.rikutou.studio.data.datasource.statistic.StatisticDataSource
 import ua.rikutou.studio.navigation.Screen
 import javax.inject.Inject
 
@@ -23,13 +26,17 @@ import javax.inject.Inject
 class MainViewModel
 @Inject constructor(
     private val studioDataSource: StudioDataSource,
-    private val profileDataSource: ProfileDataSource
+    private val profileDataSource: ProfileDataSource,
+    private val statisticDataSource: StatisticDataSource
 ): ViewModel() {
     private val _state = MutableStateFlow(Main.State())
     val state = _state.asStateFlow().onStart {
-        loadStudio()
-        getUserInfo()
-        getStudio()
+        profileDataSource.user?.studioId?.let { studioId ->
+            loadStudio()
+            getUserInfo()
+            getStudio()
+            loadStatistic(studioId = studioId)
+        }
     }
     private val _event = MutableSharedFlow<Main.Event>()
     val event = _event.asSharedFlow()
@@ -76,6 +83,36 @@ class MainViewModel
 
                 is Main.Action.OnNavigate -> {
                     _event.emit(Main.Event.OnNavigate(destination = action.destination))
+                }
+            }
+        }
+    }
+
+    private fun loadStatistic(studioId: Long) = viewModelScope.launch(Dispatchers.IO) {
+        statisticDataSource.getStatistic(studioId = studioId).collect {
+            when(it) {
+                is DataSourceResponse.Error<*> -> {
+                    _state.update {
+                        it.copy(
+                            inProgress = false
+                        )
+                    }
+                    it.message?.let {
+                        _event.emit(Main.Event.OnMessage(message = it))
+                    }
+                }
+                DataSourceResponse.InProgress -> {
+                    _state.update {
+                        it.copy(inProgress = true)
+                    }
+                }
+                is DataSourceResponse.Success -> {
+                    _state.update { s ->
+                        s.copy(
+                            inProgress = false,
+                            statistic = it.payload
+                        )
+                    }
                 }
             }
         }

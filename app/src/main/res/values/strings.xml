@@ -61,4 +61,15 @@
     <string name="subtotal">"Subtotal: "</string>
     <string name="export">Export as PDF</string>
     <string name="sumFooter">"Sum: $"</string>
+    <string name="minAvgMax">"In documents min %d, average: %d, max: %d "</string>
+    <string name="statByLocations">Statistic by locations</string>
+    <string name="statByTransport">Statistic by transport</string>
+    <string name="statByEquipment">Statistic by equipment</string>
+    <string name="incomeStructure">Income structure</string>
+    <string name="incomeStructureMessage">Income from\nlocations: $%.0f,\ntransport: $%.0f,\nequipment: $%.0f,\ntotal: $%.0f</string>
+    <string name="totalDocuments">Documents created</string>
+    <string name="mostPopularLocation">Most popular locations</string>
+    <string name="mostPopularTransport">Most popular transport</string>
+    <string name="mostPopularEquipment">Most poular equipmnet</string>
+    <string name="mostPupularActor">Actor of the year</string>
 </resources>
