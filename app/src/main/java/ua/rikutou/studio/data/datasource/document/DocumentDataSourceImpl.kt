@@ -17,7 +17,8 @@ class DocumentDataSourceImpl(
         days: Int,
         locations: List<Long>,
         transport: List<Long>,
-        equipment: List<Long>
+        equipment: List<Long>,
+        studioId: Long
     ): Unit = withContext(Dispatchers.IO) {
         documentApi.createDocument(
             body = DocumentRequest(
@@ -25,7 +26,8 @@ class DocumentDataSourceImpl(
                 days = days,
                 locations = locations,
                 transport = transport,
-                equipment = equipment
+                equipment = equipment,
+                studioId = studioId
             )
         ).run {
             when {

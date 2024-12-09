@@ -150,13 +150,17 @@ class DocumentCreateViewModel @Inject constructor(
     }
 
     private fun createDocument() = viewModelScope.launch {
-        documentDataSource.createDocument(
-            dataStart = state.value.fromDate ?: Date(),
-            days = state.value.toDays,
-            locations = state.value.locations.map { it.location.locationId },
-            transport = state.value.transport.map { it.transportId },
-            equipment = state.value.equipment.map { it.equipmentId }
-        )
+        profileDataSource.user?.studioId?.let { id ->
+            documentDataSource.createDocument(
+                dataStart = state.value.fromDate ?: Date(),
+                days = state.value.toDays,
+                locations = state.value.locations.map { it.location.locationId },
+                transport = state.value.transport.map { it.transportId },
+                equipment = state.value.equipment.map { it.equipmentId },
+                studioId = id
+            )
+
+        }
         _event.emit(DocumentCreate.Event.OnNavigate(destination = Screen.Studio.Main))
     }
 }

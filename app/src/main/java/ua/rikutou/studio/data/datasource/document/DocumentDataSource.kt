@@ -9,5 +9,6 @@ interface DocumentDataSource {
         locations: List<Long>,
         transport: List<Long>,
         equipment: List<Long>,
+        studioId: Long,
     )
 }
