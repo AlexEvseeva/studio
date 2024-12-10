@@ -16,7 +16,7 @@ interface TransportApi {
     suspend fun getTransport(
         @Query("studioId") studioId: Long,
         @Query("search") search: String?,
-        @Query("type") type: TransportType?,
+        @Query("type") type: Int?,
         @Query("manufactureDateFrom") manufactureDateFrom: Long?,
         @Query("manufactureDateTo") manufactureDateTo: Long?,
         @Query("seatsFrom") seatsFrom: Int?,

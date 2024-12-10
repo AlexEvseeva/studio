@@ -84,7 +84,7 @@ class TransportDataSourceImpl constructor(
         transportApi.getTransport(
             studioId = studioId,
             search = if(search?.isEmpty() == true) {null} else {search},
-            type = type,
+            type = type?.fromTransportType(),
             manufactureDateFrom = manufactureDateFrom?.time,
             manufactureDateTo = manufactureDateTo?.time,
             seatsFrom = seatsFrom,
