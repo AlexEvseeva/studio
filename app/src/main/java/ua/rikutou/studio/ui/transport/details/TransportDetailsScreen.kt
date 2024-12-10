@@ -118,6 +118,7 @@ private fun TransportDetailsScreenContent(
                 ElementContent(label = stringResource(R.string.seatsLabel), name = (state.transport?.seats ?: 0).toString())
                 ElementContent(label = stringResource(R.string.colorLabel), name = state.transport?.color ?: "")
                 ElementContent(label = stringResource(R.string.technicalStateLabel), name = state.transport?.technicalState ?: "")
+                ElementContent(label = stringResource(R.string.rentPriceLabel), name = state.transport?.rentPrice?.let { it.toString() } ?: "")
 
                 Button(
                     modifier = Modifier

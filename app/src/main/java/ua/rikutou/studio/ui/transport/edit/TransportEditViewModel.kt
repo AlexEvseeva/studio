@@ -102,6 +102,20 @@ class TransportEditViewModel @Inject constructor(
                         )
                     }
                 }
+                action.rentPrice?.let { price ->
+                    price.runCatching { toFloat() }.getOrNull()?.let { p ->
+                        _state.update { s ->
+                            s.copy(
+                                transport = s.transport?.copy(
+                                    rentPrice = when {
+                                        p < 0 ->  p * -1
+                                        else -> p
+                                    }
+                                )
+                            )
+                        }
+                    }
+                }
 
             }
             TransportEdit.Action.OnSave -> onSave()
@@ -149,6 +163,7 @@ class TransportEditViewModel @Inject constructor(
                     departmentId = -1L,
                     color = "",
                     technicalState = "",
+                    rentPrice = 0F
                 )
                 )
             }
@@ -178,6 +193,7 @@ class TransportEditViewModel @Inject constructor(
             || state.value.transport?.seats == 0
             || state.value.transport?.color?.isEmpty() == true
             || state.value.transport?.technicalState?.isEmpty() == true
+            || state.value.transport?.rentPrice == 0F
         ) {
             return@launch
         }

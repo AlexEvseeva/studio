@@ -17,6 +17,7 @@ data class TransportEntity(
     val departmentId: Long,
     val color: String,
     val technicalState: String,
+    val rentPrice: Float
 )
 
 fun TransportEntity.toDto() =
@@ -28,5 +29,6 @@ fun TransportEntity.toDto() =
         seats = seats,
         departmentId = departmentId,
         color = color,
-        technicalState = technicalState
+        technicalState = technicalState,
+        rentPrice = rentPrice
     )

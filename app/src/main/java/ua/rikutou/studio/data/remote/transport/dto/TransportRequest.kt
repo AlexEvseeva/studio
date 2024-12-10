@@ -9,4 +9,5 @@ data class TransportRequest(
     val departmentId: Long,
     val color: String,
     val technicalState: String,
+    val rentPrice: Float
 )

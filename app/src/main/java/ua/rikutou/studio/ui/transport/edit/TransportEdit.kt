@@ -19,6 +19,7 @@ object TransportEdit {
             val seats: Int? = null,
             val color: String? = null,
             val technicalState: String? = null,
+            val rentPrice: String? = null,
         ) : Action
         data object OnSave : Action
         data object OnSelectDate : Action

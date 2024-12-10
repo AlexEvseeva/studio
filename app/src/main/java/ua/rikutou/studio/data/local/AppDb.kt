@@ -77,7 +77,7 @@ import ua.rikutou.studio.data.remote.actor.dto.ActorToFilmDto
         TransportSelectionEntity::class,
         EquipmentSelectionEntity::class,
     ],
-    version = 19,
+    version = 20,
 )
 @TypeConverters(DbConverters::class)
 abstract class AppDb : RoomDatabase() {

@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import ua.rikutou.studio.R
+import ua.rikutou.studio.config.floatFieldMaxLength
 import ua.rikutou.studio.ui.components.DatePickerModal
 import ua.rikutou.studio.ui.components.ElementTitle
 import ua.rikutou.studio.ui.section.edit.SectionEdit
@@ -226,6 +227,22 @@ fun TransportEditScreenContent(
             },
             label = {
                 Text(text = stringResource(R.string.technicalStateLabel))
+            }
+        )
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            value = state.transport?.rentPrice?.let { it.toString() } ?: "",
+            onValueChange = {
+                if(it.length < floatFieldMaxLength) {
+                    onAction(TransportEdit.Action.OnFieldChanged(rentPrice = it))
+                }
+            },
+            label = {
+                Text(
+                    text = stringResource(R.string.rentPriceLabel)
+                )
             }
         )
 
