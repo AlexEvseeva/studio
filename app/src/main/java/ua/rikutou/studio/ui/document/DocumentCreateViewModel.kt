@@ -1,6 +1,5 @@
 package ua.rikutou.studio.ui.document
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,26 +51,26 @@ class DocumentCreateViewModel @Inject constructor(
     private val _event = MutableSharedFlow<DocumentCreate.Event>()
     val event = _event.asSharedFlow()
 
-    fun onAction(actin: DocumentCreate.Action) = viewModelScope.launch {
-        when(actin) {
+    fun onAction(action: DocumentCreate.Action) = viewModelScope.launch {
+        when(action) {
             is DocumentCreate.Action.OnNavigate -> {
-                _event.emit(DocumentCreate.Event.OnNavigate(destination = actin.destination))
+                _event.emit(DocumentCreate.Event.OnNavigate(destination = action.destination))
             }
             is DocumentCreate.Action.OnRemoveEquipmentFromCart -> {
-                equipmentDataSource.removeFromCart(listOf(actin.equipmentId))
+                equipmentDataSource.removeFromCart(listOf(action.equipmentId))
             }
             is DocumentCreate.Action.OnRemoveLocationFromCart -> {
-                locationDataSource.removeFromCart(listOf(actin.locationId))
+                locationDataSource.removeFromCart(listOf(action.locationId))
             }
             is DocumentCreate.Action.OnRemoveTransportFromCart -> {
-                transportDataSource.removeFromCart(listOf(actin.transportId))
+                transportDataSource.removeFromCart(listOf(action.transportId))
             }
 
             is DocumentCreate.Action.OnSelectFromDate -> {
                 val currentDate = Date().time
-                if(actin.time >= currentDate) {
+                if(action.time >= currentDate) {
                     _state.update {
-                        it.copy(fromDate = Date(actin.time))
+                        it.copy(fromDate = Date(action.time))
                     }
                 } else {
                     _event.emit(DocumentCreate.Event.OnMessage(message = "Date in past not allowed"))
@@ -80,14 +79,17 @@ class DocumentCreateViewModel @Inject constructor(
             is DocumentCreate.Action.OnSelectToDays -> {
                 _state.update {
                     it.copy(toDays = when {
-                        actin.days < 0 -> actin.days * -1
-                        actin.days == 0 -> 1
-                        else -> actin.days
+                        action.days < 0 -> action.days * -1
+                        action.days == 0 -> 1
+                        else -> action.days
                     })
                 }
             }
 
             DocumentCreate.Action.OnCreateDocument -> createDocument()
+            is DocumentCreate.Action.OnMessage -> {
+                _event.emit(DocumentCreate.Event.OnMessage(message = action.message))
+            }
         }
 
     }
@@ -151,6 +153,7 @@ class DocumentCreateViewModel @Inject constructor(
     }
 
     private fun createDocument() = viewModelScope.launch(Dispatchers.IO) {
+
         profileDataSource.user?.studioId?.let { id ->
             documentDataSource.createDocument(
                 dataStart = state.value.fromDate ?: Date(),

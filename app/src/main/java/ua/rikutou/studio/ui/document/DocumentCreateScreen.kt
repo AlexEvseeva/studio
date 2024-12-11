@@ -278,12 +278,17 @@ fun DocumentCreateScreenContent(
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                documentLauncher.launch(
-                    Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                        type = "application/pdf"
-                        putExtra(Intent.EXTRA_TITLE, "Lease_agreement.pdf")
-                    }
-                )
+                state.fromDate?.let {
+                    documentLauncher.launch(
+                        Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                            type = "application/pdf"
+                            putExtra(Intent.EXTRA_TITLE, "Lease_agreement.pdf")
+                        }
+                    )
+                } ?: run {
+                    onAction(DocumentCreate.Action.OnMessage(message = "Please select start date"))
+                }
+
             }
         ) {
             Text(
