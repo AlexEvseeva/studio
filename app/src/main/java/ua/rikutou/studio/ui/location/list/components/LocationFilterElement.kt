@@ -28,6 +28,7 @@ import ua.rikutou.studio.ui.location.edit.LocationEdit
 import ua.rikutou.studio.ui.location.list.Dimensions
 import ua.rikutou.studio.ui.location.list.LocationFilter
 import ua.rikutou.studio.ui.location.list.LocationList
+import ua.rikutou.studio.ui.location.list.LocationOrder
 
 @Composable
 fun LocationFilterElement(
@@ -36,6 +37,7 @@ fun LocationFilterElement(
     filter: LocationFilter,
     onTypeSelect: (LocationType?) -> Unit,
     onDimentionsChange: (Dimensions) -> Unit,
+    onOrderChange: (LocationOrder) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -44,42 +46,76 @@ fun LocationFilterElement(
             .padding(top = 20.dp, start = 4.dp, end = 4.dp)
             .verticalScroll(state= rememberScrollState())
     ) {
-        Column(
+        Row(
             modifier = Modifier
-                .selectableGroup()
+                .fillMaxWidth()
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier
+                    .selectableGroup()
+                    .weight(1F)
             ) {
-                RadioButton(
-                    selected = filter.byType == null,
-                    onClick = {
-                        onTypeSelect(null)
-                    }
-                )
                 Text(
-                    text = stringResource(R.string.all)
+                    text = stringResource(R.string.filterByLocationType)
                 )
-            }
-            LocationType.entries.forEach { type ->
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
-                        selected = filter.byType?.name == type.name,
+                        selected = filter.byType == null,
                         onClick = {
-                            onTypeSelect(type)
+                            onTypeSelect(null)
                         }
                     )
                     Text(
-                        text = type.name
+                        text = stringResource(R.string.all)
                     )
+                }
+                LocationType.entries.forEach { type ->
+                    Row(
+                        modifier = Modifier,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = filter.byType?.name == type.name,
+                            onClick = {
+                                onTypeSelect(type)
+                            }
+                        )
+                        Text(
+                            text = type.name
+                        )
+                    }
+
                 }
 
             }
-
+            Column(
+                modifier = Modifier
+                    .selectableGroup()
+                    .weight(1F)
+            ) {
+                Text(
+                    text = stringResource(R.string.orderByPrice)
+                )
+                LocationOrder.entries.forEach {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = filter.order.name == it.name,
+                            onClick = {
+                                onOrderChange(it)
+                            }
+                        )
+                        Text(
+                            text = it.name
+                        )
+                    }
+                }
+            }
         }
         FromTo(
             title = stringResource(R.string.width),
@@ -139,6 +175,7 @@ fun LocationDetailsPreview(modifier: Modifier = Modifier) {
         state = LocationList.State(),
         filter = LocationFilter(),
         onTypeSelect = {},
-        onDimentionsChange = {}
+        onDimentionsChange = {},
+        onOrderChange = {}
     )
 }

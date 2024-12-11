@@ -106,6 +106,9 @@ private fun LocationListScreenContent(
                 },
                 onDimentionsChange = {
                     onAction(LocationList.Action.OnDimansionsChange(dimensions = it))
+                },
+                onOrderChange = {
+                    onAction(LocationList.Action.OnOrderChange(it))
                 }
             )
         },

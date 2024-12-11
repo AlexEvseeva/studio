@@ -141,6 +141,12 @@ class TransportListViewModel @Inject constructor(
                 is TransportList.Action.OnAddToCart -> {
                     transportDataSource.addToCart(transportId = action.transportId)
                 }
+
+                is TransportList.Action.OnOrderChange -> {
+                    filter.update {
+                        it.copy(order = action.order)
+                    }
+                }
             }
         }
 
@@ -174,24 +180,30 @@ class TransportListViewModel @Inject constructor(
                 search,
                 filter
             ) { list, selectios, search, filter ->
+
+                val transport = if (search.isEmpty()
+                    && filter.byType == null
+                    && filter.manufactureDateFrom == null
+                    && filter.manufactureDateTo == null
+                    && filter.seatsFrom == null
+                    && filter.seatsTo == null) {
+                    list
+                } else {
+                    list.filter { transport ->
+                        (transport.mark.contains(search, ignoreCase = true) || transport.color.contains(search, ignoreCase = true) || transport.technicalState.contains(search, ignoreCase = true))
+                                && filter.byType?.let { transport.type == it } ?: true
+                                && filter.manufactureDateFrom?.let { transport.manufactureDate.time >= it.time } ?: true
+                                && filter.manufactureDateTo?.let { transport.manufactureDate.time <= it.time } ?: true
+                                && filter.seatsFrom?.let { transport.seats >= it } ?: true
+                                && filter.seatsTo?.let { transport.seats <= it } ?: true
+                    }
+                }
+
                 _state.update {
                     it.copy(
-                        transport = if (search.isEmpty()
-                            && filter.byType == null
-                            && filter.manufactureDateFrom == null
-                            && filter.manufactureDateTo == null
-                            && filter.seatsFrom == null
-                            && filter.seatsTo == null) {
-                            list
-                        } else {
-                            list.filter { transport ->
-                                (transport.mark.contains(search, ignoreCase = true) || transport.color.contains(search, ignoreCase = true) || transport.technicalState.contains(search, ignoreCase = true))
-                                        && filter.byType?.let { transport.type == it } ?: true
-                                        && filter.manufactureDateFrom?.let { transport.manufactureDate.time >= it.time } ?: true
-                                        && filter.manufactureDateTo?.let { transport.manufactureDate.time <= it.time } ?: true
-                                        && filter.seatsFrom?.let { transport.seats >= it } ?: true
-                                        && filter.seatsTo?.let { transport.seats <= it } ?: true
-                            }
+                        transport = when(filter.order) {
+                            TransportOrder.ASC -> transport.sortedBy { it.manufactureDate }
+                            TransportOrder.DESC -> transport.sortedByDescending { it.manufactureDate }
                         }.map {
                             TransportHolder(transport = it, isSelected = it.transportId in selectios)
                         }
@@ -208,10 +220,15 @@ data class TransportFilter(
     val manufactureDateFrom: Date? = null,
     val manufactureDateTo: Date? = null,
     val seatsFrom: Int? = null,
-    val seatsTo: Int? = null
+    val seatsTo: Int? = null,
+    val order: TransportOrder = TransportOrder.DESC
 )
 
 data class TransportHolder(
     val transport: TransportEntity,
     val isSelected: Boolean = false,
 )
+
+enum class TransportOrder {
+    ASC, DESC
+}

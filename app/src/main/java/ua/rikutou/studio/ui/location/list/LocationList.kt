@@ -19,6 +19,7 @@ object LocationList {
         data object OnClearFilters : Action
         data class OnDimansionsChange(val dimensions: Dimensions) : Action
         data class OnAddToCart(val locationId: Long) : Action
+        data class OnOrderChange(val order: LocationOrder) : Action
     }
 
     data class State (

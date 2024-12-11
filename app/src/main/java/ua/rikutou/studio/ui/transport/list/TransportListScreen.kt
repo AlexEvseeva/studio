@@ -114,6 +114,9 @@ private fun TransportListScreenContent(
                 },
                 onSeatsTo = {
                     onAction(TransportList.Action.OnFieldSelect(seatsTo = it))
+                },
+                onOrderChange = {
+                    onAction(TransportList.Action.OnOrderChange(order = it))
                 }
             )
         },

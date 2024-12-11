@@ -25,6 +25,7 @@ object TransportList {
             val seatsTo: Int? = null
         ) : Action
         data class OnAddToCart(val transportId: Long) : Action
+        data class OnOrderChange(val order: TransportOrder) : Action
     }
 
     data class State (

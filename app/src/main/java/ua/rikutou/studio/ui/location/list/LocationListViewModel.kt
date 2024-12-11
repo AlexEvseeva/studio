@@ -117,6 +117,12 @@ class LocationListViewModel
                 is LocationList.Action.OnAddToCart -> {
                     addLocationToCart(locationId = action.locationId)
                 }
+
+                is LocationList.Action.OnOrderChange -> {
+                    filter.update {
+                        it.copy(order = action.order)
+                    }
+                }
             }
         }
 
@@ -154,23 +160,29 @@ class LocationListViewModel
                 search,
                 filter
                 ) { list, selected, search, filter ->
+
+                val locations = if (search.isEmpty() && filter.byType == null && filter.dimensions == null) {
+                    list
+                } else {
+                    list.filter { location ->
+                        (location.location.name.contains(search, ignoreCase = true) || location.location.address.contains(search, ignoreCase = true))
+                                && (filter.byType?.let { location.location.type == it } ?: true)
+                                && (filter.dimensions?.let { d ->
+                            d.widthFrom?.let { location.location.width >= it } ?: true
+                                    && d.widthTo?.let { location.location.width <= it } ?: true
+                                    && d.lengthFrom?.let { location.location.length >= it } ?: true
+                                    && d.lengthTo?.let { location.location.length <= it } ?: true
+                                    && d.heightFrom?.let { location.location.height >= it} ?: true
+                                    && d.heightTo?.let { location.location.height <= it } ?: true
+                        } ?: true)
+                    }
+                }
+
                 _state.update {
                     it.copy(
-                        locationsHolder = if (search.isEmpty() && filter.byType == null && filter.dimensions == null) {
-                            list
-                        } else {
-                            list.filter { location ->
-                                (location.location.name.contains(search, ignoreCase = true) || location.location.address.contains(search, ignoreCase = true))
-                                        && (filter.byType?.let { location.location.type == it } ?: true)
-                                        && (filter.dimensions?.let { d ->
-                                            d.widthFrom?.let { location.location.width >= it } ?: true
-                                                    && d.widthTo?.let { location.location.width <= it } ?: true
-                                                    && d.lengthFrom?.let { location.location.length >= it } ?: true
-                                                    && d.lengthTo?.let { location.location.length <= it } ?: true
-                                                    && d.heightFrom?.let { location.location.height >= it} ?: true
-                                                    && d.heightTo?.let { location.location.height <= it } ?: true
-                                        } ?: true)
-                            }
+                        locationsHolder = when(filter.order) {
+                            LocationOrder.ASC -> locations.sortedBy { it.location.rentPrice }
+                            LocationOrder.DESC -> locations.sortedByDescending { it.location.rentPrice }
                         }.map {
                             LocationHolder(location = it, isSelected = it.location.locationId in selected)
                         }
@@ -187,7 +199,8 @@ class LocationListViewModel
 
 data class LocationFilter(
     val byType: LocationType? = null,
-    val dimensions: Dimensions? = null
+    val dimensions: Dimensions? = null,
+    val order: LocationOrder = LocationOrder.DESC
 )
 
 data class Dimensions(
@@ -203,3 +216,7 @@ data class LocationHolder(
     val location: Location,
     val isSelected: Boolean = false,
 )
+
+enum class LocationOrder {
+    ASC, DESC
+}

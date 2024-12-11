@@ -14,12 +14,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ua.rikutou.studio.R
 import ua.rikutou.studio.data.remote.transport.TransportType
 import ua.rikutou.studio.ui.components.FromTo
 import ua.rikutou.studio.ui.transport.list.TransportFilter
+import ua.rikutou.studio.ui.transport.list.TransportOrder
 import java.util.Date
 
 @Composable
@@ -30,7 +32,8 @@ fun TransportFilterElement(
     onDateFrom: (Date?) -> Unit,
     onDateTo: (Date?) -> Unit,
     onSeatsFrom: (Int) -> Unit,
-    onSeatsTo: (Int) -> Unit
+    onSeatsTo: (Int) -> Unit,
+    onOrderChange: (TransportOrder) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -39,43 +42,77 @@ fun TransportFilterElement(
             .padding(top = 20.dp, start = 4.dp, end = 4.dp)
             .verticalScroll(state = rememberScrollState())
     ) {
-        Column(
-            modifier = Modifier
-                .selectableGroup()
+        Row(
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier
+                    .selectableGroup()
+                    .weight(1F)
             ) {
-                RadioButton(
-                    selected = filter.byType == null,
-                    onClick = {
-                        onTypeSelect(null)
-                    }
-                )
                 Text(
-                    text = stringResource(R.string.all)
+                    text = stringResource(R.string.filterByTransportType)
                 )
-            }
-            TransportType.entries.forEach { type ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
-                        selected = filter.byType?.name == type.name,
+                        selected = filter.byType == null,
                         onClick = {
-                            onTypeSelect(type)
+                            onTypeSelect(null)
                         }
                     )
                     Text(
-                        text = type.name
+                        text = stringResource(R.string.all)
                     )
+                }
+                TransportType.entries.forEach { type ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = filter.byType?.name == type.name,
+                            onClick = {
+                                onTypeSelect(type)
+                            }
+                        )
+                        Text(
+                            text = type.name
+                        )
+                    }
+
                 }
 
             }
-
+            Column(
+                modifier = Modifier
+                    .selectableGroup()
+                    .weight(1F)
+            ) {
+                Text(
+                    text = stringResource(R.string.orderByDate)
+                )
+                TransportOrder.entries.forEach {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = filter.order.name == it.name,
+                            onClick = {
+                                onOrderChange(it)
+                            }
+                        )
+                        Text(
+                            text = it.name
+                        )
+                    }
+                }
+            }
         }
+
 
         FromTo(
             title = stringResource(R.string.manufactoreDate),

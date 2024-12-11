@@ -72,4 +72,8 @@
     <string name="mostPopularTransport">Most popular transport</string>
     <string name="mostPopularEquipment">Most poular equipmnet</string>
     <string name="mostPupularActor">Actor of the year</string>
+    <string name="filterByLocationType">Filter by type</string>
+    <string name="orderByPrice">Order by price</string>
+    <string name="filterByTransportType">Filter by type</string>
+    <string name="orderByDate">Order by manufacture date</string>
 </resources>
