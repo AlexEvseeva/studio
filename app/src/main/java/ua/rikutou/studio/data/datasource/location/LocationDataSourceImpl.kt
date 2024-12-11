@@ -156,5 +156,9 @@ class LocationDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructo
         dbDataSource.db.locationSelectionDao.deleteByIds(locationIds = locationIds)
     }
 
+    override suspend fun clearSelection() {
+        dbDataSource.db.locationSelectionDao.clearSelections()
+    }
+
 
 }

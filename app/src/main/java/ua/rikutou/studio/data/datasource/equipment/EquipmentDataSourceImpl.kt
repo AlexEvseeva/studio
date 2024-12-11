@@ -116,4 +116,8 @@ class EquipmentDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) construct
             }
             .flowOn(dbDeliveryDispatcher)
             .catch { it.printStackTrace() }
+
+    override suspend fun clearSelections() {
+        dbDataSource.db.equipmentSelectionDao.clearSelections()
+    }
 }

@@ -13,4 +13,5 @@ interface EquipmentDataSource {
     suspend fun addToCart(equipmentId: Long)
     suspend fun removeFromCart(equipmentIds: List<Long>)
     suspend fun getAllSelected(): Flow<List<Long>>
+    suspend fun clearSelections()
 }

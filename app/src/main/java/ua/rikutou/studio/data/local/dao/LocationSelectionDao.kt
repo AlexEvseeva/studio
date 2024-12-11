@@ -18,4 +18,7 @@ interface LocationSelectionDao {
 
     @Query("SELECT locationId FROM locationselectionentity")
     fun getSelected(): Flow<List<Long>>
+
+    @Query("DELETE FROM locationselectionentity")
+    fun clearSelections()
 }

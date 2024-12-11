@@ -18,4 +18,6 @@ interface EquipmentSelectionDao {
     @Query("DELETE FROM equipmentselectionentity WHERE equipmentId IN (:list)")
     suspend fun delete(list: List<Long>)
 
+    @Query("DELETE FROM equipmentselectionentity")
+    suspend fun clearSelections()
 }

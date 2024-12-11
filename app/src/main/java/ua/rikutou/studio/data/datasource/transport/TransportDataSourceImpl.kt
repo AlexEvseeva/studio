@@ -121,4 +121,8 @@ class TransportDataSourceImpl constructor(
     override suspend fun removeFromCart(transportIds: List<Long>): Unit = withContext(Dispatchers.IO) {
         dbDataSource.db.transportSelectionDao.delete(transportIds = transportIds)
     }
+
+    override suspend fun clearSelections() {
+        dbDataSource.db.transportSelectionDao.clearSelections()
+    }
 }

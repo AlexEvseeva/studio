@@ -17,4 +17,7 @@ interface TransportSelectionDao {
 
     @Query("SELECT transportId FROM TransportSelectionEntity")
     fun getAll(): Flow<List<Long>>
+
+    @Query("DELETE FROM transportselectionentity")
+    suspend fun clearSelections()
 }

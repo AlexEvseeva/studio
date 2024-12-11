@@ -22,4 +22,5 @@ interface TransportDataSource {
     suspend fun getSelections(): Flow<List<Long>>
     suspend fun addToCart(transportId: Long)
     suspend fun removeFromCart(transportIds: List<Long>)
+    suspend fun clearSelections()
 }

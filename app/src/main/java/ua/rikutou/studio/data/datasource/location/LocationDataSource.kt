@@ -25,4 +25,5 @@ interface LocationDataSource {
     suspend fun delete(locationId: Long)
     suspend fun addToCart(locationId: Long)
     suspend fun removeFromCart(locationIds: List<Long>)
+    suspend fun clearSelection()
 }

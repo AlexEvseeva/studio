@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -149,7 +150,7 @@ class DocumentCreateViewModel @Inject constructor(
         }
     }
 
-    private fun createDocument() = viewModelScope.launch {
+    private fun createDocument() = viewModelScope.launch(Dispatchers.IO) {
         profileDataSource.user?.studioId?.let { id ->
             documentDataSource.createDocument(
                 dataStart = state.value.fromDate ?: Date(),
@@ -161,6 +162,9 @@ class DocumentCreateViewModel @Inject constructor(
             )
 
         }
+        transportDataSource.clearSelections()
+        equipmentDataSource.clearSelections()
+        locationDataSource.clearSelection()
         _event.emit(DocumentCreate.Event.OnNavigate(destination = Screen.Studio.Main))
     }
 }
