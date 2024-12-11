@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.equipment.EquipmentDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.data.local.entity.EquipmentEntity
+import ua.rikutou.studio.data.remote.equipment.EquipmentType
 import ua.rikutou.studio.navigation.Screen
 import javax.inject.Inject
 
@@ -46,11 +47,6 @@ class EquipmentEditViewModel @Inject constructor(
                         s.copy(equipment = s.equipment?.copy(name = action.name))
                     }
                 }
-                action.type?.let {
-                    _state.update { s ->
-                        s.copy(equipment = s.equipment?.copy(type = action.type))
-                    }
-                }
                 action.comment?.let {
                     _state.update { s ->
                         s.copy(equipment = s.equipment?.copy(comment = action.comment))
@@ -63,6 +59,11 @@ class EquipmentEditViewModel @Inject constructor(
                 }
             }
             EquipmentEdit.Action.OnSave -> onSave()
+            is EquipmentEdit.Action.OnTypeSelected -> {
+                _state.update { s ->
+                    s.copy(equipment = s.equipment?.copy(type = action.type))
+                }
+            }
         }
     }
 
@@ -80,7 +81,7 @@ class EquipmentEditViewModel @Inject constructor(
                 it.copy(equipment = EquipmentEntity(
                     equipmentId = -1,
                     name = "",
-                    type = "",
+                    type = EquipmentType.Camera,
                     comment = "",
                     rentPrice = 0F,
                     studioId = profileDataSource.user?.studioId ?: -1L
@@ -92,7 +93,6 @@ class EquipmentEditViewModel @Inject constructor(
 
     private fun onSave() = viewModelScope.launch {
         if (state.value.equipment?.name?.isEmpty() == true
-            || state.value.equipment?.type?.isEmpty() == true
             || state.value.equipment?.comment?.isEmpty() == true
             || state.value.equipment?.rentPrice == 0F
         ) {

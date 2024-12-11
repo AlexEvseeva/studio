@@ -111,7 +111,6 @@ class EquipmentListViewModel @Inject constructor(
                         } else {
                             list.filter { equipment ->
                                 equipment.name.contains(search,ignoreCase = true)
-                                        || equipment.type.contains(search,ignoreCase = true)
                                         || equipment.comment.contains(search, ignoreCase = true)
                             }
                         }.map {

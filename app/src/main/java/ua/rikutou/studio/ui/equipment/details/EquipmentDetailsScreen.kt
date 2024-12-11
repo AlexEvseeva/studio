@@ -116,7 +116,7 @@ private fun EquipmentDetailsScreenContent(
                 )
 
                 ElementContent(label = stringResource(R.string.nameLabel), name = state.equipment?.name ?: "")
-                ElementContent(label = stringResource(R.string.typeLabel), name = state.equipment?.type ?: "")
+                ElementContent(label = stringResource(R.string.typeLabel), name = state.equipment?.type?.name ?: "")
                 ElementContent(label = stringResource(R.string.commentLabel), name = state.equipment?.comment ?: "")
                 ElementContent(label = stringResource(R.string.rentPriceLabel), name = (state.equipment?.rentPrice ?: 0).toString())
 

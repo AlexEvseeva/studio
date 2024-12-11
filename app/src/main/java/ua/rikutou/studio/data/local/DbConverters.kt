@@ -1,6 +1,8 @@
 package ua.rikutou.studio.data.local
 
 import androidx.room.TypeConverter
+import ua.rikutou.studio.data.remote.equipment.EquipmentType
+import ua.rikutou.studio.data.remote.equipment.toEquipmentType
 import ua.rikutou.studio.data.remote.film.Genre
 import ua.rikutou.studio.data.remote.film.toGenre
 import ua.rikutou.studio.data.remote.location.LocationType
@@ -32,4 +34,10 @@ class DbConverters {
 
     @TypeConverter
     fun genreFromDb(num: Int) = num.toGenre()
+
+    @TypeConverter
+    fun equipmentToDb(type: EquipmentType): Int = type.toDb()
+
+    @TypeConverter
+    fun equipmentFromDb(num: Int) = num.toEquipmentType()
 }
