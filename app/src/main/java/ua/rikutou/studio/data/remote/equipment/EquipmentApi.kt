@@ -17,6 +17,7 @@ interface EquipmentApi {
     suspend fun getAllEquipment(
         @Query("studioId") studioId: Long,
         @Query("search") search: String? = null,
+        @Query("type") type: Int? = null,
     ): Response<List<EquipmentDto>>
 
     @DELETE("equipment/{equipmentId}")

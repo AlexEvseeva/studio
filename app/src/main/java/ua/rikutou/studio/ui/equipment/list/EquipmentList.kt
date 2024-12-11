@@ -1,6 +1,7 @@
 package ua.rikutou.studio.ui.equipment.list
 
 import ua.rikutou.studio.data.local.entity.EquipmentEntity
+import ua.rikutou.studio.data.remote.equipment.EquipmentType
 import ua.rikutou.studio.navigation.Screen
 
 object EquipmentList {
@@ -14,6 +15,9 @@ object EquipmentList {
         data object OnSearch : Action
         data object OnCancel : Action
         data class OnAddToCart(val equipmentId: Long) : Action
+        data class OnType(val type: EquipmentType?) : Action
+        data class OnOrder(val order: EquipmentOrder) : Action
+        data object OnClearFilter : Action
     }
 
     data class State (

@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 import ua.rikutou.studio.data.datasource.equipment.EquipmentDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.data.local.entity.EquipmentEntity
+import ua.rikutou.studio.data.remote.equipment.EquipmentType
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,6 +27,7 @@ class EquipmentListViewModel @Inject constructor(
     private val profileDataSource: ProfileDataSource,
 ) : ViewModel() {
     private val _state = MutableStateFlow(EquipmentList.State())
+    val filter = MutableStateFlow(EquipmentFilter())
     val state = _state
         .onStart {
             profileDataSource.user?.studioId?.let {
@@ -43,17 +46,20 @@ class EquipmentListViewModel @Inject constructor(
     private val search = MutableStateFlow("")
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            search
-                .collect { search ->
-                    if (search.length > 2) {
-                        profileDataSource.user?.studioId?.let { id ->
-                            loadEquipments(
-                                studioId = id,
-                                search = search
-                            )
-                        }
+            combine(
+                search,
+                filter
+            ) { search, filter ->
+                if (search.length > 2 || filter.byType != null) {
+                    profileDataSource.user?.studioId?.let { id ->
+                        loadEquipments(
+                            studioId = id,
+                            search = search,
+                            byType = filter.byType
+                        )
                     }
                 }
+            }.collect()
         }
     }
 
@@ -88,12 +94,36 @@ class EquipmentListViewModel @Inject constructor(
                 is EquipmentList.Action.OnAddToCart -> {
                     equipmentDataSource.addToCart(equipmentId = action.equipmentId)
                 }
+
+                is EquipmentList.Action.OnOrder -> {
+                    filter.update {
+                        it.copy(order = action.order)
+                    }
+                }
+                is EquipmentList.Action.OnType -> {
+                    filter.update {
+                        it.copy(byType = action.type)
+                    }
+                }
+
+                EquipmentList.Action.OnClearFilter -> {
+                    _state.update {
+                        it.copy(
+                            isSearchActive = false,
+                            isSearchEnabled = true,
+                        )
+                    }
+                    search.value = ""
+                    filter.update {
+                        it.copy(byType = null, order = EquipmentOrder.DESC)
+                    }
+                }
             }
         }
 
-    private fun loadEquipments(studioId: Long, search: String) {
+    private fun loadEquipments(studioId: Long, search: String, byType: EquipmentType? = null) {
         viewModelScope.launch(Dispatchers.IO) {
-            equipmentDataSource.loadEquipment(studioId = studioId, search = search)
+            equipmentDataSource.loadEquipment(studioId = studioId, search = search, type = byType)
         }
     }
 
@@ -102,17 +132,25 @@ class EquipmentListViewModel @Inject constructor(
             combine(
                 equipmentDataSource.getAllEquipment(studioId = studioId),
                 equipmentDataSource.getAllSelected(),
-                search
-            ) { list, selected, search ->
+                search,
+                filter
+            ) { list, selected, search, filter ->
+
+                val equipment = if (search.isEmpty() && filter.byType == null) {
+                    list
+                } else {
+                    list.filter { equipment ->
+                        (equipment.name.contains(search,ignoreCase = true)
+                                || equipment.comment.contains(search, ignoreCase = true))
+                                && filter.byType?.let { equipment.type == it } ?: true
+                    }
+                }
+
                 _state.update {
                     it.copy(
-                        equipment = if (search.isEmpty()) {
-                            list
-                        } else {
-                            list.filter { equipment ->
-                                equipment.name.contains(search,ignoreCase = true)
-                                        || equipment.comment.contains(search, ignoreCase = true)
-                            }
+                        equipment = when(filter.order) {
+                            EquipmentOrder.ASC -> equipment.sortedBy { it.rentPrice }
+                            EquipmentOrder.DESC -> equipment.sortedByDescending { it.rentPrice }
                         }.map {
                             EquipmentHolder(equipment = it, isSelected = it.equipmentId in selected)
                         }
@@ -127,3 +165,12 @@ data class EquipmentHolder(
     val equipment: EquipmentEntity,
     val isSelected: Boolean = false,
 )
+
+data class EquipmentFilter(
+    val byType: EquipmentType? = null,
+    val order: EquipmentOrder = EquipmentOrder.DESC
+)
+
+enum class EquipmentOrder {
+    ASC, DESC
+}

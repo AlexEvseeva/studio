@@ -16,6 +16,7 @@ import ua.rikutou.studio.data.local.entity.EquipmentEntity
 import ua.rikutou.studio.data.local.entity.EquipmentSelectionEntity
 import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.equipment.EquipmentApi
+import ua.rikutou.studio.data.remote.equipment.EquipmentType
 import ua.rikutou.studio.data.remote.equipment.dto.toEntity
 import ua.rikutou.studio.di.DbDeliveryDispatcher
 
@@ -81,10 +82,11 @@ class EquipmentDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) construct
         }
     }
 
-    override suspend fun loadEquipment(studioId: Long, search: String?): Unit = withContext(Dispatchers.IO) {
+    override suspend fun loadEquipment(studioId: Long, search: String?, type: EquipmentType?): Unit = withContext(Dispatchers.IO) {
         equipmentApi.getAllEquipment(
             studioId = studioId,
-            search = search
+            search = if(search?.isEmpty() == true) null else search,
+            type = type?.toDb()
         ).run {
             when {
                 isSuccessful -> {
