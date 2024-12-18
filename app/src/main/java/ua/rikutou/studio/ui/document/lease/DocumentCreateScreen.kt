@@ -2,9 +2,11 @@ package ua.rikutou.studio.ui.document.lease
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,6 +20,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,6 +45,10 @@ import ua.rikutou.studio.ui.components.DatePickerModal
 import ua.rikutou.studio.ui.components.Item
 import ua.rikutou.studio.ui.components.dateFormatter
 import ua.rikutou.studio.ui.document.PdfCreator
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.Date
 
 @Composable
@@ -77,7 +85,7 @@ fun DocumentCreateScreen(
 }
 
 @SuppressLint("Recycle")
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun DocumentCreateScreenContent(
     state: DocumentCreate.State,
@@ -257,7 +265,8 @@ fun DocumentCreateScreenContent(
                 },
                 onDismiss = {
                     showDatePickerDialog = false
-                }
+                },
+                selectableDates = DocumentSelectableDates
             )
         }
 
@@ -283,5 +292,11 @@ fun DocumentCreateScreenContent(
         }
     }
 
+}
 
+@OptIn(ExperimentalMaterial3Api::class)
+object DocumentSelectableDates : SelectableDates {
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun isSelectableDate(utcTimeMillis: Long): Boolean =
+        LocalDate.ofInstant(Instant.ofEpochMilli(utcTimeMillis), ZoneId.systemDefault()) >= LocalDate.now()
 }
