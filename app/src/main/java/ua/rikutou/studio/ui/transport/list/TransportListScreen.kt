@@ -86,8 +86,8 @@ private fun TransportListScreenContent(
                 onAdd = {
                     onAction(
                         TransportList.Action.OnNavigate(
-                            destionation = Screen.Location.Edit(
-                                locationId = null
+                            destionation = Screen.Transport.Edit(
+                                transportId = null
                             )
                         )
                     )

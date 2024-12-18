@@ -147,7 +147,7 @@ fun TransportEditScreenContent(
             }
         )
 
-        state.departments?.let { departments ->
+        if(state.departments?.isNotEmpty() == true) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start,
@@ -168,7 +168,7 @@ fun TransportEditScreenContent(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = departments[itemPosition].type,
+                            text = state.departments[itemPosition].type,
                             overflow = TextOverflow.Ellipsis
                         )
                         Icon(
@@ -182,7 +182,7 @@ fun TransportEditScreenContent(
                             expanded = false
                         }
                     ) {
-                        departments.forEachIndexed { index, dept ->
+                        state.departments.forEachIndexed { index, dept ->
                             DropdownMenuItem(
                                 text = {
                                     Text(

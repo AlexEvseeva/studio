@@ -34,8 +34,11 @@ class TransportEditViewModel @Inject constructor(
     private val _state = MutableStateFlow(TransportEdit.State())
     val state = _state.asStateFlow()
         .onStart {
-            getTransport()
-            getDepartments()
+            profileDataSource.user?.studioId?.let { studioId ->
+                getTransport()
+                getDepartments(studioId = studioId)
+                loadDepartments(studioId = studioId)
+            }
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000L),
@@ -170,21 +173,23 @@ class TransportEditViewModel @Inject constructor(
         }
     }
 
-    private fun getDepartments() = viewModelScope.launch {
-        profileDataSource.user?.studioId?.let { studioId ->
-            departmentDataSource.getAllDepartments(studioId = studioId).collect { list ->
-                _state.update { s ->
-                    s.copy(
-                        departments = list.map { it.entity },
-                        transport = if((s.transport?.departmentId ?: -1L) < 0) {
-                            s.transport?.copy(departmentId = list.first().entity.departmentId)
-                        } else {
-                            s.transport
-                        }
-                    )
-                }
+    private fun getDepartments(studioId: Long) = viewModelScope.launch {
+        departmentDataSource.getAllDepartments(studioId = studioId).collect { list ->
+            _state.update { s ->
+                s.copy(
+                    departments = list.map { it.entity },
+                    transport = if((s.transport?.departmentId ?: -1L) < 0) {
+                        s.transport?.copy(departmentId = list.runCatching { first() }.getOrNull()?.entity?.departmentId ?: -1)
+                    } else {
+                        s.transport
+                    }
+                )
             }
         }
+    }
+
+    private fun loadDepartments(studioId: Long) = viewModelScope.launch {
+        departmentDataSource.loadDepartments(studioId = studioId, search = "")
     }
 
     private fun onSave() = viewModelScope.launch {
