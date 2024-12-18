@@ -77,4 +77,5 @@
     <string name="filterByTransportType">Filter by type</string>
     <string name="orderByDate">Order by manufacture date</string>
     <string name="filterByEquipmentType">Filter by type</string>
+    <string name="documentCreationDate">Created: %s</string>
 </resources>

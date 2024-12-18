@@ -128,7 +128,8 @@ fun DocumentCreateScreenContent(
                             equipment = state.equipment,
                             fromDate = state.fromDate ?: Date(),
                             toDays = state.toDays,
-                            sumFooter = "$sum ${(state.equipmentSum + state.locationSum + state.transportSum) * state.toDays}"
+                            sumFooter = "$sum ${(state.equipmentSum + state.locationSum + state.transportSum) * state.toDays}",
+                            created = String.format(context.getString(R.string.documentCreationDate), dateFormatter.format(Date()))
                         )
                     }
                 }

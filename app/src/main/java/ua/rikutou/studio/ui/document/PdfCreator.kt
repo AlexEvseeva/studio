@@ -36,7 +36,8 @@ class PdfCreator(private val context: Context) {
         equipment: List<EquipmentEntity>? = null,
         sumFooter: String,
         fromDate: Date,
-        toDays: Int
+        toDays: Int,
+        created: String,
     ) {
         val headerFontSize = 20F
         val messageFontSize = 16F
@@ -144,6 +145,12 @@ class PdfCreator(private val context: Context) {
             Paragraph(sumFooter)
                 .setBold()
         )
+
+        document.add(
+            Paragraph(created)
+        )
+
+
 
         document.close()
     }
