@@ -102,7 +102,7 @@ fun FilmDetailsScreenContent(
                 ElementTitle(
                     modifier = Modifier,
                     title = state.film?.entity?.title ?: "",
-                    isEditEnabled = true,
+                    isEditEnabled = false,
                     onEdit = {
                         onAction(
                             FilmDetails.Action.OnNavigate(

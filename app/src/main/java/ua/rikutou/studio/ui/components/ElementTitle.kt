@@ -37,6 +37,7 @@ fun ElementTitle(
     isSearchEnabled: Boolean = false,
     isSearchActive: Boolean = false,
     isCartEnable: Boolean = false,
+    isAddEnable: Boolean = true,
     onEdit: () -> Unit = {},
     onAdd: () -> Unit = {},
     onSearchChanged: (String) -> Unit = {},
@@ -105,15 +106,17 @@ fun ElementTitle(
                     painter = painterResource(R.drawable.search),
                     contentDescription = "Search"
                 )
-                Image(
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .clickable {
-                            onAdd()
-                        },
-                    painter = painterResource(R.drawable.add),
-                    contentDescription = "Add"
-                )
+                if(isAddEnable) {
+                    Image(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .clickable {
+                                onAdd()
+                            },
+                        painter = painterResource(R.drawable.add),
+                        contentDescription = "Add"
+                    )
+                }
             }
             isSearchActive -> {
                 OutlinedTextField(

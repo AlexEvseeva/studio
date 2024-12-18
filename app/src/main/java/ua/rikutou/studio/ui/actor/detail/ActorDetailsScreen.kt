@@ -111,7 +111,7 @@ private fun ActorDetailsScreenContent(
                 ElementTitle(
                     modifier = Modifier,
                     title = state.actor?.entity?.nickName ?: state.actor?.entity?.name ?: "",
-                    isEditEnabled = true,
+                    isEditEnabled = false,
                     onEdit = {
                         onAction(
                             ActorDetails.Action.OnNavigate(

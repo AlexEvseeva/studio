@@ -79,6 +79,7 @@ fun ActorListScreenContent(
                 onSearchChanged = {
                     onAction(ActorList.Action.OnSearchChanged(it))
                 },
+                isAddEnable = false,
                 onAdd = {
                     onAction(
                         ActorList.Action.OnNavigate(
