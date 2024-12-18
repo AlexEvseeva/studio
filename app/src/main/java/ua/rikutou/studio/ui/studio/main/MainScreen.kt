@@ -157,19 +157,19 @@ private fun MainScreenContent(
                     if(mostPopularLocations?.isNotEmpty() == true) {
                         ElementContent(
                             label = stringResource(R.string.mostPopularLocation),
-                            name = mostPopularLocations.map { it.name }.joinToString(", ")
+                            name = mostPopularLocations.first().name
                         )
                     }
                     if(mostPopularTransport?.isNotEmpty() == true) {
                         ElementContent(
                             label = stringResource(R.string.mostPopularTransport),
-                            name = mostPopularTransport.map { it.mark }.joinToString(", ")
+                            name = mostPopularTransport.first().mark
                         )
                     }
                     if(mostPopularEquipment?.isNotEmpty() == true) {
                         ElementContent(
                             label = stringResource(R.string.mostPopularEquipment),
-                            name = mostPopularEquipment.map { it.type }.joinToString(", ")
+                            name = mostPopularEquipment.first().name
                         )
                     }
                     mostPopularActor?.let { actor ->
