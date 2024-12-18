@@ -69,9 +69,15 @@ class LocationEditViewModel
                     }
                 }
                 action.height?.let { height ->
-                    val h = height.runCatching { height.toFloat() }.getOrNull() ?: 0F
-                    _state.update { s ->
-                        s.copy(location = s.location?.copy(height = if(h >= 0F) h else -1 * h))
+                    if(state.value.location?.type != LocationType.openspace) {
+                        val h = height.runCatching { height.toFloat() }.getOrNull() ?: 0F
+                        _state.update { s ->
+                            s.copy(location = s.location?.copy(height = if(h >= 0F) h else -1 * h))
+                        }
+                    } else {
+                        _state.update { s ->
+                            s.copy(location = s.location?.copy(height = 0F))
+                        }
                     }
                 }
                 action.rentPrice?.let { price ->
@@ -83,11 +89,12 @@ class LocationEditViewModel
             }
             LocationEdit.Action.OnSave -> onSave()
             is LocationEdit.Action.OnTypeSelected -> {
-                Log.d(TAG, "onAction: ${action.option}")
+                val type = LocationType.valueOf(action.option)
                 _state.update { s ->
                     s.copy(
                         location = s.location?.copy(
-                            type = LocationType.valueOf(action.option)
+                            type = type,
+                            height = if(type != LocationType.openspace) s.location.height else 0F
                         )
                     )
                 }
