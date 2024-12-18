@@ -92,7 +92,7 @@ class TransportDataSourceImpl constructor(
         ).run {
             when {
                 isSuccessful -> {
-                    dbDataSource.db.transportDao.insert(
+                    dbDataSource.db.transportDao.syncInsert(
                         body()?.map {
                             it.toEntity()
                         } ?: emptyList()

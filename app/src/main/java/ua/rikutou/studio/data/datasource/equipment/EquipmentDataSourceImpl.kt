@@ -90,7 +90,7 @@ class EquipmentDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) construct
         ).run {
             when {
                 isSuccessful -> {
-                    dbDataSource.db.equipmentDao.insert(
+                    dbDataSource.db.equipmentDao.syncInsert(
                         body()?.map { it.toEntity() } ?: emptyList()
                     )
                 }

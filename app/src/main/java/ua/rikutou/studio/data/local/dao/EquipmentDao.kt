@@ -12,6 +12,12 @@ interface EquipmentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(list: List<EquipmentEntity>): List<Long>
 
+    suspend fun syncInsert(list: List<EquipmentEntity>) {
+        deleteExcluded(
+            insert(list)
+        )
+    }
+
     @Query("SELECT * FROM equipmententity WHERE studioId=:studioId")
     fun getAllEquipment(studioId: Long): Flow<List<EquipmentEntity>>
 
@@ -20,4 +26,7 @@ interface EquipmentDao {
 
     @Query("DELETE FROM equipmententity WHERE equipmentId=:equipmentId")
     suspend fun deleteById(equipmentId: Long)
+
+    @Query("DELETE FROM EquipmentEntity WHERE equipmentId NOT IN (:list)")
+    suspend fun deleteExcluded(list: List<Long>)
 }

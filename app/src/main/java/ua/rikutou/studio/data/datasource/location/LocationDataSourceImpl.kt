@@ -75,7 +75,7 @@ class LocationDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructo
                     when {
                         isSuccessful -> {
                             body()?.let { list ->
-                                dbDataSource.db.locationDao.insert(
+                                dbDataSource.db.locationDao.syncInsert(
                                     list.map {
                                         it.toEntity()
                                     }
