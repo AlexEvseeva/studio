@@ -17,12 +17,13 @@ import ua.rikutou.studio.data.local.entity.EquipmentEntity
 import ua.rikutou.studio.data.local.entity.Location
 import ua.rikutou.studio.data.local.entity.StudioEntity
 import ua.rikutou.studio.data.local.entity.TransportEntity
+import ua.rikutou.studio.data.remote.location.dto.LocationResponse
 import ua.rikutou.studio.ui.components.dateFormatter
 import java.io.File
 import java.io.OutputStream
 import java.util.Date
 
-class PdfCreator(private val context: Context) {
+class PdfCreator() {
     fun create(
         outputStream: OutputStream,
         header: String,
@@ -150,7 +151,64 @@ class PdfCreator(private val context: Context) {
             Paragraph(created)
         )
 
+        document.close()
+    }
 
+    fun createLocationsReport(
+        outputStream: OutputStream,
+        title: String,
+        locations: List<LocationResponse>,
+        locationsStatistics: String,
+        created: String,
+    ) {
+        val headerFontSize = 20F
+        val messageFontSize = 16F
+        val listTitleFontSize = 12F
+        val listCommentFontSize = 10F
+        val listMargin = 8F
+
+        val pdfWriter = PdfWriter(outputStream)
+        val pdfDocument = PdfDocument(pdfWriter)
+        val document = Document(pdfDocument, PageSize.A4)
+
+        val page = pdfDocument.addNewPage()
+
+        val titleParagraph = Paragraph(title)
+            .setFontSize(headerFontSize)
+            .setTextAlignment(TextAlignment.CENTER)
+            .setFontColor(DeviceRgb.BLACK)
+        document.add(titleParagraph)
+
+        document.add(LineSeparator(SolidLine(1F)))
+
+        locations.forEach { item ->
+            document.add(
+                Paragraph(item.name)
+                    .setFontSize(listTitleFontSize)
+                    .setTextAlignment(TextAlignment.LEFT)
+                    .setFontColor(DeviceRgb.BLACK)
+                    .setMargins(listMargin, 0f, 0f, 0f)
+            )
+            document.add(
+                Paragraph(item.address)
+                    .setFontSize(listCommentFontSize)
+                    .setTextAlignment(TextAlignment.LEFT)
+                    .setFontColor(DeviceRgb.BLACK, 50F)
+                    .setMargins(0f, 0f, listMargin, 0f)
+            )
+        }
+
+        document.add(LineSeparator(SolidLine(1F)))
+
+        document.add(
+            Paragraph(
+                locationsStatistics
+            ).setBold()
+        )
+
+        document.add(
+            Paragraph(created)
+        )
 
         document.close()
     }

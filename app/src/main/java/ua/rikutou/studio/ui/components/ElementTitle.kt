@@ -38,13 +38,15 @@ fun ElementTitle(
     isSearchActive: Boolean = false,
     isCartEnable: Boolean = false,
     isAddEnable: Boolean = true,
+    isLocationReportEnabled: Boolean = false,
     onEdit: () -> Unit = {},
     onAdd: () -> Unit = {},
     onSearchChanged: (String) -> Unit = {},
     onSearch: () -> Unit = {},
     onCancel: () -> Unit = {},
     onClearFilters: () -> Unit = {},
-    onCart: () -> Unit = {}
+    onCart: () -> Unit = {},
+    onLocationReport: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
@@ -161,6 +163,17 @@ fun ElementTitle(
                 )
             }
         }
+        if(isLocationReportEnabled) {
+            Image(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .clickable {
+                        onLocationReport()
+                    },
+                painter = painterResource(R.drawable.location),
+                contentDescription = "Location report"
+            )
+        }
         if(isCartEnable) {
             Image(
                 modifier = Modifier
@@ -169,7 +182,7 @@ fun ElementTitle(
                         onCart()
                     },
                 painter = painterResource(R.drawable.cart),
-                contentDescription = "Clear"
+                contentDescription = "Go to cart"
             )
         }
 

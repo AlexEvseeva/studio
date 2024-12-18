@@ -8,6 +8,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,6 +22,7 @@ import ua.rikutou.studio.data.local.entity.toDto
 import ua.rikutou.studio.data.remote.gallery.dto.toEntity
 import ua.rikutou.studio.data.remote.location.LocationApi
 import ua.rikutou.studio.data.remote.location.LocationType
+import ua.rikutou.studio.data.remote.location.dto.LocationsReportRespons
 import ua.rikutou.studio.data.remote.location.dto.toEntity
 import ua.rikutou.studio.di.DbDeliveryDispatcher
 
@@ -160,5 +162,19 @@ class LocationDataSourceImpl @OptIn(ExperimentalCoroutinesApi::class) constructo
         dbDataSource.db.locationSelectionDao.clearSelections()
     }
 
-
+    override suspend fun getLocationsReport(studioId: Long): Flow<LocationsReportRespons> = flow {
+        locationApi.getLocationReport(studioId = studioId).run {
+            when {
+                isSuccessful -> {
+                    body()?.let {
+                        emit(it)
+                    }
+                }
+                else -> {
+                    Log.e(TAG, "getLocationsReport: Failed: ${errorBody()?.string()}", )
+                }
+            }
+        }
+    }.flowOn(Dispatchers.IO)
+    
 }

@@ -9,6 +9,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import ua.rikutou.studio.data.remote.location.dto.LocationRequest
 import ua.rikutou.studio.data.remote.location.dto.LocationResponse
+import ua.rikutou.studio.data.remote.location.dto.LocationsReportRespons
 
 interface LocationApi {
     @GET("locations")
@@ -33,4 +34,9 @@ interface LocationApi {
     suspend fun saveUpdateLocation(
         @Body body: LocationRequest
     ): Response<LocationResponse>
+
+    @GET("reportLocation")
+    suspend fun getLocationReport(
+        @Query("studioId") studioId: Long
+    ): Response<LocationsReportRespons>
 }

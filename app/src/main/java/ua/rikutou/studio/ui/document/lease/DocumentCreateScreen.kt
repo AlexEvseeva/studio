@@ -1,7 +1,6 @@
-package ua.rikutou.studio.ui.document
+package ua.rikutou.studio.ui.document.lease
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -17,11 +16,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material3.Button
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,26 +32,15 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.itextpdf.kernel.geom.PageSize
-import com.itextpdf.kernel.pdf.PdfDocument
-import com.itextpdf.kernel.pdf.PdfWriter
-import com.itextpdf.layout.Document
-import com.itextpdf.layout.element.Paragraph
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ua.rikutou.studio.R
-import ua.rikutou.studio.config.floatFieldMaxLength
 import ua.rikutou.studio.ui.components.DatePickerModal
 import ua.rikutou.studio.ui.components.Item
 import ua.rikutou.studio.ui.components.dateFormatter
-import java.io.File
+import ua.rikutou.studio.ui.document.PdfCreator
 import java.util.Date
 
 @Composable
@@ -100,7 +85,7 @@ fun DocumentCreateScreenContent(
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val pdfCreator = PdfCreator(context)
+    val pdfCreator = PdfCreator()
 
     val header = stringResource(R.string.documentHeader)
     val message = String.format(stringResource(R.string.documentMessage), state.studio?.name ?: "")

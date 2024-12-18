@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import ua.rikutou.studio.data.local.entity.Location
 import ua.rikutou.studio.data.local.entity.LocationEntity
 import ua.rikutou.studio.data.remote.location.LocationType
+import ua.rikutou.studio.data.remote.location.dto.LocationsReportRespons
 
 
 interface LocationDataSource {
@@ -26,4 +27,6 @@ interface LocationDataSource {
     suspend fun addToCart(locationId: Long)
     suspend fun removeFromCart(locationIds: List<Long>)
     suspend fun clearSelection()
+
+    suspend fun getLocationsReport(studioId: Long): Flow<LocationsReportRespons>
 }

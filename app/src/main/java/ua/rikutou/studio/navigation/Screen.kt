@@ -55,6 +55,7 @@ sealed class Screen {
 
     @Serializable sealed class Document : Screen() {
         @Serializable data object Create : Document()
+        @Serializable data object LocationReport : Document()
     }
 
 }

@@ -100,6 +100,14 @@ private fun MainScreenContent(
                     onAction(Main.Action.OnNavigate(
                         destination = Screen.Document.Create)
                     )
+                },
+                isLocationReportEnabled = true,
+                onLocationReport = {
+                    onAction(
+                        Main.Action.OnNavigate(
+                            destination = Screen.Document.LocationReport
+                        )
+                    )
                 }
             )
             ElementContent(label = "address", name = state.studio?.address ?: "")

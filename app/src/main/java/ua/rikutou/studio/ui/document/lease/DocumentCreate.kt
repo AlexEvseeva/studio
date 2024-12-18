@@ -1,4 +1,4 @@
-package ua.rikutou.studio.ui.document
+package ua.rikutou.studio.ui.document.lease
 
 import ua.rikutou.studio.data.local.entity.EquipmentEntity
 import ua.rikutou.studio.data.local.entity.Location

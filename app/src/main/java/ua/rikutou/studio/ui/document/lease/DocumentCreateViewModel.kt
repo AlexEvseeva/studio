@@ -1,4 +1,4 @@
-package ua.rikutou.studio.ui.document
+package ua.rikutou.studio.ui.document.lease
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

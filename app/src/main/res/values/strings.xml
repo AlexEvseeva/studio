@@ -78,4 +78,7 @@
     <string name="orderByDate">Order by manufacture date</string>
     <string name="filterByEquipmentType">Filter by type</string>
     <string name="documentCreationDate">Created: %s</string>
+    <string name="vacantLocationsReport">Vacant locations report</string>
+    <string name="locationStatistics">Vacant locations %d from %d</string>
+    <string name="locationsReportIsEmpty">Locations report is empty</string>
 </resources>
