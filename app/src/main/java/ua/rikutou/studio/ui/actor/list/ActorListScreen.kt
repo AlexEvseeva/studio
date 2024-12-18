@@ -82,8 +82,8 @@ fun ActorListScreenContent(
                 onAdd = {
                     onAction(
                         ActorList.Action.OnNavigate(
-                            destionation = Screen.Location.Edit(
-                                locationId = null
+                            destionation = Screen.Actor.Edit(
+                                actorId = null
                             )
                         )
                     )
