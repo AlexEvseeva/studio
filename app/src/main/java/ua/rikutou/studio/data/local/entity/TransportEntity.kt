@@ -22,7 +22,7 @@ data class TransportEntity(
 
 fun TransportEntity.toDto() =
     TransportRequest(
-        transportId = transportId,
+        transportId = if(transportId > 0) transportId else null,
         type = type.fromTransportType(),
         mark = mark,
         manufactureDate = manufactureDate.time,

@@ -9,6 +9,7 @@ import java.util.Date
 object TransportEdit {
     sealed interface Event {
         data object OnBack : Event
+        data class OmMessage(val message: String): Event
     }
 
     sealed interface Action {

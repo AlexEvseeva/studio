@@ -31,6 +31,7 @@ class TransportEditViewModel @Inject constructor(
     private val profileDataSource: ProfileDataSource,
     private val departmentDataSource: DepartmentDataSource,
 ) : ViewModel() {
+    private val TAG by lazy { TransportEditViewModel::class.simpleName }
     private val _state = MutableStateFlow(TransportEdit.State())
     val state = _state.asStateFlow()
         .onStart {
@@ -193,13 +194,14 @@ class TransportEditViewModel @Inject constructor(
     }
 
     private fun onSave() = viewModelScope.launch {
-        if (state.value.transport?.type != null
+        if (state.value.transport?.type == null
             || state.value.transport?.mark?.isEmpty() == true
             || state.value.transport?.seats == 0
             || state.value.transport?.color?.isEmpty() == true
             || state.value.transport?.technicalState?.isEmpty() == true
             || state.value.transport?.rentPrice == 0F
         ) {
+            _event.emit(TransportEdit.Event.OmMessage(message = "Data validation failed"))
             return@launch
         }
         state.value.transport?.let {
