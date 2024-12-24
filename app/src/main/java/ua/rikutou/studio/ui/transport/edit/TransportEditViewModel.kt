@@ -15,6 +15,10 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ua.rikutou.studio.config.maxBusSeats
+import ua.rikutou.studio.config.maxCommercialSeats
+import ua.rikutou.studio.config.maxPickupSeats
+import ua.rikutou.studio.config.maxSedanSeats
 import ua.rikutou.studio.data.datasource.department.DepartmentDataSource
 import ua.rikutou.studio.data.datasource.profile.ProfileDataSource
 import ua.rikutou.studio.data.datasource.transport.TransportDataSource
@@ -198,6 +202,12 @@ class TransportEditViewModel @Inject constructor(
     }
 
     private fun onSave() = viewModelScope.launch {
+        val maxSeats = when(state.value.transport?.type ?: TransportType.Sedan) {
+            TransportType.Sedan -> maxSedanSeats
+            TransportType.Pickup -> maxPickupSeats
+            TransportType.Bus -> maxBusSeats
+            TransportType.Commercial -> maxCommercialSeats
+        }
         if (state.value.transport?.type == null) {
             _event.emit(TransportEdit.Event.OmMessage(message = "Data validation failed: type"))
             return@launch
@@ -216,7 +226,14 @@ class TransportEditViewModel @Inject constructor(
         } else if(state.value.transport?.rentPrice == 0F) {
             _event.emit(TransportEdit.Event.OmMessage(message = "Data validation failed: rent price"))
             return@launch
+        } else if((state.value.transport?.seats ?: 0) > maxSeats) {
+            _event.emit(TransportEdit.Event.OmMessage(
+                message = "Data validation failed: max seats for selected type ${state.value.transport?.type?.name ?: ""} is $maxSeats")
+            )
+            return@launch
+
         }
+
         Log.d(TAG, "onSave: ${state.value.transport}")
 
         state.value.transport?.let {

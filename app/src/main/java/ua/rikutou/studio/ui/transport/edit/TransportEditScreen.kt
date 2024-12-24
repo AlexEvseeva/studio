@@ -30,16 +30,21 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ua.rikutou.studio.R
 import ua.rikutou.studio.config.floatFieldMaxLength
 import ua.rikutou.studio.data.remote.transport.TransportType
@@ -91,7 +96,6 @@ fun TransportEditScreenContent(
             .verticalScroll(state = rememberScrollState())
             .padding(horizontal = 8.dp)
     ) {
-
         var expanded by remember { mutableStateOf(false) }
         var typeExpanded by remember { mutableStateOf(false) }
 
@@ -199,9 +203,9 @@ fun TransportEditScreenContent(
                 it.toString()
             } ?: "",
             onValueChange = {
-                it.runCatching { toInt() }.getOrNull()?.let {
-                    onAction(TransportEdit.Action.OnFieldChanged(seats = it))
-                }
+                    it.runCatching { toInt() }.getOrNull()?.let {
+                        onAction(TransportEdit.Action.OnFieldChanged(seats = it))
+                    }
             },
             label = {
                 Text(text = stringResource(R.string.seatsLabel))
