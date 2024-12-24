@@ -137,7 +137,7 @@ class PdfCreator() {
         }
 
         document.add(
-            Paragraph("From ${dateFormatter.format(fromDate)} to $toDays days")
+            Paragraph("From ${dateFormatter.format(fromDate)} for $toDays days")
         )
 
         document.add(LineSeparator(SolidLine(1F)))

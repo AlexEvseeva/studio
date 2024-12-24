@@ -70,7 +70,7 @@
     <string name="totalDocuments">Documents created</string>
     <string name="mostPopularLocation">Most popular locations</string>
     <string name="mostPopularTransport">Most popular transport</string>
-    <string name="mostPopularEquipment">Most poular equipmnet</string>
+    <string name="mostPopularEquipment">Most popular equipment</string>
     <string name="mostPupularActor">Actor of the year</string>
     <string name="filterByLocationType">Filter by type</string>
     <string name="orderByPrice">Order by price</string>
@@ -79,6 +79,6 @@
     <string name="filterByEquipmentType">Filter by type</string>
     <string name="documentCreationDate">Created: %s</string>
     <string name="vacantLocationsReport">Vacant locations report</string>
-    <string name="locationStatistics">Vacant locations %d from %d</string>
+    <string name="locationStatistics">Vacant locations %d of %d</string>
     <string name="locationsReportIsEmpty">Locations report is empty</string>
 </resources>

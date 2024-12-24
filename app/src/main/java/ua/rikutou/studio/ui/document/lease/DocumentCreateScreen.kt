@@ -296,6 +296,7 @@ fun DocumentCreateScreenContent(
 
 @OptIn(ExperimentalMaterial3Api::class)
 object DocumentSelectableDates : SelectableDates {
+    @SuppressLint("NewApi")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun isSelectableDate(utcTimeMillis: Long): Boolean =
         LocalDate.ofInstant(Instant.ofEpochMilli(utcTimeMillis), ZoneId.systemDefault()) >= LocalDate.now()
