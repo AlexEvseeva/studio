@@ -83,7 +83,10 @@ class TransportEditViewModel @Inject constructor(
                     _state.update { s ->
                         s.copy(
                             transport = s.transport?.copy(
-                                seats = seats
+                                seats = when {
+                                    seats < 0 -> seats * -1
+                                    else -> seats
+                                }
                             )
                         )
                     }
@@ -194,16 +197,27 @@ class TransportEditViewModel @Inject constructor(
     }
 
     private fun onSave() = viewModelScope.launch {
-        if (state.value.transport?.type == null
-            || state.value.transport?.mark?.isEmpty() == true
-            || state.value.transport?.seats == 0
-            || state.value.transport?.color?.isEmpty() == true
-            || state.value.transport?.technicalState?.isEmpty() == true
-            || state.value.transport?.rentPrice == 0F
-        ) {
-            _event.emit(TransportEdit.Event.OmMessage(message = "Data validation failed"))
+        if (state.value.transport?.type == null) {
+            _event.emit(TransportEdit.Event.OmMessage(message = "Data validation failed: type"))
+            return@launch
+        } else if(state.value.transport?.mark?.isEmpty() == true) {
+            _event.emit(TransportEdit.Event.OmMessage(message = "Data validation failed: mark"))
+            return@launch
+        } else if((state.value.transport?.seats ?: -1) <= 0) {
+            _event.emit(TransportEdit.Event.OmMessage(message = "Data validation failed: seats"))
+            return@launch
+        } else if(state.value.transport?.color?.isEmpty() == true) {
+            _event.emit(TransportEdit.Event.OmMessage(message = "Data validation failed: color"))
+            return@launch
+        } else if(state.value.transport?.technicalState?.isEmpty() == true) {
+            _event.emit(TransportEdit.Event.OmMessage(message = "Data validation failed: technical state"))
+            return@launch
+        } else if(state.value.transport?.rentPrice == 0F) {
+            _event.emit(TransportEdit.Event.OmMessage(message = "Data validation failed: rent price"))
             return@launch
         }
+        Log.d(TAG, "onSave: ${state.value.transport}")
+
         state.value.transport?.let {
             transportDataSource.save(transport = it)
             _event.emit(TransportEdit.Event.OnBack)
