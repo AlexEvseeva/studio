@@ -42,6 +42,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import ua.rikutou.studio.R
 import ua.rikutou.studio.config.floatFieldMaxLength
+import ua.rikutou.studio.data.remote.transport.TransportType
 import ua.rikutou.studio.ui.components.DatePickerModal
 import ua.rikutou.studio.ui.components.ElementTitle
 import ua.rikutou.studio.ui.section.edit.SectionEdit
@@ -92,6 +93,8 @@ fun TransportEditScreenContent(
     ) {
 
         var expanded by remember { mutableStateOf(false) }
+        var typeExpanded by remember { mutableStateOf(false) }
+
         var itemPosition by remember {
             mutableStateOf(
                 state.departments
@@ -105,22 +108,67 @@ fun TransportEditScreenContent(
             )
         }
 
-        ElementTitle(
-            title = state.transport?.mark ?: "",
-            isEditActive = true
-        )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            value = state.transport?.type?.name ?: "",
-            onValueChange = {
-                onAction(TransportEdit.Action.OnFieldChanged(type = it))
-            },
-            label = {
-                Text(text = stringResource(R.string.typeLabel))
+        var typePositon by remember {
+            mutableStateOf(
+                state.transport?.type?.ordinal ?: 0
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "${stringResource(R.string.typeLabel)}: "
+            )
+            ExposedDropdownMenuBox(
+                modifier = Modifier.padding(vertical = 16.dp),
+                expanded = typeExpanded,
+                onExpandedChange = {
+                    typeExpanded = !typeExpanded
+                }
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = state.transport?.type?.name ?: "",
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Icon(
+                        Icons.Default.ArrowDropDown, null
+                    )
+                }
+
+                DropdownMenu(
+                    expanded = typeExpanded,
+                    onDismissRequest = {
+                        typeExpanded = false
+                    }
+                ) {
+                    TransportType.entries.forEachIndexed() { index, type ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = type.name
+                                )
+                            },
+                            onClick = {
+                                typeExpanded = false
+                                typePositon = index
+                                onAction(TransportEdit.Action.OnTypeSelect(type = type))
+                            }
+                        )
+                    }
+
+                }
+
             }
-        )
+
+        }
+
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()

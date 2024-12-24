@@ -4,6 +4,7 @@ import ua.rikutou.studio.data.local.entity.Department
 import ua.rikutou.studio.data.local.entity.DepartmentEntity
 import ua.rikutou.studio.data.local.entity.LocationEntity
 import ua.rikutou.studio.data.local.entity.TransportEntity
+import ua.rikutou.studio.data.remote.transport.TransportType
 import java.util.Date
 
 object TransportEdit {
@@ -26,6 +27,7 @@ object TransportEdit {
         data object OnSelectDate : Action
         data class OnDepartmentSelect(val departmentId: Long) : Action
         data object OnDismissDatePicker : Action
+        data class OnTypeSelect(val type: TransportType) : Action
     }
 
     data class State (

@@ -51,15 +51,6 @@ class TransportEditViewModel @Inject constructor(
     fun onAction(action: TransportEdit.Action) = viewModelScope.launch {
         when(action) {
             is TransportEdit.Action.OnFieldChanged -> {
-                action.type?.let { type ->
-                    _state.update { s ->
-                        s.copy(
-                            transport = s.transport?.copy(
-                                type = type.runCatching { TransportType.valueOf(type) }.getOrNull() ?: TransportType.Sedan
-                            )
-                        )
-                    }
-                }
                 action.mark?.let { mark ->
                     _state.update { s ->
                         s.copy(
@@ -146,6 +137,16 @@ class TransportEditViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         isSelectDateDialogActive = false
+                    )
+                }
+            }
+
+            is TransportEdit.Action.OnTypeSelect -> {
+                _state.update { s ->
+                    s.copy(
+                        transport = s.transport?.copy(
+                            type = action.type
+                        )
                     )
                 }
             }
