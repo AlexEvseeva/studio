@@ -1,6 +1,8 @@
 package ua.rikutou.studio.ui.transport.edit
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +22,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,6 +43,9 @@ import ua.rikutou.studio.config.floatFieldMaxLength
 import ua.rikutou.studio.ui.components.DatePickerModal
 import ua.rikutou.studio.ui.components.ElementTitle
 import ua.rikutou.studio.ui.section.edit.SectionEdit
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Date
 
 private const val TAG = "TransportEditScreen"
@@ -270,9 +276,16 @@ fun TransportEditScreenContent(
                 },
                 onDismiss = {
                     onAction(TransportEdit.Action.OnDismissDatePicker)
-                }
+                },
+                selectableDates = TransportSelectableDates
             )
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+object TransportSelectableDates : SelectableDates {
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun isSelectableDate(utcTimeMillis: Long): Boolean =
+        LocalDate.ofInstant(Instant.ofEpochMilli(utcTimeMillis), ZoneId.systemDefault()) <= LocalDate.now()
+}
