@@ -4,5 +4,6 @@ enum class LocationType {
     pavilion,
     openspace,
     interior,
-    spare;
+    spare,
+    premium;
 }
