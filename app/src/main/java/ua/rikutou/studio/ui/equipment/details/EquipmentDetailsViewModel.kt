@@ -1,5 +1,6 @@
 package ua.rikutou.studio.ui.equipment.details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,6 +26,7 @@ class EquipmentDetailsViewModel @Inject constructor(
     private val equipmentDataSource: EquipmentDataSource,
     private val profileDataSource: ProfileDataSource,
 ) : ViewModel() {
+    private val TAG by lazy { EquipmentDetailsViewModel::class.simpleName }
     private val _state = MutableStateFlow(EquipmentDetails.State())
     val state = _state.asStateFlow()
         .onStart {
@@ -49,13 +51,12 @@ class EquipmentDetailsViewModel @Inject constructor(
 
     private fun loadEquipment() = viewModelScope.launch {
         savedStateHandle.toRoute<Screen.Equipment.Details>().equipmentId.let { id ->
-            profileDataSource.user?.userId?.let { studioId ->
-                equipmentDataSource.getEquipmentById(equipmentId = id, studioId = studioId).collect { Equipment ->
+            profileDataSource.user?.studioId?.let { studioId ->
+                equipmentDataSource.getEquipmentById(equipmentId = id, studioId = studioId).collect { equipment ->
                     _state.update {
-                        it.copy(equipment = Equipment)
+                        it.copy(equipment = equipment)
                     }
                 }
-
             }
         }
     }
